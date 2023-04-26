@@ -7,7 +7,6 @@ class InputFields extends StatelessWidget {
     required this.hintText,
     required this.obscureText,
     required this.icon,
-   
   }) : super(key: key);
 
   final controller;
@@ -17,16 +16,12 @@ class InputFields extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25.0),
-      child: TextField(
-        controller: controller,
-        obscureText: obscureText,
-        decoration: InputDecoration(
-          
-          prefixIcon: Icon(icon),
-          hintText: hintText,
-        ),
+    return TextField(
+      controller: controller,
+      obscureText: obscureText,
+      decoration: InputDecoration(
+        prefixIcon: Icon(icon),
+        hintText: hintText,
       ),
     );
   }

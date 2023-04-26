@@ -14,47 +14,40 @@ class _LandingState extends State<Landing> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: Center(
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 50),
+            padding: const EdgeInsets.symmetric(horizontal: 40),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 150),
-                    Container(
-                      alignment: Alignment.center,
-                      child: Image.asset(
-                        'assets/images/chat.png',
-                        fit: BoxFit.cover,
-                        height: 210,
-                        width: 210,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    const Text(
-                      'Welcome to Chatting App, Fast and Secure', 
-                      style: TextStyle(fontSize: 18,),
-                    )
-                  ],
+                Image.asset(
+                  'assets/images/chat.png',
+                  fit: BoxFit.cover,
+                  height: 210,
+                  width: 210,
                 ),
-                Column(
-                  children: [
-                    const SizedBox(height: 100),
-                    ButtonWidget(
-                      text: "Start Messaging",
-                      press: () { 
-                        Navigator.pushNamed(context, login);
-                      },
-                    ),
-                  ]
+
+                const SizedBox(height: 20),
+              
+                const Text(
+                  'Welcome to Chatting App, Fast and Secure', 
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 18),
+                ),
+             
+                const SizedBox(height: 100),
+                
+                ButtonWidget(
+                  text: "Start Messaging",
+                  press: () { 
+                    Navigator.pushNamed(context, login);
+                  },
                 ),
               ],
             ),
           ),
         ),
-      )
+      ),
     );
   }
 }

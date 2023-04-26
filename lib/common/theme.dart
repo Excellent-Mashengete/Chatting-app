@@ -9,7 +9,6 @@ class ThemeConstants {
   static const dark1Color = Color(0xFF0D1A2E);
   static const dark2Color = Color(0xFF122646);
   static const light1Color = Color(0xFFF5F5F5);
-
 }
 
 final light = ThemeData(
@@ -49,8 +48,20 @@ final dark = ThemeData(
         fontWeight: FontWeight.w500,
         fontSize: 18.0,
         decoration: TextDecoration.none,
+        color: ThemeConstants.dark1Color
       ),
     ),
+  ),
+
+  //Text Button
+  textButtonTheme: TextButtonThemeData(
+    style: TextButton.styleFrom(
+      primary: ThemeConstants.light1Color,
+      textStyle: const TextStyle(
+        fontFamily: 'Montserrat',
+        color: ThemeConstants.light1Color
+      )
+    )
   ),
 
   //Input Text

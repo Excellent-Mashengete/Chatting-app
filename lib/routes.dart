@@ -1,5 +1,6 @@
 
 import 'package:chattingapp/screens/auth/forgot_password/forgot_password_email_page.dart';
+import 'package:chattingapp/screens/auth/forgot_password/forgot_password_password_page.dart';
 import 'package:chattingapp/screens/auth/login/login_page.dart';
 import 'package:chattingapp/screens/auth/verifyotp/verifyotp.dart';
 import 'package:chattingapp/screens/landing/landing_page.dart';
@@ -19,6 +20,8 @@ class MyRoutes {
         return MaterialPageRoute(builder: (context) => const Login());
       case forgotpassword:
         return MaterialPageRoute(builder: (context) => const ForgotPassword());
+      case enterNewPassword:
+        return MaterialPageRoute(builder: (context) => const EnterNewPassword());
       case verifyOtp:
         return MaterialPageRoute(builder: (context) => const VerifyOTP());
       default:

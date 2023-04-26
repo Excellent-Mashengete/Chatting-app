@@ -1,4 +1,3 @@
-import 'package:chattingapp/widgets/app_bar_widget.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {
@@ -11,9 +10,9 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      appBar: AppBarWidget(title: 'Profile'),
-      body: Center(
+    return  Scaffold(
+      appBar: AppBar(title: const Text('Profile'), automaticallyImplyLeading: false), 
+      body: const Center(
         child: Text('Profile Screen', style: TextStyle(fontSize: 40)),
       )
     );

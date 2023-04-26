@@ -21,37 +21,37 @@ class _LoginState extends State<Login> {
     return Scaffold(
       body: SafeArea(
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.lock, size: 100),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 40),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.lock, size: 100),
 
-              const SizedBox(height: 80),
+                const SizedBox(height: 80),
 
-              // email textfield
-              InputFields(
-                controller: emailController,
-                icon: Icons.email,
-                hintText: 'Email',
-                obscureText: false,
-              ),
+                // email textfield
+                InputFields(
+                  controller: emailController,
+                  icon: Icons.email,
+                  hintText: 'Email',
+                  obscureText: false,
+                ),
 
-              const SizedBox(height: 20),
+                const SizedBox(height: 20),
 
-              // password textfield
-              InputFields(
-                controller: passwordController,
-                icon:Icons.lock_rounded,
-                hintText: 'Password',
-                obscureText: true,
-              ),
+                // password textfield
+                InputFields(
+                  controller: passwordController,
+                  icon:Icons.lock_rounded,
+                  hintText: 'Password',
+                  obscureText: true,
+                ),
 
-              const SizedBox(height: 10),
+                const SizedBox(height: 10),
 
-              // forgot password?
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                child: Row(
+                // forgot password?
+                Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     TextButton(
@@ -65,19 +65,19 @@ class _LoginState extends State<Login> {
                     ),
                   ],
                 ),
-              ),
 
-              // sign in button
-              const SizedBox(height: 100),
-              ButtonWidget(
-                text: "Start Messaging",
-                press: () { 
-                  Navigator.pushNamed(context, verifyOtp);
-                },
-              ),
-            ],
+                // sign in button
+                const SizedBox(height: 100),
+                ButtonWidget(
+                  text: "Start Messaging",
+                  press: () { 
+                    Navigator.pushNamed(context, verifyOtp);
+                  },
+                ),
+              ],
+            )
           )
-        )
+        ),
       )
     );
   }

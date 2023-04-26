@@ -36,8 +36,11 @@ N.B if you have not installed <strong>Android Studio </strong> on your machine p
         flutter:
             sdk: flutter
         cupertino_icons: ^1.0.2
-        intl_phone_field: ^3.1.0
         http: ^0.13.5
+        google_nav_bar: ^5.0.6
+        flutter_native_splash: ^2.2.19
+        intl: ^0.18.1
+        url_strategy: ^0.2.0
 
     dev_dependencies:
         flutter_test:

@@ -8,7 +8,7 @@ class OTPPin extends StatelessWidget {
     required this.hintText,
   }) : super(key: key);
 
-  final controller;
+  final TextEditingController? controller;
   final String hintText;
 
   @override
@@ -25,6 +25,7 @@ class OTPPin extends StatelessWidget {
             FocusScope.of(context).previousFocus();
           }
         },
+        controller: controller,
         decoration: InputDecoration(
           hintText: hintText,
         ),

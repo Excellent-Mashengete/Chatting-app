@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 
@@ -24,7 +23,7 @@ class InputFields extends StatelessWidget {
   final VoidCallback? changeVisibility;
   final String? errorText;
   final TextInputType textType;
-  final onChange;
+  final onChange ;
 
   @override
   Widget build(BuildContext context) {

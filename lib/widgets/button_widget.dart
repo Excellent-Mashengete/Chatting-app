@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ButtonWidget extends StatelessWidget {
-  ButtonWidget({
+  const ButtonWidget({
     Key? key,
     required this.text,
     this.press,

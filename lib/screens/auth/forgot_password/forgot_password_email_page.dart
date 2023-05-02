@@ -1,5 +1,4 @@
 import 'package:chattingapp/constants.dart';
-import 'package:chattingapp/widgets/Input_Textfield_widget.dart';
 import 'package:chattingapp/widgets/app_bar_widget.dart';
 import 'package:chattingapp/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +12,19 @@ class ForgotPassword extends StatefulWidget {
 
 class _ForgotPasswordState extends State<ForgotPassword> {
   final emailController = TextEditingController();
+  bool _validateEmail = false;
+  bool _submitted = false;
+
+  String? get _forgotpassError {
+    final text = emailController.value.text;
+
+    if (text.isEmpty) {
+      return 'Enter valid email address or phone number';
+    }
+
+    // return null if the text is valid
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +45,17 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 ),
 
                 const SizedBox(height: 20),
-                InputFields(
+                TextField(
                   controller: emailController,
-                  icon: Icons.email,
-                  hintText: 'Email',
                   obscureText: false,
+                  keyboardType: TextInputType.text,
+                  onChanged: (_) => setState(() {
+                     _validateEmail = true;
+                  }),
+                  decoration: InputDecoration(
+                    hintText: 'Email / Phone Number',
+                    errorText: _submitted || _validateEmail ? _forgotpassError : null,
+                  ),
                 ),
 
                 //Forgot Password button
@@ -47,7 +65,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 ButtonWidget(
                   text: "REQUEST",
                   press: () { 
-                    Navigator.pushNamed(context, enterNewPassword);
+                    Navigator.pushNamed(context, verifyforgotPassword);
                   },
                 ),
               ],

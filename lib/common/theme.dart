@@ -43,7 +43,7 @@ final dark = ThemeData(
         borderRadius: BorderRadius.all(Radius.circular(30)),
       ),
       
-      textStyle: const TextStyle(
+      textStyle: TextStyle(
         fontFamily: 'Montserrat',
         fontWeight: FontWeight.w500,
         fontSize: 18.0,

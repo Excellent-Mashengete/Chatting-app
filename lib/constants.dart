@@ -5,3 +5,4 @@ const String register = '/auth/register';
 const String verifyOtp = '/auth/verifyOtp';
 const String forgotpassword = '/auth//forgotpassword';
 const String enterNewPassword = '/auth/enterNewPassword';
+const String verifyforgotPassword = '/auth/verifyForgotPassword';

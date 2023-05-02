@@ -1,32 +1,33 @@
 import 'package:chattingapp/constants.dart';
+import 'package:chattingapp/widgets/app_bar_widget.dart';
 import 'package:chattingapp/widgets/otpPin.dart';
 import 'package:flutter/material.dart';
 
-class VerifyOTP extends StatefulWidget {
-
-  const VerifyOTP({Key? key }) :super(key:key);
-   
+class VerifyForgotPassword extends StatefulWidget {
+  const VerifyForgotPassword({super.key});
+  
   @override
-  State<VerifyOTP> createState() => _MyVerifyOTPState();
+  State<VerifyForgotPassword> createState() => _VerifyForgotPasswordState();
 }
 
-class _MyVerifyOTPState extends State<VerifyOTP> {
+class _VerifyForgotPasswordState extends State<VerifyForgotPassword> {
   final verify1Controller = TextEditingController();
   final verify2Controller = TextEditingController();
   final verify3Controller = TextEditingController();
   final verify4Controller = TextEditingController();
 
   @override
-    Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) {
+    return  Scaffold(
+      appBar: const AppBarWidget(title: 'Verify Account', icon: Icons.arrow_back),
       body: SafeArea(
         child: Center(
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 40),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const SizedBox(height: 50),
+                const SizedBox(height: 20),
                 Image.network(
                   "https://i.imgur.com/bOCEVJg.png",
                   height: 180,
@@ -38,11 +39,11 @@ class _MyVerifyOTPState extends State<VerifyOTP> {
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 18),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 15),
                 const Text(
                   '+27******5147',
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -66,7 +67,7 @@ class _MyVerifyOTPState extends State<VerifyOTP> {
                 ),
 
                 // sign in button
-                const SizedBox(height: 80),
+                const SizedBox(height: 70),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -85,17 +86,17 @@ class _MyVerifyOTPState extends State<VerifyOTP> {
                         minimumSize:  const Size(150, 55),
                       ),
                       onPressed: (){
-                        Navigator.pushNamed(context, homepage);
+                        Navigator.pushNamed(context, enterNewPassword);
                       },
                       child: const Text('Verify OTP'),
                     ),
-                  ]
+                  ],
                 ),
               ],
-            )
-          )
+            ),
+          ),
         ),
-      )
+      ),
     );
   }
 }

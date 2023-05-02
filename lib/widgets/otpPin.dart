@@ -1,8 +1,15 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
 
 class OTPPin extends StatelessWidget {
-  const OTPPin({Key? key}) : super(key: key);
+  const OTPPin({
+    Key? key,
+    required this.controller,
+    required this.hintText,
+  }) : super(key: key);
+
+  final controller;
+  final String hintText;
 
   @override
   Widget build(BuildContext context) {
@@ -18,19 +25,10 @@ class OTPPin extends StatelessWidget {
             FocusScope.of(context).previousFocus();
           }
         },
-        decoration: const InputDecoration(
-          hintText: "0",
-          filled: true,
-          fillColor: Color(0xFFF5F5F5),
-          enabledBorder:  OutlineInputBorder(
-            borderSide: BorderSide(color: Color(0xFFF5F5F5), width: 1),
-            borderRadius: BorderRadius.all(Radius.circular(15))
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(15)),
-            borderSide: BorderSide(color: Color(0xFF000000), width: 1)
-          ),
+        decoration: InputDecoration(
+          hintText: hintText,
         ),
+
         style: Theme.of(context).textTheme.titleLarge,
         keyboardType: TextInputType.number,
         textAlign: TextAlign.center,

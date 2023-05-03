@@ -58,14 +58,22 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   ),
                 ),
 
-                //Forgot Password button
-              
                 const SizedBox(height: 100),
-              
+                
+                //Forgot Password button
                 ButtonWidget(
-                  text: "REQUEST",
+                  text: "RESET",
                   press: () { 
-                    Navigator.pushNamed(context, verifyforgotPassword);
+                    if (emailController.text.isEmpty ) {
+                      setState(() {
+                        _submitted = true;
+                      });
+                    } else {
+                      setState(() {
+                        _submitted = false;
+                        Navigator.pushNamed(context, verifyforgotPassword);
+                      });
+                    }
                   },
                 ),
               ],

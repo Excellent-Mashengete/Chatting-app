@@ -1,4 +1,7 @@
+import 'package:chattingapp/common/loader.dart';
 import 'package:chattingapp/constants.dart';
+import 'package:chattingapp/model/login_model.dart';
+import 'package:chattingapp/service/auth_api_service.dart';
 import 'package:chattingapp/widgets/Input_Textfield_widget.dart';
 import 'package:chattingapp/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +14,8 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final ApiClient _apiClient = ApiClient();
+
   // text editing controllers
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -18,6 +23,15 @@ class _LoginState extends State<Login> {
   bool _submitted = false;
   bool _validateEmail = false;
   bool _validatePass = false;
+  bool isApiCallProcessing = false;
+
+  late LoginRequestModel loginRequestModel;
+
+  @override
+  void initState() {
+    super.initState();
+    loginRequestModel = new LoginRequestModel();
+  }
 
   String? get _emailError {
     final text = emailController.value.text;
@@ -49,8 +63,45 @@ class _LoginState extends State<Login> {
     return null;
   }
 
+  Future<void> _handleLogin(
+      String emailController, String passwordController) async {
+    loginRequestModel.identifier = emailController.toLowerCase();
+    loginRequestModel.password = passwordController;
+
+    //get response from ApiClient
+    _apiClient.login(loginRequestModel).then((value) => {
+      // ignore: unnecessary_null_comparison
+      if (value != null){
+        setState(() {
+          isApiCallProcessing = false;
+        }),
+
+        if(value.message!.isNotEmpty){
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: const Text('Login Successful'),
+            backgroundColor: Colors.red.shade300,
+          )),
+          Navigator.pushNamed(context, verifyOtp, arguments: emailController)
+        }else{
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(value.error!),
+            backgroundColor: Colors.red.shade300,
+          ))
+        }
+      },
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    return ProgressHUD(
+      inAsyncCall: isApiCallProcessing,
+      opacity: 0.2,
+      child: uiSetup(context),
+    );
+  }
+
+  Widget uiSetup(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -64,17 +115,17 @@ class _LoginState extends State<Login> {
 
                 // email textfield
                 InputFields(
-                  controller: emailController,
-                  icon: Icons.email,
-                  hintText: 'Email',
-                  obscureText: false,
-                  isPassword: false,
-                  errorText: _submitted || _validateEmail ? _emailError : null,
-                  onChange: (_) => setState(() {
-                    _validateEmail = true;
-                  }),
-                  textType: TextInputType.emailAddress
-                ),
+                    controller: emailController,
+                    icon: Icons.email,
+                    hintText: 'Email',
+                    obscureText: false,
+                    isPassword: false,
+                    errorText:
+                        _submitted || _validateEmail ? _emailError : null,
+                    onChange: (_) => setState(() {
+                          _validateEmail = true;
+                        }),
+                    textType: TextInputType.emailAddress),
 
                 const SizedBox(height: 20),
 
@@ -85,7 +136,8 @@ class _LoginState extends State<Login> {
                   hintText: 'Password',
                   obscureText: _obscureText,
                   isPassword: true,
-                  errorText: _submitted || _validatePass ? _passwordError : null,
+                  errorText:
+                      _submitted || _validatePass ? _passwordError : null,
                   textType: TextInputType.text,
                   onChange: (_) => setState(() {
                     _validatePass = true;
@@ -119,7 +171,22 @@ class _LoginState extends State<Login> {
                 const SizedBox(height: 70),
                 ButtonWidget(
                   text: "Login",
-                  press: () {},
+                  press: () {
+                    if (emailController.text.isEmpty &&
+                        passwordController.text.isEmpty) {
+                      setState(() {
+                        _submitted = true;
+                      });
+                    } else {
+                      setState(() {
+                        _submitted = false;
+                        //
+                        isApiCallProcessing = true;
+                      });
+                      _handleLogin(
+                          emailController.text, passwordController.text);
+                    }
+                  },
                 ),
               ],
             ),
@@ -129,10 +196,3 @@ class _LoginState extends State<Login> {
     );
   }
 }
-
-
-
-
-/*
-Navigator.pushNamed(context, verifyOtp)
- */

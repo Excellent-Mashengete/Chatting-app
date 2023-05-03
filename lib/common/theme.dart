@@ -38,17 +38,17 @@ final dark = ThemeData(
     style: ElevatedButton.styleFrom(
       primary: ThemeConstants.light1Color,
       onSurface: ThemeConstants.light1Color,
+      foregroundColor: ThemeConstants.dark1Color,
       minimumSize: const Size(double.infinity, 55),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(30)),
       ),
       
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         fontFamily: 'Montserrat',
         fontWeight: FontWeight.w500,
         fontSize: 18.0,
         decoration: TextDecoration.none,
-        color: ThemeConstants.dark1Color
       ),
     ),
   ),

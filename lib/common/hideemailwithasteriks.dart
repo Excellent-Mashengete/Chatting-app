@@ -4,9 +4,9 @@ String maskEmail(String email){
 
   String maskedEmail = '';
 
-  if (atPosition > 3) {
-    maskedEmail += email.substring(0, 2);
-    for (int i = 2; i < atPosition-3; i++) {
+  if (atPosition > 1) {
+    maskedEmail += email.substring(0, 1);
+    for (int i = 1; i < atPosition; i++) {
       maskedEmail += '*';
     }
   } else {

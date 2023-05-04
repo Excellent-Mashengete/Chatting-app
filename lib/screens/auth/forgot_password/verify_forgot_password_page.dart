@@ -4,8 +4,12 @@ import 'package:chattingapp/widgets/otpPin.dart';
 import 'package:flutter/material.dart';
 
 class VerifyForgotPassword extends StatefulWidget {
-  const VerifyForgotPassword({super.key});
-  
+  const VerifyForgotPassword({
+    Key? key,
+    required this.data,
+  }) : super(key: key);
+
+  final String data;
   @override
   State<VerifyForgotPassword> createState() => _VerifyForgotPasswordState();
 }

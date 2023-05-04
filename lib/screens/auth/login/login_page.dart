@@ -19,6 +19,7 @@ class _LoginState extends State<Login> {
   // text editing controllers
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  
   var _obscureText = true;
   bool _submitted = false;
   bool _validateEmail = false;
@@ -77,15 +78,13 @@ class _LoginState extends State<Login> {
         }),
 
         if(value.message!.isNotEmpty){
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: const Text('Login Successful'),
-            backgroundColor: Colors.red.shade300,
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Login Successful')
           )),
           Navigator.pushNamed(context, verifyOtp, arguments: emailController)
         }else{
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(value.error!),
-            backgroundColor: Colors.red.shade300,
+            content: Text(value.error!)
           ))
         }
       },

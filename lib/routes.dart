@@ -33,8 +33,14 @@ class MyRoutes {
         }
         return _errorRoute();
       case verifyforgotPassword:
-        return MaterialPageRoute(
-            builder: (context) => const VerifyForgotPassword());
+        if (args is String) {
+          return MaterialPageRoute(
+            builder: (context) => VerifyForgotPassword(
+              data: args,
+            ),
+          );
+        }
+        return _errorRoute();
       default:
         //if there is no such named route in the switch statement, return error route
         return _errorRoute();

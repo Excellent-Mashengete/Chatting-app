@@ -6,4 +6,4 @@ const String verifyOtp = '/auth/verifyOtp';
 const String forgotpassword = '/auth//forgotpassword';
 const String enterNewPassword = '/auth/enterNewPassword';
 const String verifyforgotPassword = '/auth/verifyForgotPassword';
-const String baseurl = 'http://localhost:8080/api/';
+const String baseurl = 'http://192.168.255.125:8080/api/';

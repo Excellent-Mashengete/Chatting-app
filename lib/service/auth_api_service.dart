@@ -2,6 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:chattingapp/constants.dart';
 import 'package:chattingapp/model/login_model.dart';
+import 'package:chattingapp/model/reqotp_model.dart';
+import 'package:chattingapp/model/verifyOTp_model.dart';
+import 'package:chattingapp/service/hive.dart';
 import 'package:http/http.dart' as http;
 
 class ApiClient {
@@ -17,7 +20,6 @@ class ApiClient {
         case 200:
           final data = json.decode(response.body);
           return LoginResponseModel.fromJson(data);
-
         case 400:
           final data = json.decode(response.body);
           return LoginResponseModel.fromJson(data);
@@ -30,9 +32,9 @@ class ApiClient {
     }
   }
 
-
-  Future<LoginResponseModel> verifyOP(LoginRequestModel requestModel) async {
-    //IMPLEMENT USER LOGIN
+  Future<VerifyOTPResponseModel> verifyOP(
+      VerifyOTPRequestModel requestModel) async {
+    //IMPLEMENT Verify OTP Pin
     try {
       final response = await http.post(
         Uri.parse('${baseurl}verifyOTP'),
@@ -42,12 +44,14 @@ class ApiClient {
       switch (response.statusCode) {
         case 200:
           final data = json.decode(response.body);
-          return LoginResponseModel.fromJson(data);
-
+          StoreUserData.fromJson(data);
+          return VerifyOTPResponseModel.fromJson(data);
         case 400:
           final data = json.decode(response.body);
-          return LoginResponseModel.fromJson(data);
-
+          return VerifyOTPResponseModel.fromJson(data);
+        case 404:
+          final data = json.decode(response.body);
+          return VerifyOTPResponseModel.fromJson(data);
         default:
           throw Exception(response.body);
       }
@@ -56,22 +60,21 @@ class ApiClient {
     }
   }
 
-  
-   Future<LoginResponseModel> requestOTP(LoginRequestModel requestModel) async {
-    //IMPLEMENT USER LOGIN
+  Future<ReqOTPResponseModel> requestOTP(
+      ReqOTPRequestModel requestModel) async {
+    //IMPLEMENT Request OTP Pin
     try {
-      final response = await http.get(
-        Uri.parse('${baseurl}reqOTP')
-      );
+      final response = await http.post(Uri.parse('${baseurl}reqOTP'),
+          body: requestModel.toJson());
 
       switch (response.statusCode) {
         case 200:
           final data = json.decode(response.body);
-          return LoginResponseModel.fromJson(data);
+          return ReqOTPResponseModel.fromJson(data);
 
-        case 400:
+        case 500:
           final data = json.decode(response.body);
-          return LoginResponseModel.fromJson(data);
+          return ReqOTPResponseModel.fromJson(data);
 
         default:
           throw Exception(response.body);
@@ -80,5 +83,4 @@ class ApiClient {
       rethrow;
     }
   }
-
 }

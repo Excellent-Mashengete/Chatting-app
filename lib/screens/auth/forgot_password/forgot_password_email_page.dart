@@ -14,7 +14,8 @@ class ForgotPassword extends StatefulWidget {
 }
 
 class _ForgotPasswordState extends State<ForgotPassword> {
-  final RestApiClient _apiClient = RestApiClient();
+  final RestApiClient _resetapiClient = RestApiClient(); //
+
   final emailController = TextEditingController();
   bool _validateEmail = false;
   bool _submitted = false;
@@ -112,7 +113,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   Future<void> _handleResetPassword(String emailController) async {
     resetPassRequestModel.identifier = emailController.toLowerCase();
 
-    _apiClient.passwordReset(resetPassRequestModel).then((value) => {
+    _resetapiClient.passwordReset(resetPassRequestModel).then((value) => {
       if (value != null){
         setState(() {
           isApiCallProcessing = false;

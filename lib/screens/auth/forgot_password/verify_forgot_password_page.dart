@@ -1,4 +1,9 @@
+import 'package:chattingapp/common/loader.dart';
 import 'package:chattingapp/constants.dart';
+import 'package:chattingapp/model/reqotp_model.dart';
+import 'package:chattingapp/model/resetpassword_model.dart';
+import 'package:chattingapp/service/auth_api_service.dart';
+import 'package:chattingapp/service/reset_auth_api_service.dart';
 import 'package:chattingapp/widgets/app_bar_widget.dart';
 import 'package:chattingapp/widgets/otpPin.dart';
 import 'package:flutter/material.dart';
@@ -15,13 +20,36 @@ class VerifyForgotPassword extends StatefulWidget {
 }
 
 class _VerifyForgotPasswordState extends State<VerifyForgotPassword> {
+  final RestApiClient _resetapiClient = RestApiClient();
+  final ApiClient _apiClient = ApiClient();
   final verify1Controller = TextEditingController();
   final verify2Controller = TextEditingController();
   final verify3Controller = TextEditingController();
   final verify4Controller = TextEditingController();
+  bool isApiCallProcessing = false;
+
+  late String message;
+  late ForgotVerifyOTPRequestModel forgotPassVerifyRequestModel;
+  late ReqOTPRequestModel requestOtpRequestModel;
+ 
+  @override
+  void initState() {
+    super.initState();
+    message = widget.data;
+    forgotPassVerifyRequestModel = ForgotVerifyOTPRequestModel();
+    requestOtpRequestModel = ReqOTPRequestModel();
+  }
 
   @override
   Widget build(BuildContext context) {
+    return ProgressHUD(
+      inAsyncCall: isApiCallProcessing,
+      opacity: 0.2,
+      child: uiSetup(context),
+    );
+  }
+
+  Widget uiSetup(BuildContext context) {
     return  Scaffold(
       appBar: const AppBarWidget(title: 'Verify Account', icon: Icons.arrow_back),
       body: SafeArea(
@@ -80,7 +108,7 @@ class _VerifyForgotPasswordState extends State<VerifyForgotPassword> {
                         minimumSize:  const Size(150, 55),
                       ),
                       onPressed: (){
-                        Navigator.pushNamed(context, homepage);
+                        _handleRequestOTP();
                       },
                       child: const Text('Resend'),
                     ),
@@ -90,7 +118,16 @@ class _VerifyForgotPasswordState extends State<VerifyForgotPassword> {
                         minimumSize:  const Size(150, 55),
                       ),
                       onPressed: (){
-                        Navigator.pushNamed(context, enterNewPassword);
+                        setState(() {
+                          isApiCallProcessing = true;
+                        });
+                        
+                        _handleVerifyOTP(
+                          verify1Controller.text,
+                          verify2Controller.text,
+                          verify3Controller.text,
+                          verify4Controller.text
+                        );
                       },
                       child: const Text('Verify OTP'),
                     ),
@@ -102,5 +139,49 @@ class _VerifyForgotPasswordState extends State<VerifyForgotPassword> {
         ),
       ),
     );
+  }
+
+  Future<void> _handleRequestOTP() async {
+    requestOtpRequestModel.email = message.toLowerCase();
+    _apiClient.requestOTP(requestOtpRequestModel).then((value) => {
+      if (value != null){
+        setState(() {
+          isApiCallProcessing = false;
+        }),
+
+        if (value.message!.isNotEmpty){
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(value.message!))
+          ),
+        }else{
+          ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(value.error!))),
+        }
+      },
+    });
+  }
+
+  Future<void> _handleVerifyOTP(
+      String code1, String code2, String code3, String code4) async {
+    forgotPassVerifyRequestModel.identifier = message.toLowerCase();
+    forgotPassVerifyRequestModel.otp = code1 + code2 + code3 + code4;
+
+    _resetapiClient.verifyAccount(forgotPassVerifyRequestModel).then((value) => {
+      if (value != null){
+        setState(() {
+          isApiCallProcessing = false;
+        }),
+
+        if (value.message!.isNotEmpty){
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(value.message!))
+          ),
+          Navigator.pushNamed(context, enterNewPassword, arguments: message)
+        }else{
+          ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(value.error!))),
+        }
+      },
+    });
   }
 }

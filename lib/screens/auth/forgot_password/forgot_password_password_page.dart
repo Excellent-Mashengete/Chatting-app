@@ -1,24 +1,45 @@
-import 'package:chattingapp/constants.dart';
+import 'package:chattingapp/model/resetpassword_model.dart';
+import 'package:chattingapp/service/reset_auth_api_service.dart';
 import 'package:chattingapp/widgets/Input_Textfield_widget.dart';
 import 'package:chattingapp/widgets/app_bar_widget.dart';
 import 'package:chattingapp/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
 
 class EnterNewPassword extends StatefulWidget {
-  const EnterNewPassword({super.key});
+  const EnterNewPassword({
+    Key? key,
+    required this.data,
+  }) : super(key: key);
+
+  final String data;
 
   @override
   State<EnterNewPassword> createState() => _EnterNewPasswordState();
 }
 
 class _EnterNewPasswordState extends State<EnterNewPassword> {
+  final RestApiClient _resetapiClient = RestApiClient();
+
   final newpasswordController = TextEditingController();
   final confirmpasswordController = TextEditingController();
+
   var _obscureText = true;
   var _confirmobscureText = true;
   bool _submitted = false;
   bool _validatePass = false;
   bool _validateConfPass = false;
+
+  bool isApiCallProcessing = false;
+
+  late String message;
+  late ForgotNewPassRequestModel forgotNewPassRequestModel;
+
+  @override
+  void initState() {
+    super.initState();
+    message = widget.data;
+    forgotNewPassRequestModel = ForgotNewPassRequestModel();
+  }
 
   String? get _passwordError {
     final text = newpasswordController.value.text;
@@ -33,14 +54,16 @@ class _EnterNewPasswordState extends State<EnterNewPassword> {
     return null;
   }
 
-  
   String? get _confirmpasswordError {
     final text = confirmpasswordController.value.text;
+    final confirmText = newpasswordController.value.text;
 
     if (text.isEmpty) {
       return 'Enter Password ';
     } else if (text.length < 5) {
       return 'Password Should be less than 5 characters';
+    } else if (text != text) {
+      return 'Password mismatch';
     }
 
     // return null if the text is valid
@@ -76,9 +99,10 @@ class _EnterNewPasswordState extends State<EnterNewPassword> {
                   icon: Icons.lock_rounded,
                   hintText: 'New Password',
                   obscureText: _obscureText,
-                  errorText: _submitted || _validatePass ? _passwordError : null,
+                  errorText:
+                      _submitted || _validatePass ? _passwordError : null,
                   isPassword: true,
-                  onChange:(_) => setState(() {
+                  onChange: (_) => setState(() {
                     _validatePass = true;
                   }),
                   textType: TextInputType.text,
@@ -87,7 +111,6 @@ class _EnterNewPasswordState extends State<EnterNewPassword> {
                       _obscureText = !_obscureText;
                     });
                   },
-                 
                 ),
 
                 const SizedBox(height: 30),
@@ -98,18 +121,19 @@ class _EnterNewPasswordState extends State<EnterNewPassword> {
                   icon: Icons.lock_rounded,
                   hintText: 'Confirm Password',
                   obscureText: _confirmobscureText,
-                  errorText: _submitted || _validateConfPass ? _confirmpasswordError  : null,
+                  errorText: _submitted || _validateConfPass
+                      ? _confirmpasswordError
+                      : null,
                   isPassword: true,
-                   onChange:(_) => setState(() {
+                  onChange: (_) => setState(() {
                     _validateConfPass = true;
-                   }),
+                  }),
                   textType: TextInputType.text,
                   changeVisibility: () {
                     setState(() {
                       _confirmobscureText = !_confirmobscureText;
                     });
                   },
-                 
                 ),
 
                 //Forgot Password button
@@ -118,7 +142,20 @@ class _EnterNewPasswordState extends State<EnterNewPassword> {
                 ButtonWidget(
                   text: "Continue",
                   press: () {
-                    Navigator.pushNamed(context, homepage);
+                    if (newpasswordController.text.isEmpty &&
+                        confirmpasswordController.text.isEmpty) {
+                      setState(() {
+                        _submitted = true;
+                      });
+                    } else {
+                      setState(() {
+                        _submitted = false;
+                        //
+                        isApiCallProcessing = true;
+                      });
+                      _handleLogin(newpasswordController.text,
+                          confirmpasswordController.text);
+                    }
                   },
                 ),
               ],
@@ -127,5 +164,33 @@ class _EnterNewPasswordState extends State<EnterNewPassword> {
         ),
       ),
     );
+  }
+
+  Future<void> _handleLogin(
+      String newPassController, String confPassController) async {
+    forgotNewPassRequestModel.identifier = message.toLowerCase();
+    forgotNewPassRequestModel.newpassword = newPassController;
+    forgotNewPassRequestModel.confirmPassword = confPassController;
+
+    //get response from ApiClient
+    _resetapiClient.newPassword(forgotNewPassRequestModel).then((value) => {
+      // ignore: unnecessary_null_comparison
+      if (value != null){
+        setState(() {
+          isApiCallProcessing = false;
+        }),
+        if (value.message!.isNotEmpty){
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(value.message!))
+          ),
+        //  Navigator.pushNamed(context, homepage)
+        }
+        else{
+          ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(value.error!))
+          )
+        }
+      },
+    });
   }
 }

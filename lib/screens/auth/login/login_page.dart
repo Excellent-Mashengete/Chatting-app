@@ -31,7 +31,7 @@ class _LoginState extends State<Login> {
   @override
   void initState() {
     super.initState();
-    loginRequestModel = new LoginRequestModel();
+    loginRequestModel =  LoginRequestModel();
   }
 
   String? get _emailError {
@@ -64,32 +64,6 @@ class _LoginState extends State<Login> {
     return null;
   }
 
-  Future<void> _handleLogin(
-      String emailController, String passwordController) async {
-    loginRequestModel.identifier = emailController.toLowerCase();
-    loginRequestModel.password = passwordController;
-
-    //get response from ApiClient
-    _apiClient.login(loginRequestModel).then((value) => {
-      // ignore: unnecessary_null_comparison
-      if (value != null){
-        setState(() {
-          isApiCallProcessing = false;
-        }),
-
-        if(value.message!.isNotEmpty){
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Login Successful')
-          )),
-          Navigator.pushNamed(context, verifyOtp, arguments: emailController)
-        }else{
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(value.error!)
-          ))
-        }
-      },
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -193,5 +167,33 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+  }
+
+  
+  Future<void> _handleLogin(
+      String emailController, String passwordController) async {
+    loginRequestModel.identifier = emailController.toLowerCase();
+    loginRequestModel.password = passwordController;
+
+    //get response from ApiClient
+    _apiClient.login(loginRequestModel).then((value) => {
+      // ignore: unnecessary_null_comparison
+      if (value != null){
+        setState(() {
+          isApiCallProcessing = false;
+        }),
+
+        if(value.message!.isNotEmpty){
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Login Successful')
+          )),
+          Navigator.pushNamed(context, verifyOtp, arguments: emailController)
+        }else{
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(value.error!)
+          ))
+        }
+      },
+    });
   }
 }

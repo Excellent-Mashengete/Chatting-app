@@ -10,6 +10,7 @@ class Landing extends StatefulWidget {
 }
 
 class _LandingState extends State<Landing> {
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,20 +27,16 @@ class _LandingState extends State<Landing> {
                   height: 210,
                   width: 210,
                 ),
-
                 const SizedBox(height: 20),
-              
                 const Text(
-                  'Welcome to Chatting App, Fast and Secure', 
+                  'Welcome to Chatting App, Fast and Secure',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 18),
                 ),
-             
                 const SizedBox(height: 100),
-                
                 ButtonWidget(
                   text: "Start Messaging",
-                  press: () { 
+                  press: () {
                     Navigator.pushNamed(context, login);
                   },
                 ),

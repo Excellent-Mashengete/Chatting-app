@@ -144,7 +144,6 @@ class _MyVerifyOTPState extends State<VerifyOTP> {
   Future<void> _handleRequestOTP() async {
     requestOtpRequestModel.email = message.toLowerCase();
     _apiClient.requestOTP(requestOtpRequestModel).then((value) => {
-      print(requestOtpRequestModel.email),
       if (value != null){
         setState(() {
           isApiCallProcessing = false;

@@ -22,7 +22,14 @@ class MyRoutes {
       case forgotpassword:
         return MaterialPageRoute(builder: (context) => const ForgotPassword());
       case enterNewPassword:
-        return MaterialPageRoute(builder: (context) => const EnterNewPassword());
+        if (args is String) {
+          return MaterialPageRoute(
+            builder: (context) => EnterNewPassword(
+              data: args,
+            ),
+          );
+        }
+        return _errorRoute();
       case verifyOtp:
         if (args is String) {
           return MaterialPageRoute(

@@ -54,8 +54,9 @@ flutter_native_splash:
   android: true
   ios: true
   web: false
-  color: "#3D3D3D"
-#  image: "assets/images/logo2-background.png"
+  color: "#0D1A2E"
+  image: "assets/images/chat.png"
+  
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

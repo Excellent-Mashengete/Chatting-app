@@ -1,6 +1,6 @@
 import 'package:chattingapp/common/loader.dart';
 import 'package:chattingapp/constants.dart';
-import 'package:chattingapp/model/resetpassword_model.dart';
+import 'package:chattingapp/model/models.dart';
 import 'package:chattingapp/service/reset_auth_api_service.dart';
 import 'package:chattingapp/widgets/app_bar_widget.dart';
 import 'package:chattingapp/widgets/button_widget.dart';

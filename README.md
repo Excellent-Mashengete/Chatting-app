@@ -5,6 +5,9 @@ A chatting App that uses socket.io and build as a native app using flutter and n
 ## Functional Requirements
 
 <ul>
+    <li>Login to an existing account</li>
+    <li>Forgot Password then reset it </li>
+    <li>Receive OTP PIN via Email</li>
     <li>Sends One on One Messages</li>
     <li>Send Messages To Group Chat</li>
     <li>Create Group Group Chats</li>

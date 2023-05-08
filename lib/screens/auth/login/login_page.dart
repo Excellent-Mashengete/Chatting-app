@@ -1,6 +1,6 @@
 import 'package:chattingapp/common/loader.dart';
 import 'package:chattingapp/constants.dart';
-import 'package:chattingapp/model/login_model.dart';
+import 'package:chattingapp/model/models.dart';
 import 'package:chattingapp/service/auth_api_service.dart';
 import 'package:chattingapp/widgets/Input_Textfield_widget.dart';
 import 'package:chattingapp/widgets/button_widget.dart';

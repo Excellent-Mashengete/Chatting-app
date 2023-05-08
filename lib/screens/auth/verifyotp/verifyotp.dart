@@ -1,8 +1,7 @@
 import 'package:chattingapp/common/hideemailwithasteriks.dart';
 import 'package:chattingapp/common/loader.dart';
 import 'package:chattingapp/constants.dart';
-import 'package:chattingapp/model/reqotp_model.dart';
-import 'package:chattingapp/model/verifyOTp_model.dart';
+import 'package:chattingapp/model/models.dart';
 import 'package:chattingapp/service/auth_api_service.dart';
 import 'package:chattingapp/widgets/otpPin.dart';
 import 'package:flutter/material.dart';

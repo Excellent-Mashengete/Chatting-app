@@ -1,9 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:chattingapp/constants.dart';
-import 'package:chattingapp/model/login_model.dart';
-import 'package:chattingapp/model/reqotp_model.dart';
-import 'package:chattingapp/model/verifyOTp_model.dart';
+import 'package:chattingapp/model/models.dart';
 import 'package:chattingapp/service/hive.dart';
 import 'package:http/http.dart' as http;
 

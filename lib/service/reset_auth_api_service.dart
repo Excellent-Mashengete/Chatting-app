@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:chattingapp/constants.dart';
-import 'package:chattingapp/model/resetpassword_model.dart';
+import 'package:chattingapp/model/models.dart';
 import 'package:http/http.dart' as http;
 
 class RestApiClient {

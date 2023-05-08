@@ -1,3 +1,5 @@
+import 'package:chattingapp/model/message_data.dart';
+import 'package:chattingapp/screens/Pages/messages.dart';
 import 'package:chattingapp/screens/auth/forgot_password/forgot_password_email_page.dart';
 import 'package:chattingapp/screens/auth/forgot_password/forgot_password_password_page.dart';
 import 'package:chattingapp/screens/auth/forgot_password/verify_forgot_password_page.dart';
@@ -44,6 +46,16 @@ class MyRoutes {
           return MaterialPageRoute(
             builder: (context) => VerifyForgotPassword(
               data: args,
+            ),
+          );
+        }
+        return _errorRoute();
+
+      case messages:
+        if (args is MessageData ) {
+          return MaterialPageRoute(
+            builder: (context) => Messages(
+              messageData: args,
             ),
           );
         }

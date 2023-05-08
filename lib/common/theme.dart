@@ -12,7 +12,19 @@ class ThemeConstants {
 }
 
 final light = ThemeData(
-
+  //Input Text
+  inputDecorationTheme: const InputDecorationTheme(
+      filled: true,
+      fillColor: ThemeConstants.light1Color,
+      prefixIconColor: ThemeConstants.dark1Color,
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: ThemeConstants.light1Color,),
+        borderRadius: BorderRadius.all(Radius.circular(15)),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(15)),
+        borderSide: BorderSide(color: ThemeConstants.light1Color,),
+      )),
 );
 
 final dark = ThemeData(
@@ -43,7 +55,6 @@ final dark = ThemeData(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(30)),
       ),
-      
       textStyle: const TextStyle(
         fontFamily: 'Montserrat',
         fontWeight: FontWeight.w500,
@@ -55,27 +66,22 @@ final dark = ThemeData(
 
   //Text Button
   textButtonTheme: TextButtonThemeData(
-    style: TextButton.styleFrom(
-      primary: ThemeConstants.light1Color,
-      textStyle: const TextStyle(
-        fontFamily: 'Montserrat',
-        color: ThemeConstants.light1Color
-      )
-    )
-  ),
+      style: TextButton.styleFrom(
+          primary: ThemeConstants.light1Color,
+          textStyle: const TextStyle(
+              fontFamily: 'Montserrat', color: ThemeConstants.light1Color))),
 
   //Input Text
   inputDecorationTheme: const InputDecorationTheme(
-    filled: true,
-    fillColor: ThemeConstants.dark2Color,
-    prefixIconColor: ThemeConstants.light1Color,
-    enabledBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: Colors.transparent),
-      borderRadius: BorderRadius.all(Radius.circular(15)), 
-    ),
-    focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.all(Radius.circular(15)),
-      borderSide: BorderSide(color: ThemeConstants.light1Color),
-    )
-  )
+      filled: true,
+      fillColor: ThemeConstants.dark2Color,
+      prefixIconColor: ThemeConstants.light1Color,
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.transparent),
+        borderRadius: BorderRadius.all(Radius.circular(15)),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(15)),
+        borderSide: BorderSide(color: ThemeConstants.light1Color),
+      )),
 );

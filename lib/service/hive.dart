@@ -1,38 +1,34 @@
 import 'dart:ffi';
 import 'package:hive_flutter/hive_flutter.dart';
 
-class StoreUserData {
-  String? phone;
-  String? name;
-  String? token;
-
-  StoreUserData({this.phone, this.name, this.token});
-
-  StoreUserData.fromJson(Map<String, dynamic> json) {
-    late Box box1;
-
-    Future<void> saveUserDatat() async {
-      await Hive.initFlutter();
-      box1 = await Hive.openBox('user');
-      box1.put('user_name', json["name"]);
-      box1.put('user_phone', json["phone"]);
-      box1.put('user_token', json["token"]);
-      box1.put('logintype', json["isLoogedIn"]);
-    }
+class HandleHive {
+  Future<void> storeData(String name, String phone, String token) async {
+    await Hive.initFlutter();
+    var box1 = await Hive.openBox('user');
+    box1.put('user_name', name);
+    box1.put('user_phone', phone);
+    box1.put('user_token', token);
+    box1.put('logintype', true);
   }
-}
 
-Future<String> getToken() async {
-  var box1 = await Hive.openBox('user');
-  return box1.get('user_token');
-}
+  Future<String> getToken() async {
+    await Hive.initFlutter();
+    var box1 = await Hive.openBox('user');
+    return box1.get('user_token');
+  }
 
-Future<String> getName() async {
-  var box1 = await Hive.openBox('user');
-  return box1.get('user_name');
-}
+  Future<String> getName() async {
+    await Hive.initFlutter();
+    var box1 = await Hive.openBox('user');
+    return box1.get('user_name');
+  }
 
-Future<Bool> getLogginType() async {
-  var box1 = await Hive.openBox('user');
-  return box1.get('logintype');
+  Future<void> removeAllData() async {
+    await Hive.initFlutter();
+    var box1 = await Hive.openBox('user');
+    box1.put('logintype', false);
+    box1.delete('user_name');
+    box1.delete('user_phone');
+    box1.delete('user_token');
+  }
 }

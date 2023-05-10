@@ -11,22 +11,6 @@ class ThemeConstants {
   static const light1Color = Color(0xFFF5F5F5);
 }
 
-final light = ThemeData(
-  //Input Text
-  inputDecorationTheme: const InputDecorationTheme(
-      filled: true,
-      fillColor: ThemeConstants.light1Color,
-      prefixIconColor: ThemeConstants.dark1Color,
-      enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: ThemeConstants.light1Color,),
-        borderRadius: BorderRadius.all(Radius.circular(15)),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(15)),
-        borderSide: BorderSide(color: ThemeConstants.light1Color,),
-      )),
-);
-
 final dark = ThemeData(
   fontFamily: 'Montserrat',
   brightness: Brightness.dark,
@@ -84,4 +68,6 @@ final dark = ThemeData(
         borderRadius: BorderRadius.all(Radius.circular(15)),
         borderSide: BorderSide(color: ThemeConstants.light1Color),
       )),
+
+
 );

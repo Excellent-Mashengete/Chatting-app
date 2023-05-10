@@ -1,5 +1,5 @@
 import 'package:chattingapp/model/models.dart';
-import 'package:chattingapp/service/reset_auth_api_service.dart';
+import 'package:chattingapp/service/auth_api_service.dart';
 import 'package:chattingapp/widgets/Input_Textfield_widget.dart';
 import 'package:chattingapp/widgets/app_bar_widget.dart';
 import 'package:chattingapp/widgets/button_widget.dart';
@@ -18,7 +18,7 @@ class EnterNewPassword extends StatefulWidget {
 }
 
 class _EnterNewPasswordState extends State<EnterNewPassword> {
-  final RestApiClient _resetapiClient = RestApiClient();
+    final ApiClient _resetapiClient = ApiClient();
 
   final newpasswordController = TextEditingController();
   final confirmpasswordController = TextEditingController();
@@ -62,7 +62,7 @@ class _EnterNewPasswordState extends State<EnterNewPassword> {
       return 'Enter Password ';
     } else if (text.length < 5) {
       return 'Password Should be less than 5 characters';
-    } else if (text != text) {
+    } else if (text != confirmText) {
       return 'Password mismatch';
     }
 
@@ -73,93 +73,100 @@ class _EnterNewPasswordState extends State<EnterNewPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const AppBarWidget(title: 'New Password', icon: Icons.arrow_back),
+      appBar: const AppBarWidget(
+        title: 'New Password', 
+        icon: Icons.arrow_back
+      ),
       body: SafeArea(
         child: Center(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 40),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const SizedBox(height: 50),
-                Row(
+          child: ListView(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  children: const [
-                    Text(
-                      'Create your new password',
-                      style: TextStyle(fontSize: 18),
+                  children: [
+                    const SizedBox(height: 50),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: const [
+                        Text(
+                          'Create your new password',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 20),
+                    // Enter new password textfield
+                    InputFields(
+                      controller: newpasswordController,
+                      icon: Icons.lock_rounded,
+                      hintText: 'New Password',
+                      obscureText: _obscureText,
+                      errorText:
+                          _submitted || _validatePass ? _passwordError : null,
+                      isPassword: true,
+                      onChange: (_) => setState(() {
+                        _validatePass = true;
+                      }),
+                      textType: TextInputType.text,
+                      changeVisibility: () {
+                        setState(() {
+                          _obscureText = !_obscureText;
+                        });
+                      },
+                    ),
+
+                    const SizedBox(height: 30),
+
+                    // confirm new password textfield
+                    InputFields(
+                      controller: confirmpasswordController,
+                      icon: Icons.lock_rounded,
+                      hintText: 'Confirm Password',
+                      obscureText: _confirmobscureText,
+                      errorText: _submitted || _validateConfPass
+                          ? _confirmpasswordError
+                          : null,
+                      isPassword: true,
+                      onChange: (_) => setState(() {
+                        _validateConfPass = true;
+                      }),
+                      textType: TextInputType.text,
+                      changeVisibility: () {
+                        setState(() {
+                          _confirmobscureText = !_confirmobscureText;
+                        });
+                      },
+                    ),
+
+                    //Forgot Password button
+                    const SizedBox(height: 100),
+
+                    ButtonWidget(
+                      text: "Continue",
+                      press: () {
+                        if (newpasswordController.text.isEmpty &&
+                            confirmpasswordController.text.isEmpty) {
+                          setState(() {
+                            _submitted = true;
+                          });
+                        } else {
+                          setState(() {
+                            _submitted = false;
+                            //
+                            isApiCallProcessing = true;
+                          });
+                          _handleLogin(newpasswordController.text,
+                              confirmpasswordController.text);
+                        }
+                      },
                     ),
                   ],
                 ),
-
-                const SizedBox(height: 20),
-                // Enter new password textfield
-                InputFields(
-                  controller: newpasswordController,
-                  icon: Icons.lock_rounded,
-                  hintText: 'New Password',
-                  obscureText: _obscureText,
-                  errorText:
-                      _submitted || _validatePass ? _passwordError : null,
-                  isPassword: true,
-                  onChange: (_) => setState(() {
-                    _validatePass = true;
-                  }),
-                  textType: TextInputType.text,
-                  changeVisibility: () {
-                    setState(() {
-                      _obscureText = !_obscureText;
-                    });
-                  },
-                ),
-
-                const SizedBox(height: 30),
-
-                // confirm new password textfield
-                InputFields(
-                  controller: confirmpasswordController,
-                  icon: Icons.lock_rounded,
-                  hintText: 'Confirm Password',
-                  obscureText: _confirmobscureText,
-                  errorText: _submitted || _validateConfPass
-                      ? _confirmpasswordError
-                      : null,
-                  isPassword: true,
-                  onChange: (_) => setState(() {
-                    _validateConfPass = true;
-                  }),
-                  textType: TextInputType.text,
-                  changeVisibility: () {
-                    setState(() {
-                      _confirmobscureText = !_confirmobscureText;
-                    });
-                  },
-                ),
-
-                //Forgot Password button
-                const SizedBox(height: 100),
-
-                ButtonWidget(
-                  text: "Continue",
-                  press: () {
-                    if (newpasswordController.text.isEmpty &&
-                        confirmpasswordController.text.isEmpty) {
-                      setState(() {
-                        _submitted = true;
-                      });
-                    } else {
-                      setState(() {
-                        _submitted = false;
-                        //
-                        isApiCallProcessing = true;
-                      });
-                      _handleLogin(newpasswordController.text,
-                          confirmpasswordController.text);
-                    }
-                  },
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

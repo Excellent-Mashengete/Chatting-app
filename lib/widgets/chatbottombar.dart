@@ -1,3 +1,4 @@
+import 'package:chattingapp/common/theme.dart';
 import 'package:chattingapp/widgets/icon_buttons.dart';
 import 'package:flutter/material.dart';
 
@@ -8,9 +9,9 @@ class ChatBottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 65,
-      decoration: BoxDecoration(color: const Color(0xFF122646), boxShadow: [
+      decoration: BoxDecoration(color: ThemeConstants.dark2Color, boxShadow: [
         BoxShadow(
-          color: const Color(0xFF122646).withOpacity(0.5),
+          color: ThemeConstants.dark2Color.withOpacity(0.5),
           blurRadius: 10,
           spreadRadius: 2,
           offset: const Offset(0, 3),
@@ -25,7 +26,7 @@ class ChatBottomBar extends StatelessWidget {
               size: 25,
               onTap: () {
                 showModalBottomSheet(
-                    backgroundColor: const Color(0xFF122646),
+                    backgroundColor: ThemeConstants.dark2Color,
                     context: context,
                     builder: (builder) => bottomSheet(context));
               },
@@ -78,7 +79,7 @@ class ChatBottomBar extends StatelessWidget {
       height: 278,
       width: MediaQuery.of(context).size.width,
       child: Card(
-        color: const Color(0xFF122646),
+        color: ThemeConstants.dark2Color,
         margin: const EdgeInsets.all(18),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
@@ -121,7 +122,7 @@ class ChatBottomBar extends StatelessWidget {
           child: Icon(
             icon,
             size: 29,
-            color: Colors.white,
+            color: ThemeConstants.light1Color,
           ),
         ),
         const SizedBox(

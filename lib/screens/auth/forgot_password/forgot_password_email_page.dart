@@ -1,7 +1,7 @@
 import 'package:chattingapp/common/loader.dart';
 import 'package:chattingapp/constants.dart';
 import 'package:chattingapp/model/models.dart';
-import 'package:chattingapp/service/reset_auth_api_service.dart';
+import 'package:chattingapp/service/auth_api_service.dart';
 import 'package:chattingapp/widgets/app_bar_widget.dart';
 import 'package:chattingapp/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
@@ -14,8 +14,8 @@ class ForgotPassword extends StatefulWidget {
 }
 
 class _ForgotPasswordState extends State<ForgotPassword> {
-  final RestApiClient _resetapiClient = RestApiClient(); //
-
+  final ApiClient _resetapiClient = ApiClient();
+  
   final emailController = TextEditingController();
   bool _validateEmail = false;
   bool _submitted = false;
@@ -52,58 +52,64 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
   Widget uiSetup(BuildContext context) {
     return Scaffold(
-      appBar:
-          const AppBarWidget(title: 'Forgot Password', icon: Icons.arrow_back),
+      appBar: const AppBarWidget(
+        title: 'Forgot Password', 
+        icon: Icons.arrow_back
+      ),
       body: SafeArea(
         child: Center(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 40),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const SizedBox(height: 50),
-                const Text(
-                  'Please enter email address or Phone number to reset the password',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 18),
-                ),
+          child: ListView(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 50),
+                    const Text(
+                      'Please enter email address or Phone number to reset the password',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 18),
+                    ),
 
-                const SizedBox(height: 20),
-                TextField(
-                  controller: emailController,
-                  obscureText: false,
-                  keyboardType: TextInputType.text,
-                  onChanged: (_) => setState(() {
-                    _validateEmail = true;
-                  }),
-                  decoration: InputDecoration(
-                    hintText: 'Email / Phone Number',
-                    errorText:
-                        _submitted || _validateEmail ? _forgotpassError : null,
-                  ),
-                ),
+                    const SizedBox(height: 20),
+                    TextField(
+                      controller: emailController,
+                      obscureText: false,
+                      keyboardType: TextInputType.text,
+                      onChanged: (_) => setState(() {
+                        _validateEmail = true;
+                      }),
+                      decoration: InputDecoration(
+                        hintText: 'Email / Phone Number',
+                        errorText:
+                            _submitted || _validateEmail ? _forgotpassError : null,
+                      ),
+                    ),
 
-                const SizedBox(height: 100),
+                    const SizedBox(height: 100),
 
-                //Forgot Password button
-                ButtonWidget(
-                  text: "RESET",
-                  press: () {
-                    if (emailController.text.isEmpty) {
-                      setState(() {
-                        _submitted = true;
-                      });
-                    } else {
-                      setState(() {
-                        _submitted = false;
-                        isApiCallProcessing = true;
-                      });
-                      _handleResetPassword(emailController.text);
-                    }
-                  },
+                    //Forgot Password button
+                    ButtonWidget(
+                      text: "RESET",
+                      press: () {
+                        if (emailController.text.isEmpty) {
+                          setState(() {
+                            _submitted = true;
+                          });
+                        } else {
+                          setState(() {
+                            _submitted = false;
+                            isApiCallProcessing = true;
+                          });
+                          _handleResetPassword(emailController.text);
+                        }
+                      },
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

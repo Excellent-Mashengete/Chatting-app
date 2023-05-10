@@ -1,3 +1,4 @@
+import 'package:chattingapp/common/theme.dart';
 import 'package:chattingapp/widgets/activechats.dart';
 import 'package:chattingapp/widgets/recentchats.dart';
 import 'package:flutter/material.dart';
@@ -29,11 +30,11 @@ class _ChatState extends State<Chats> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               decoration: BoxDecoration(
-                color: const Color(0xFF122646),
+                color: ThemeConstants.dark2Color,
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFF122646).withOpacity(0.5),
+                    color: ThemeConstants.dark2Color.withOpacity(0.5),
                     blurRadius: 10,
                     spreadRadius: 2,
                     offset: const Offset(0, 3),
@@ -43,7 +44,7 @@ class _ChatState extends State<Chats> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
+                  SizedBox(
                     width: 300,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 1),
@@ -66,7 +67,7 @@ class _ChatState extends State<Chats> {
                   ),
                   const Icon(
                     Icons.search,
-                    color: Color(0xFFF5F5F5),
+                    color: ThemeConstants.light1Color,
                   ),
                 ],
               ),

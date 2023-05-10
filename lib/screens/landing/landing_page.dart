@@ -1,3 +1,4 @@
+import 'package:chattingapp/common/assets.dart';
 import 'package:chattingapp/constants.dart';
 import 'package:chattingapp/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,9 @@ class Landing extends StatefulWidget {
 
 class _LandingState extends State<Landing> {
   
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,8 +25,7 @@ class _LandingState extends State<Landing> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset(
-                  'assets/images/chat.png',
+                Image.asset(AssetConstants.loggo,
                   fit: BoxFit.cover,
                   height: 210,
                   width: 210,

@@ -1,3 +1,4 @@
+import 'package:chattingapp/common/theme.dart';
 import 'package:chattingapp/model/models.dart';
 import 'package:chattingapp/widgets/chatbottombar.dart';
 import 'package:chattingapp/widgets/chatbox.dart';
@@ -34,7 +35,7 @@ class _MessagesState extends State<Messages> {
         child: Padding(
           padding: const EdgeInsets.only(top: 5),
           child: AppBar(
-            backgroundColor: const Color(0xFF122646),
+            backgroundColor: ThemeConstants.dark2Color,
             leadingWidth: 30,
             title: Row(
               children: [
@@ -78,12 +79,12 @@ class _MessagesState extends State<Messages> {
         ),
       ),
       body: ListView(
-        padding: EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 80),
+        padding: const EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 80),
         children: [
-          for (int i = 0; i < 5; i++) ChatSample(),
+          for (int i = 0; i < 5; i++) const ChatSample(),
         ],
       ),
-      bottomSheet: ChatBottomBar(),
+      bottomSheet: const ChatBottomBar(),
     );
   }
 }

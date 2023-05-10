@@ -7,4 +7,4 @@ const String forgotpassword = '/auth//forgotpassword';
 const String enterNewPassword = '/auth/enterNewPassword';
 const String verifyforgotPassword = '/auth/verifyForgotPassword';
 const String messages = '/messages';
-const String baseurl = 'http://192.168.255.125:8080/api/';
+const String baseurl = 'http://192.168.255.121:8080/api/';

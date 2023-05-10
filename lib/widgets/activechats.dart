@@ -1,3 +1,4 @@
+import 'package:chattingapp/common/theme.dart';
 import 'package:flutter/material.dart';
 
 class ActiveChats extends StatelessWidget {
@@ -18,11 +19,11 @@ class ActiveChats extends StatelessWidget {
                   width: 65,
                   height: 65,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF5F5F5),
+                    color: ThemeConstants.light1Color,
                     borderRadius: BorderRadius.circular(35),
                     boxShadow: [
                       BoxShadow(
-                        color: const Color(0xFF122646).withOpacity(0.5),
+                        color: ThemeConstants.dark2Color.withOpacity(0.5),
                         blurRadius: 10,
                         spreadRadius: 2,
                         offset: const Offset(0,3)

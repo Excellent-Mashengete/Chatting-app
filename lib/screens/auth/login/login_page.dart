@@ -1,10 +1,14 @@
+import 'package:chattingapp/common/assets.dart';
 import 'package:chattingapp/common/loader.dart';
+import 'package:chattingapp/common/theme.dart';
 import 'package:chattingapp/constants.dart';
 import 'package:chattingapp/model/models.dart';
 import 'package:chattingapp/service/auth_api_service.dart';
 import 'package:chattingapp/widgets/Input_Textfield_widget.dart';
+import 'package:chattingapp/widgets/app_bar_widget.dart';
 import 'package:chattingapp/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -19,7 +23,7 @@ class _LoginState extends State<Login> {
   // text editing controllers
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  
+
   var _obscureText = true;
   bool _submitted = false;
   bool _validateEmail = false;
@@ -31,7 +35,7 @@ class _LoginState extends State<Login> {
   @override
   void initState() {
     super.initState();
-    loginRequestModel =  LoginRequestModel();
+    loginRequestModel = LoginRequestModel();
   }
 
   String? get _emailError {
@@ -64,7 +68,6 @@ class _LoginState extends State<Login> {
     return null;
   }
 
-
   @override
   Widget build(BuildContext context) {
     return ProgressHUD(
@@ -76,100 +79,138 @@ class _LoginState extends State<Login> {
 
   Widget uiSetup(BuildContext context) {
     return Scaffold(
+      appBar: const AppBarWidget(
+        title: '', 
+        icon: Icons.arrow_back
+      ),
       body: SafeArea(
         child: Center(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 40),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.lock, size: 100),
-                const SizedBox(height: 70),
-
-                // email textfield
-                InputFields(
-                    controller: emailController,
-                    icon: Icons.email,
-                    hintText: 'Email',
-                    obscureText: false,
-                    isPassword: false,
-                    errorText:
-                        _submitted || _validateEmail ? _emailError : null,
-                    onChange: (_) => setState(() {
-                          _validateEmail = true;
-                        }),
-                    textType: TextInputType.emailAddress),
-
-                const SizedBox(height: 20),
-
-                // password textfield
-                InputFields(
-                  controller: passwordController,
-                  icon: Icons.lock_rounded,
-                  hintText: 'Password',
-                  obscureText: _obscureText,
-                  isPassword: true,
-                  errorText:
-                      _submitted || _validatePass ? _passwordError : null,
-                  textType: TextInputType.text,
-                  onChange: (_) => setState(() {
-                    _validatePass = true;
-                  }),
-                  changeVisibility: () {
-                    setState(() {
-                      _obscureText = !_obscureText;
-                    });
-                  },
-                ),
-
-                const SizedBox(height: 10),
-
-                // forgot password?
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+          child: ListView(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        textStyle: const TextStyle(fontSize: 20),
+                    const SizedBox(height: 25),
+                    const Icon(Icons.lock, size: 80),
+                    const SizedBox(height: 20),
+                    const Text(
+                      'Login to Your Account',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color:ThemeConstants.light1Color,
                       ),
-                      onPressed: () {
-                        Navigator.pushNamed(context, forgotpassword);
-                      },
-                      child: const Text('Forgot Password?'),
                     ),
+                    const SizedBox(height: 20),
+                    // email textfield
+                    InputFields(
+                      controller: emailController,
+                      icon: Icons.email,
+                      hintText: 'Email',
+                      obscureText: false,
+                      isPassword: false,
+                      errorText:
+                        _submitted || _validateEmail ? _emailError : null,
+                      onChange: (_) => setState(() {
+                        _validateEmail = true;
+                      }),
+                      textType: TextInputType.emailAddress
+                    ),
+                    const SizedBox(height: 20),
+                    // password textfield
+                    InputFields(
+                      controller: passwordController,
+                      icon: Icons.lock_rounded,
+                      hintText: 'Password',
+                      obscureText: _obscureText,
+                      isPassword: true,
+                      errorText:
+                          _submitted || _validatePass ? _passwordError : null,
+                      textType: TextInputType.text,
+                      onChange: (_) => setState(() {
+                        _validatePass = true;
+                      }),
+                      changeVisibility: () {
+                        setState(() {
+                          _obscureText = !_obscureText;
+                        });
+                      },
+                    ),
+                    // sign in button
+                    const SizedBox(height: 50),
+                    ButtonWidget(
+                      text: "Login",
+                      press: () {
+                        if (emailController.text.isEmpty &&
+                            passwordController.text.isEmpty) {
+                          setState(() {
+                            _submitted = true;
+                          });
+                        } else {
+                          setState(() {
+                            _submitted = false;
+                            //
+                            isApiCallProcessing = true;
+                          });
+                          _handleLogin(
+                              emailController.text, passwordController.text);
+                        }
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    // forgot password?
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Don`t have an account?',
+                              style: TextStyle(
+                                color:ThemeConstants.light1Color.withOpacity(0.7),
+                              ),
+                            ),
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                textStyle: const TextStyle(fontSize: 16),
+                              ),
+                              onPressed: () {
+                                Navigator.pushNamed(context, register);
+                              },
+                              child: const Text('Sign Up'),
+                            ),
+                          ],
+                        ),
+                        TextButton(
+                          style: TextButton.styleFrom(
+                            textStyle: const TextStyle(fontSize: 16),
+                          ),
+                          onPressed: () {
+                            Navigator.pushNamed(context, forgotpassword);
+                          },
+                          child: Text(
+                            'Forgot Password?',
+                            style: TextStyle(
+                              color:ThemeConstants.light1Color.withOpacity(0.7),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    _SocialButtons(),
                   ],
                 ),
-
-                // sign in button
-                const SizedBox(height: 70),
-                ButtonWidget(
-                  text: "Login",
-                  press: () {
-                    if (emailController.text.isEmpty &&
-                        passwordController.text.isEmpty) {
-                      setState(() {
-                        _submitted = true;
-                      });
-                    } else {
-                      setState(() {
-                        _submitted = false;
-                        //
-                        isApiCallProcessing = true;
-                      });
-                      _handleLogin(
-                          emailController.text, passwordController.text);
-                    }
-                  },
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
 
-  
   Future<void> _handleLogin(
       String emailController, String passwordController) async {
     loginRequestModel.identifier = emailController.toLowerCase();
@@ -177,23 +218,66 @@ class _LoginState extends State<Login> {
 
     //get response from ApiClient
     _apiClient.login(loginRequestModel).then((value) => {
-      // ignore: unnecessary_null_comparison
-      if (value != null){
-        setState(() {
-          isApiCallProcessing = false;
-        }),
+          // ignore: unnecessary_null_comparison
+          if (value != null)
+            {
+              setState(() {
+                isApiCallProcessing = false;
+              }),
+              if (value.message!.isNotEmpty)
+                {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Login Successful'))),
+                  Navigator.pushNamed(context, verifyOtp,
+                      arguments: emailController)
+                }
+              else
+                {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text(value.error!)))
+                }
+            },
+        });
+  }
+}
 
-        if(value.message!.isNotEmpty){
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Login Successful')
-          )),
-          Navigator.pushNamed(context, verifyOtp, arguments: emailController)
-        }else{
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(value.error!)
-          ))
-        }
-      },
-    });
+class _SocialButtons extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min, 
+      children: [
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                primary: ThemeConstants.dark2Color,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                ),
+              ),
+              child: SvgPicture.asset(AssetConstants.googleImage)
+            ),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                primary: ThemeConstants.dark2Color,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                ),
+              ),
+              child: SvgPicture.asset(AssetConstants.appleImage)
+            ),
+          ),
+        ),
+      ]
+    );
   }
 }

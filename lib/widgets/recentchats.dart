@@ -1,3 +1,4 @@
+import 'package:chattingapp/common/theme.dart';
 import 'package:chattingapp/constants.dart';
 import 'package:chattingapp/model/models.dart';
 import 'package:flutter/material.dart';
@@ -118,7 +119,7 @@ class _MessageTitle extends StatelessWidget {
                         messageData.message,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          color: const Color(0xFFF5F5F5).withOpacity(0.7),
+                          color: ThemeConstants.light1Color.withOpacity(0.7),
                           fontSize: 12,
                         ),
                       ),
@@ -151,14 +152,16 @@ class _MessageTitle extends StatelessWidget {
                       width: 20,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                          color: const Color(0xFFF5F5F5),
-                          borderRadius: BorderRadius.circular(25)),
+                        color: ThemeConstants.light1Color,
+                        borderRadius: BorderRadius.circular(25)
+                      ),
                       child: const Text(
                         "10",
                         style: TextStyle(
-                            color: Color(0xFF122646),
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold),
+                          color: ThemeConstants.dark2Color,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold
+                        ),
                       ),
                     ),
                   ],
@@ -170,4 +173,6 @@ class _MessageTitle extends StatelessWidget {
       ),
     );
   }
+
+  
 }

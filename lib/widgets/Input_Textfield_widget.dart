@@ -23,6 +23,7 @@ class InputFields extends StatelessWidget {
   final VoidCallback? changeVisibility;
   final String? errorText;
   final TextInputType textType;
+  // ignore: prefer_typing_uninitialized_variables
   final onChange ;
 
   @override

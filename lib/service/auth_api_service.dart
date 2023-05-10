@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:chattingapp/constants.dart';
 import 'package:chattingapp/model/models.dart';
-import 'package:chattingapp/service/hive.dart';
 import 'package:http/http.dart' as http;
 
 class ApiClient {
+  //request to login
   Future<LoginResponseModel> login(LoginRequestModel requestModel) async {
     //IMPLEMENT USER LOGIN
     try {
@@ -30,6 +30,7 @@ class ApiClient {
     }
   }
 
+  //verify OTP Pin from login
   Future<VerifyOTPResponseModel> verifyOP(
       VerifyOTPRequestModel requestModel) async {
     //IMPLEMENT Verify OTP Pin
@@ -38,11 +39,9 @@ class ApiClient {
         Uri.parse('${baseurl}verifyOTP'),
         body: requestModel.toJson(),
       );
-
       switch (response.statusCode) {
         case 200:
           final data = json.decode(response.body);
-          StoreUserData.fromJson(data);
           return VerifyOTPResponseModel.fromJson(data);
         case 400:
           final data = json.decode(response.body);
@@ -58,6 +57,7 @@ class ApiClient {
     }
   }
 
+  //request OTP Pin
   Future<ReqOTPResponseModel> requestOTP(
       ReqOTPRequestModel requestModel) async {
     //IMPLEMENT Request OTP Pin
@@ -74,6 +74,112 @@ class ApiClient {
           final data = json.decode(response.body);
           return ReqOTPResponseModel.fromJson(data);
 
+        default:
+          throw Exception(response.body);
+      }
+    } on SocketException catch (_) {
+      rethrow;
+    }
+  }
+
+  //request to login
+  Future<LoginResponseModel> register(RegisterRequestModel requestModel) async {
+    //IMPLEMENT USER LOGIN
+    try {
+      final response = await http.post(
+        Uri.parse('${baseurl}register'),
+        body: requestModel.toJson(),
+      );
+
+      switch (response.statusCode) {
+        case 201:
+          final data = json.decode(response.body);
+          return LoginResponseModel.fromJson(data);
+        case 400:
+          final data = json.decode(response.body);
+          return LoginResponseModel.fromJson(data);
+
+        default:
+          throw Exception(response.body);
+      }
+    } on SocketException catch (_) {
+      rethrow;
+    }
+  }
+
+  //Send an email asking for password reset
+  Future<ResetPassResponseModel> passwordReset(
+      ResetPassRequestModel requestModel) async {
+    //IMPLEMENT REQUEST FORGOTPASSWORD OTP PIN
+    try {
+      final response = await http.post(
+        Uri.parse('${baseurl}resetPassword'),
+        body: requestModel.toJson(),
+      );
+
+      switch (response.statusCode) {
+        case 200:
+          final data = json.decode(response.body);
+          return ResetPassResponseModel.fromJson(data);
+        case 400:
+          final data = json.decode(response.body);
+          return ResetPassResponseModel.fromJson(data);
+        case 404:
+          final data = json.decode(response.body);
+          return ResetPassResponseModel.fromJson(data);
+        default:
+          throw Exception(response.body);
+      }
+    } on SocketException catch (_) {
+      rethrow;
+    }
+  }
+
+  //Verify reset user account
+  Future<ForgotVerifyResponseModel> verifyAccount(
+      ForgotVerifyOTPRequestModel requestModel) async {
+    //IMPLEMENT Verify FORGOTPASSWORD request OTP PIN
+    try {
+      final response = await http.post(
+        Uri.parse('${baseurl}verifyresetpass'),
+        body: requestModel.toJson(),
+      );
+
+      switch (response.statusCode) {
+        case 200:
+          final data = json.decode(response.body);
+          return ForgotVerifyResponseModel.fromJson(data);
+        case 400:
+          final data = json.decode(response.body);
+          return ForgotVerifyResponseModel.fromJson(data);
+        case 404:
+          final data = json.decode(response.body);
+          return ForgotVerifyResponseModel.fromJson(data);
+        default:
+          throw Exception(response.body);
+      }
+    } on SocketException catch (_) {
+      rethrow;
+    }
+  }
+
+  //Create new passwords
+  Future<ForgotNewPassResponseModel> newPassword(
+      ForgotNewPassRequestModel requestModel) async {
+    //IMPLEMENT REQUEST FORGOTPASSWORD OTP PIN
+    try {
+      final response = await http.post(
+        Uri.parse('${baseurl}newpassword'),
+        body: requestModel.toJson(),
+      );
+
+      switch (response.statusCode) {
+        case 200:
+          final data = json.decode(response.body);
+          return ForgotNewPassResponseModel.fromJson(data);
+        case 400:
+          final data = json.decode(response.body);
+          return ForgotNewPassResponseModel.fromJson(data);
         default:
           throw Exception(response.body);
       }

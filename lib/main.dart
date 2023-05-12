@@ -1,3 +1,4 @@
+import 'package:chattingapp/providers/chat_provider.dart';
 import 'package:chattingapp/screens/landing/landing_page.dart';
 import 'package:chattingapp/screens/tabs/tabs.dart';
 import 'package:flutter/material.dart';
@@ -5,16 +6,22 @@ import 'package:chattingapp/constants.dart';
 import 'package:chattingapp/routes.dart';
 import 'package:chattingapp/common/theme.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:hive/hive.dart';
 import 'package:url_strategy/url_strategy.dart';
-
+import 'package:provider/provider.dart';
 
 late Box box1;
 void main() async {
   await Hive.initFlutter();
   box1 = await Hive.openBox('user'); 
   setPathUrlStrategy();
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ChatProvider()),
+      ], 
+      child: const MyApp()
+    )
+  );
 }
 
 class MyApp extends StatelessWidget {

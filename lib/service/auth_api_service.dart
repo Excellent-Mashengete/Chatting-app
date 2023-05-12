@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 class ApiClient {
   //request to login
-  Future<LoginResponseModel> login(LoginRequestModel requestModel) async {
+  Future<AuthResponseModel> login(LoginRequestModel requestModel) async {
     //IMPLEMENT USER LOGIN
     try {
       final response = await http.post(
@@ -17,10 +17,10 @@ class ApiClient {
       switch (response.statusCode) {
         case 200:
           final data = json.decode(response.body);
-          return LoginResponseModel.fromJson(data);
+          return AuthResponseModel.fromJson(data);
         case 400:
           final data = json.decode(response.body);
-          return LoginResponseModel.fromJson(data);
+          return AuthResponseModel.fromJson(data);
 
         default:
           throw Exception(response.body);
@@ -29,6 +29,32 @@ class ApiClient {
       rethrow;
     }
   }
+
+  //request to Register
+  Future<AuthResponseModel> register(RegisterRequestModel requestModel) async {
+    //IMPLEMENT USER LOGIN
+    try {
+      final response = await http.post(
+        Uri.parse('${baseurl}register'),
+        body: requestModel.toJson(),
+      );
+
+      switch (response.statusCode) {
+        case 201:
+          final data = json.decode(response.body);
+          return AuthResponseModel.fromJson(data);
+        case 400:
+          final data = json.decode(response.body);
+          return AuthResponseModel.fromJson(data);
+
+        default:
+          throw Exception(response.body);
+      }
+    } on SocketException catch (_) {
+      rethrow;
+    }
+  }
+
 
   //verify OTP Pin from login
   Future<VerifyOTPResponseModel> verifyOP(
@@ -58,7 +84,7 @@ class ApiClient {
   }
 
   //request OTP Pin
-  Future<ReqOTPResponseModel> requestOTP(
+  Future<AuthResponseModel> requestOTP(
       ReqOTPRequestModel requestModel) async {
     //IMPLEMENT Request OTP Pin
     try {
@@ -68,11 +94,11 @@ class ApiClient {
       switch (response.statusCode) {
         case 200:
           final data = json.decode(response.body);
-          return ReqOTPResponseModel.fromJson(data);
+          return AuthResponseModel.fromJson(data);
 
         case 500:
           final data = json.decode(response.body);
-          return ReqOTPResponseModel.fromJson(data);
+          return AuthResponseModel.fromJson(data);
 
         default:
           throw Exception(response.body);
@@ -82,33 +108,9 @@ class ApiClient {
     }
   }
 
-  //request to login
-  Future<LoginResponseModel> register(RegisterRequestModel requestModel) async {
-    //IMPLEMENT USER LOGIN
-    try {
-      final response = await http.post(
-        Uri.parse('${baseurl}register'),
-        body: requestModel.toJson(),
-      );
-
-      switch (response.statusCode) {
-        case 201:
-          final data = json.decode(response.body);
-          return LoginResponseModel.fromJson(data);
-        case 400:
-          final data = json.decode(response.body);
-          return LoginResponseModel.fromJson(data);
-
-        default:
-          throw Exception(response.body);
-      }
-    } on SocketException catch (_) {
-      rethrow;
-    }
-  }
 
   //Send an email asking for password reset
-  Future<ResetPassResponseModel> passwordReset(
+  Future<AuthResponseModel> passwordReset(
       ResetPassRequestModel requestModel) async {
     //IMPLEMENT REQUEST FORGOTPASSWORD OTP PIN
     try {
@@ -120,13 +122,13 @@ class ApiClient {
       switch (response.statusCode) {
         case 200:
           final data = json.decode(response.body);
-          return ResetPassResponseModel.fromJson(data);
+          return AuthResponseModel.fromJson(data);
         case 400:
           final data = json.decode(response.body);
-          return ResetPassResponseModel.fromJson(data);
+          return AuthResponseModel.fromJson(data);
         case 404:
           final data = json.decode(response.body);
-          return ResetPassResponseModel.fromJson(data);
+          return AuthResponseModel.fromJson(data);
         default:
           throw Exception(response.body);
       }
@@ -136,8 +138,8 @@ class ApiClient {
   }
 
   //Verify reset user account
-  Future<ForgotVerifyResponseModel> verifyAccount(
-      ForgotVerifyOTPRequestModel requestModel) async {
+  Future<AuthResponseModel> verifyAccount(
+      VerifyOTPRequestModel requestModel) async {
     //IMPLEMENT Verify FORGOTPASSWORD request OTP PIN
     try {
       final response = await http.post(
@@ -148,13 +150,13 @@ class ApiClient {
       switch (response.statusCode) {
         case 200:
           final data = json.decode(response.body);
-          return ForgotVerifyResponseModel.fromJson(data);
+          return AuthResponseModel.fromJson(data);
         case 400:
           final data = json.decode(response.body);
-          return ForgotVerifyResponseModel.fromJson(data);
+          return AuthResponseModel.fromJson(data);
         case 404:
           final data = json.decode(response.body);
-          return ForgotVerifyResponseModel.fromJson(data);
+          return AuthResponseModel.fromJson(data);
         default:
           throw Exception(response.body);
       }
@@ -164,7 +166,7 @@ class ApiClient {
   }
 
   //Create new passwords
-  Future<ForgotNewPassResponseModel> newPassword(
+  Future<VerifyOTPResponseModel> newPassword(
       ForgotNewPassRequestModel requestModel) async {
     //IMPLEMENT REQUEST FORGOTPASSWORD OTP PIN
     try {
@@ -176,10 +178,10 @@ class ApiClient {
       switch (response.statusCode) {
         case 200:
           final data = json.decode(response.body);
-          return ForgotNewPassResponseModel.fromJson(data);
+          return VerifyOTPResponseModel.fromJson(data);
         case 400:
           final data = json.decode(response.body);
-          return ForgotNewPassResponseModel.fromJson(data);
+          return VerifyOTPResponseModel.fromJson(data);
         default:
           throw Exception(response.body);
       }

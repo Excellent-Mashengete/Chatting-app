@@ -1,12 +1,8 @@
-import 'package:chattingapp/common/assets.dart';
-import 'package:chattingapp/common/loader.dart';
-import 'package:chattingapp/common/theme.dart';
+import 'package:chattingapp/common/common.dart';
 import 'package:chattingapp/constants.dart';
 import 'package:chattingapp/model/models.dart';
 import 'package:chattingapp/service/auth_api_service.dart';
-import 'package:chattingapp/widgets/Input_Textfield_widget.dart';
-import 'package:chattingapp/widgets/app_bar_widget.dart';
-import 'package:chattingapp/widgets/button_widget.dart';
+import 'package:chattingapp/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -227,7 +223,7 @@ class _LoginState extends State<Login> {
               if (value.message!.isNotEmpty)
                 {
                   ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Login Successful'))),
+                    SnackBar(content: Text(value.message!))),
                   Navigator.pushNamed(context, verifyOtp,
                       arguments: emailController)
                 }
@@ -253,7 +249,7 @@ class _SocialButtons extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
-                primary: ThemeConstants.dark2Color,
+                backgroundColor: ThemeConstants.dark2Color,
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(15)),
                 ),
@@ -268,7 +264,7 @@ class _SocialButtons extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
-                primary: ThemeConstants.dark2Color,
+                backgroundColor: ThemeConstants.dark2Color,
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(15)),
                 ),

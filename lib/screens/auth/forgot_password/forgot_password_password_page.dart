@@ -1,8 +1,6 @@
 import 'package:chattingapp/model/models.dart';
 import 'package:chattingapp/service/auth_api_service.dart';
-import 'package:chattingapp/widgets/Input_Textfield_widget.dart';
-import 'package:chattingapp/widgets/app_bar_widget.dart';
-import 'package:chattingapp/widgets/button_widget.dart';
+import 'package:chattingapp/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class EnterNewPassword extends StatefulWidget {

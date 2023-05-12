@@ -1,16 +1,10 @@
-import 'package:chattingapp/common/assets.dart';
-import 'package:chattingapp/common/loader.dart';
-import 'package:chattingapp/common/theme.dart';
+import 'package:chattingapp/common/common.dart';
 import 'package:chattingapp/constants.dart';
 import 'package:chattingapp/model/models.dart';
 import 'package:chattingapp/service/auth_api_service.dart';
-import 'package:chattingapp/widgets/Input_Textfield_widget.dart';
-import 'package:chattingapp/widgets/app_bar_widget.dart';
-import 'package:chattingapp/widgets/button_widget.dart';
-import 'package:chattingapp/widgets/input_Phone_widget.dart';
+import 'package:chattingapp/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl_phone_field/phone_number.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -210,10 +204,10 @@ class _RegisterState extends State<Register> {
                       text: "Login",
                       press: () {
                         if (firstController.text.isEmpty &&
-                          lastController.text.isEmpty && 
-                          emailController.text.isEmpty &&
-                          phoneController.text.isEmpty &&
-                          passwordController.text.isEmpty) {
+                            lastController.text.isEmpty &&
+                            emailController.text.isEmpty &&
+                            phoneController.text.isEmpty &&
+                            passwordController.text.isEmpty) {
                           setState(() {
                             _submitted = true;
                           });
@@ -223,12 +217,11 @@ class _RegisterState extends State<Register> {
                             isApiCallProcessing = true; // Loader
                           });
                           _handleLogin(
-                            firstController.text,
-                            lastController.text,
-                            emailController.text,
-                            phoneController.text,
-                            passwordController.text
-                          );
+                              firstController.text,
+                              lastController.text,
+                              emailController.text,
+                              phoneController.text,
+                              passwordController.text);
                         }
                       },
                     ),
@@ -280,22 +273,26 @@ class _RegisterState extends State<Register> {
 
     //get response from ApiClient
     _apiClient.register(registerRequestModel).then((value) => {
-      // ignore: unnecessary_null_comparison
-      if (value != null){
-        setState(() {
-          isApiCallProcessing = false;
-        }),
-        if (value.message!.isNotEmpty){
-          ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(value.message!))),
-          Navigator.pushNamed(context, verifyOtp,
+          // ignore: unnecessary_null_comparison
+          if (value != null)
+            {
+              setState(() {
+                isApiCallProcessing = false;
+              }),
+              if (value.message!.isNotEmpty)
+                {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text(value.message!))),
+                  Navigator.pushNamed(context, verifyOtp,
                       arguments: emailController)
-        }else{
-          ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(value.error!)))
-        }
-      },
-    });
+                }
+              else
+                {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text(value.error!)))
+                }
+            },
+        });
   }
 }
 
@@ -309,7 +306,7 @@ class _SocialButtons extends StatelessWidget {
           child: ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
-                primary: ThemeConstants.dark2Color,
+                backgroundColor: ThemeConstants.dark2Color,
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(15)),
                 ),
@@ -323,7 +320,7 @@ class _SocialButtons extends StatelessWidget {
           child: ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
-                primary: ThemeConstants.dark2Color,
+                backgroundColor: ThemeConstants.dark2Color,
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(15)),
                 ),

@@ -1,13 +1,7 @@
 import 'package:chattingapp/model/message_data.dart';
-import 'package:chattingapp/screens/Pages/messages.dart';
-import 'package:chattingapp/screens/auth/forgot_password/forgot_password_email_page.dart';
-import 'package:chattingapp/screens/auth/forgot_password/forgot_password_password_page.dart';
-import 'package:chattingapp/screens/auth/forgot_password/verify_forgot_password_page.dart';
-import 'package:chattingapp/screens/auth/login/login_page.dart';
-import 'package:chattingapp/screens/auth/login/register_page.dart';
-import 'package:chattingapp/screens/auth/verifyotp/verifyotp.dart';
-import 'package:chattingapp/screens/landing/landing_page.dart';
+import 'package:chattingapp/screens/auth/auths.dart';
 import 'package:chattingapp/screens/tabs/tabs.dart';
+import 'package:chattingapp/screens/landing/landing_page.dart';
 import 'package:flutter/material.dart';
 import 'package:chattingapp/constants.dart';
 

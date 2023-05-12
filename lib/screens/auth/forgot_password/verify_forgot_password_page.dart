@@ -1,9 +1,8 @@
-import 'package:chattingapp/common/loader.dart';
+import 'package:chattingapp/common/common.dart';
 import 'package:chattingapp/constants.dart';
 import 'package:chattingapp/model/models.dart';
 import 'package:chattingapp/service/auth_api_service.dart';
-import 'package:chattingapp/widgets/app_bar_widget.dart';
-import 'package:chattingapp/widgets/otpPin.dart';
+import 'package:chattingapp/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class VerifyForgotPassword extends StatefulWidget {
@@ -26,14 +25,14 @@ class _VerifyForgotPasswordState extends State<VerifyForgotPassword> {
   bool isApiCallProcessing = false;
 
   late String message;
-  late ForgotVerifyOTPRequestModel forgotPassVerifyRequestModel;
+  late VerifyOTPRequestModel forgotPassVerifyRequestModel;
   late ReqOTPRequestModel requestOtpRequestModel;
  
   @override
   void initState() {
     super.initState();
     message = widget.data;
-    forgotPassVerifyRequestModel = ForgotVerifyOTPRequestModel();
+    forgotPassVerifyRequestModel = VerifyOTPRequestModel();
     requestOtpRequestModel = ReqOTPRequestModel();
   }
 
@@ -145,6 +144,7 @@ class _VerifyForgotPasswordState extends State<VerifyForgotPassword> {
   Future<void> _handleRequestOTP() async {
     requestOtpRequestModel.email = message.toLowerCase();
     _apiClient.requestOTP(requestOtpRequestModel).then((value) => {
+      // ignore: unnecessary_null_comparison
       if (value != null){
         setState(() {
           isApiCallProcessing = false;
@@ -164,10 +164,11 @@ class _VerifyForgotPasswordState extends State<VerifyForgotPassword> {
 
   Future<void> _handleVerifyOTP(
       String code1, String code2, String code3, String code4) async {
-    forgotPassVerifyRequestModel.identifier = message.toLowerCase();
+    forgotPassVerifyRequestModel.email = message.toLowerCase();
     forgotPassVerifyRequestModel.otp = code1 + code2 + code3 + code4;
 
     _apiClient.verifyAccount(forgotPassVerifyRequestModel).then((value) => {
+      // ignore: unnecessary_null_comparison
       if (value != null){
         setState(() {
           isApiCallProcessing = false;

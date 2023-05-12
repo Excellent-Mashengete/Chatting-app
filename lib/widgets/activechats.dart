@@ -1,4 +1,4 @@
-import 'package:chattingapp/common/theme.dart';
+import 'package:chattingapp/common/common.dart';
 import 'package:flutter/material.dart';
 
 class ActiveChats extends StatelessWidget {

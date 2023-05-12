@@ -1,8 +1,6 @@
-import 'package:chattingapp/common/theme.dart';
+import 'package:chattingapp/common/common.dart';
 import 'package:chattingapp/model/models.dart';
-import 'package:chattingapp/widgets/chatbottombar.dart';
-import 'package:chattingapp/widgets/chatbox.dart';
-import 'package:chattingapp/widgets/icon_buttons.dart';
+import 'package:chattingapp/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -88,4 +86,3 @@ class _MessagesState extends State<Messages> {
     );
   }
 }
-//child: ChatBottomBar(),

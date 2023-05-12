@@ -1,5 +1,5 @@
-import 'package:chattingapp/common/theme.dart';
-import 'package:chattingapp/widgets/icon_buttons.dart';
+import 'package:chattingapp/common/common.dart';
+import 'package:chattingapp/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class ChatBottomBar extends StatelessWidget {

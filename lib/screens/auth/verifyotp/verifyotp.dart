@@ -1,10 +1,9 @@
-import 'package:chattingapp/common/hideemailwithasteriks.dart';
-import 'package:chattingapp/common/loader.dart';
+import 'package:chattingapp/common/common.dart';
 import 'package:chattingapp/constants.dart';
 import 'package:chattingapp/model/models.dart';
 import 'package:chattingapp/service/auth_api_service.dart';
 import 'package:chattingapp/service/hive.dart';
-import 'package:chattingapp/widgets/otpPin.dart';
+import 'package:chattingapp/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class VerifyOTP extends StatefulWidget {
@@ -144,6 +143,7 @@ class _MyVerifyOTPState extends State<VerifyOTP> {
   Future<void> _handleRequestOTP() async {
     requestOtpRequestModel.email = message.toLowerCase();
     _apiClient.requestOTP(requestOtpRequestModel).then((value) => {
+          // ignore: unnecessary_null_comparison
           if (value != null)
             {
               setState(() {
@@ -168,6 +168,7 @@ class _MyVerifyOTPState extends State<VerifyOTP> {
     verifyRequestModel.email = message.toLowerCase();
     verifyRequestModel.otp = code1 + code2 + code3 + code4;
     _apiClient.verifyOP(verifyRequestModel).then((value) => {
+      // ignore: unnecessary_null_comparison
       if (value != null){
         setState(() {
           // isApiCallProcessing = false;

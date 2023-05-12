@@ -1,4 +1,4 @@
-import 'package:chattingapp/common/theme.dart';
+import 'package:chattingapp/common/common.dart';
 import 'package:chattingapp/constants.dart';
 import 'package:chattingapp/model/models.dart';
 import 'package:flutter/material.dart';
@@ -12,40 +12,44 @@ class RecentChats extends StatelessWidget {
       children: const [
         _MessageTitle(
             messageData: MessageData(
+              id: '1',
               senderName: "Shaggy",
               message: "Hello Developer, How are you?",
-              messageDate: "date",
-              dateMessage: "12:30",
+              messageDate: "12:30",
+              phoneNumber: "",
               profilePicture:
                   'https://avatarfiles.alphacoders.com/103/103808.jpg',
             ),
           ),
            _MessageTitle(
           messageData: MessageData(
+            id: '2',
             senderName: "Koketso",
             message: "Hi Nhlanhla",
-            messageDate: "date",
-            dateMessage: "12:30",
+            messageDate: "12:30",
+            phoneNumber: "",
             profilePicture:
                 'https://avatarfiles.alphacoders.com/975/97500.jpg',
           ),
         ),
          _MessageTitle(
           messageData: MessageData(
+            id: '3',
             senderName: "Chris",
             message: "I need your help",
-            messageDate: "date",
-            dateMessage: "12:30",
+            messageDate: "12:30",
+            phoneNumber: "",
             profilePicture:
                 'https://avatarfiles.alphacoders.com/103/103808.jpg',
           ),
         ),
         _MessageTitle(
           messageData: MessageData(
+            id: '4',
             senderName: "Ronald",
             message: "Have you completed the fragments",
-            messageDate: "date",
-            dateMessage: "12:30",
+            messageDate: "12:30",
+            phoneNumber: "",
             profilePicture:
               'https://avatarfiles.alphacoders.com/226/226604.png',
           ),
@@ -137,7 +141,7 @@ class _MessageTitle extends StatelessWidget {
                       height: 4,
                     ),
                     Text(
-                      messageData.dateMessage.toUpperCase(),
+                      messageData.messageDate.toUpperCase(),
                       style: const TextStyle(
                         fontSize: 12,
                         letterSpacing: -0.2,
@@ -173,6 +177,4 @@ class _MessageTitle extends StatelessWidget {
       ),
     );
   }
-
-  
 }

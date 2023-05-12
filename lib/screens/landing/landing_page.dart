@@ -1,6 +1,6 @@
-import 'package:chattingapp/common/assets.dart';
+import 'package:chattingapp/common/common.dart';
 import 'package:chattingapp/constants.dart';
-import 'package:chattingapp/widgets/button_widget.dart';
+import 'package:chattingapp/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class Landing extends StatefulWidget {
@@ -12,9 +12,6 @@ class Landing extends StatefulWidget {
 
 class _LandingState extends State<Landing> {
   
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

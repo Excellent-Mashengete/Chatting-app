@@ -1,10 +1,9 @@
-import 'package:chattingapp/common/loader.dart';
+import 'package:chattingapp/common/common.dart';
 import 'package:chattingapp/constants.dart';
 import 'package:chattingapp/model/models.dart';
 import 'package:chattingapp/service/auth_api_service.dart';
-import 'package:chattingapp/widgets/app_bar_widget.dart';
-import 'package:chattingapp/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:chattingapp/widgets/widgets.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});
@@ -120,6 +119,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     resetPassRequestModel.identifier = emailController.toLowerCase();
 
     _resetapiClient.passwordReset(resetPassRequestModel).then((value) => {
+      // ignore: unnecessary_null_comparison
       if (value != null){
         setState(() {
           isApiCallProcessing = false;

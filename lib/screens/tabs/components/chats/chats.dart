@@ -1,7 +1,8 @@
 import 'package:chattingapp/common/theme.dart';
-import 'package:chattingapp/widgets/activechats.dart';
-import 'package:chattingapp/widgets/recentchats.dart';
+import 'package:chattingapp/providers/chat_provider.dart';
+import 'package:chattingapp/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Chats extends StatefulWidget {
   const Chats({super.key});
@@ -12,7 +13,15 @@ class Chats extends StatefulWidget {
 
 class _ChatState extends State<Chats> {
   @override
+  void initState() {
+    super.initState();
+    final postModel = Provider.of<ChatProvider>(context, listen: false);
+    postModel.getChats();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final postModel = Provider.of<ChatProvider>(context);
     return Scaffold(
       appBar:
           AppBar(title: const Text('Chats'), automaticallyImplyLeading: false),
@@ -57,9 +66,10 @@ class _ChatState extends State<Chats> {
                                   BorderRadius.all(Radius.circular(5)),
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderRadius:BorderRadius.all(Radius.circular(5)),
-                              borderSide:BorderSide(color: Colors.transparent)
-                            ),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5)),
+                                borderSide:
+                                    BorderSide(color: Colors.transparent)),
                             hintText: "Search",
                             border: InputBorder.none),
                       ),

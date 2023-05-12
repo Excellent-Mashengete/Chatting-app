@@ -14,6 +14,7 @@ class ThemeConstants {
 final dark = ThemeData(
   fontFamily: 'Montserrat',
   brightness: Brightness.dark,
+  // ignore: deprecated_member_use
   backgroundColor: ThemeConstants.light1Color,
   primaryColor: ThemeConstants.dark1Color,
   scaffoldBackgroundColor: ThemeConstants.dark1Color,
@@ -32,7 +33,9 @@ final dark = ThemeData(
   //Button
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
+      // ignore: deprecated_member_use
       primary: ThemeConstants.light1Color,
+      // ignore: deprecated_member_use
       onSurface: ThemeConstants.light1Color,
       foregroundColor: ThemeConstants.dark1Color,
       minimumSize: const Size(double.infinity, 55),
@@ -51,6 +54,7 @@ final dark = ThemeData(
   //Text Button
   textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
+          // ignore: deprecated_member_use
           primary: ThemeConstants.light1Color,
           textStyle: const TextStyle(
               fontFamily: 'Montserrat', color: ThemeConstants.light1Color))),

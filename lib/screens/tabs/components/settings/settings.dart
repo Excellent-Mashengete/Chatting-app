@@ -1,10 +1,9 @@
 import 'package:chattingapp/constants.dart';
 import 'package:chattingapp/service/hive.dart';
-import 'package:chattingapp/widgets/icon_buttons.dart';
+import 'package:chattingapp/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:hive/hive.dart';
+
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -46,7 +45,7 @@ class _SettingsState extends State<Settings> {
                       size: 25,
                       onTap: () {
                         sharedHive.removeAllData();
-                        Navigator.pushReplacementNamed(context, login);
+                        Navigator.pushReplacementNamed(context, landing);
                       },
                     ),
                   ),

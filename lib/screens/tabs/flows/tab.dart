@@ -106,24 +106,4 @@ class _TabsState extends State<NavTabs> {
       ),
     );
   }
-
-  // Future<void> loadChats() async {
-  //   await Hive.initFlutter();
-  //   box1 = await Hive.openBox('user'); 
-  //   _apiClient.getChats(box1.get('user_token')).then((value) => {
-  //     // ignore: unnecessary_null_comparison
-  //     if (value != null){
-  //       setState(() {
-  //         isApiCallProcessing = false;
-  //       }),
-  //       if (value.message!.isNotEmpty){
-  //        ScaffoldMessenger.of(context).showSnackBar(
-  //           SnackBar(content: Text(value.message!))),
-  //       }else{
-  //         ScaffoldMessenger.of(context)
-  //           .showSnackBar(SnackBar(content: Text(value.error!)))
-  //       }
-  //     }
-  //   });
-  // }
 }

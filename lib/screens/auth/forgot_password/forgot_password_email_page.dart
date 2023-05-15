@@ -28,6 +28,12 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     resetPassRequestModel = ResetPassRequestModel();
   }
 
+  @override
+  void dispose() {
+    emailController.dispose();
+    super.dispose();
+  }
+
   String? get _forgotpassError {
     final text = emailController.value.text;
 

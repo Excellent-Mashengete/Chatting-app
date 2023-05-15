@@ -3,15 +3,19 @@ import 'package:chattingapp/model/models.dart';
 import 'package:chattingapp/service/chats_users_api_service.dart';
 
 class ChatProvider extends ChangeNotifier {
-  ChatResponseModel? post;
+  ChatResponseModel? _chats;
 
-  bool isApiCallProcessing = false;
+  bool _loading = false;
 
-  getChats() async {
-    isApiCallProcessing = true;
-    post = await MessageApiClient().getAllChats();
-    isApiCallProcessing = false;
+  bool get loading => _loading;
 
+  Future<void> getChats() async {
+    _loading = true;
+    notifyListeners();
+
+    _chats = await MessageApiClient().getAllChats();
+
+    _loading = false;
     notifyListeners();
   }
 }

@@ -28,7 +28,7 @@ class ChatSample extends StatelessWidget {
               ]),
               child: const Text(
                 "Hi, developers How are you",
-                style: TextStyle(color: ThemeConstants.dark1Color, fontSize: 16),
+                style: TextStyle(color: ThemeConstants.light1Color, fontSize: 16),
               ),
             ),
           ),

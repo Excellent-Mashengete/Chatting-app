@@ -49,7 +49,7 @@ class MyRoutes {
         return _errorRoute();
 
       case messages:
-        if (args is MessageData ) {
+        if (args is MessageData) {
           return MaterialPageRoute(
             builder: (context) => Messages(
               messageData: args,
@@ -57,6 +57,8 @@ class MyRoutes {
           );
         }
         return _errorRoute();
+      case camera:
+        return MaterialPageRoute(builder: (context) => const CameraScreen());
       default:
         //if there is no such named route in the switch statement, return error route
         return _errorRoute();

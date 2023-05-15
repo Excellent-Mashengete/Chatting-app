@@ -77,11 +77,12 @@ class _MessagesState extends State<Messages> {
         ),
       ),
       body: ListView(
-        padding: const EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 80),
-        children: [
-          for (int i = 0; i < 5; i++) const ChatSample(),
-        ],
-      ),
+          padding:
+              const EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 80),
+          children: [
+            for (int i = 0; i < 5; i++) const ChatSample(),
+          ],
+        ),
       bottomSheet: const ChatBottomBar(),
     );
   }

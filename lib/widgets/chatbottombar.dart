@@ -1,4 +1,5 @@
 import 'package:chattingapp/common/common.dart';
+import 'package:chattingapp/constants.dart';
 import 'package:chattingapp/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -46,6 +47,8 @@ class ChatBottomBar extends StatelessWidget {
               alignment: Alignment.centerRight,
               width: 270,
               child: TextFormField(
+                maxLines: 2,
+                maxLength: 7,
                 decoration: const InputDecoration(
                   hintText: "Message",
                   border: InputBorder.none,
@@ -88,22 +91,24 @@ class ChatBottomBar extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  iconcreation(
-                      Icons.insert_drive_file, Colors.indigo, "Document"),
+                  iconcreation(Icons.insert_drive_file, Colors.indigo,
+                      "Document", () {}),
                   const SizedBox(width: 40),
-                  iconcreation(Icons.camera_alt, Colors.pink, "Camera"),
+                  iconcreation(Icons.camera_alt, Colors.pink, "Camera", () {
+                    Navigator.pushNamed(context, camera);
+                  }),
                   const SizedBox(width: 40),
                   iconcreation(
-                      Icons.insert_drive_file, Colors.purple, "Gallery"),
+                      Icons.insert_drive_file, Colors.purple, "Gallery", () {}),
                 ],
               ),
               const SizedBox(height: 30),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  iconcreation(Icons.headset, Colors.orange, "Audio"),
+                  iconcreation(Icons.headset, Colors.orange, "Audio", () {}),
                   const SizedBox(width: 40),
-                  iconcreation(Icons.person, Colors.blue, "Contact"),
+                  iconcreation(Icons.person, Colors.blue, "Contact", () {}),
                 ],
               ),
             ],
@@ -113,24 +118,27 @@ class ChatBottomBar extends StatelessWidget {
     );
   }
 
-  Widget iconcreation(IconData icon, Color color, String text) {
-    return Column(
-      children: [
-        CircleAvatar(
-          radius: 30,
-          backgroundColor: color,
-          child: Icon(
-            icon,
-            size: 29,
-            color: ThemeConstants.light1Color,
+  Widget iconcreation(
+      IconData icon, Color color, String text, VoidCallback? pressed) {
+    return InkWell(
+      onTap: pressed,
+      child: Column(
+        children: [
+          CircleAvatar(
+            radius: 30,
+            backgroundColor: color,
+            child: Icon(
+              icon,
+              size: 29,
+              color: ThemeConstants.light1Color,
+            ),
           ),
-        ),
-        const SizedBox(
-          height: 5,
-        ),
-        Text(text),
-      ],
+          const SizedBox(
+            height: 5,
+          ),
+          Text(text),
+        ],
+      ),
     );
   }
-
 }

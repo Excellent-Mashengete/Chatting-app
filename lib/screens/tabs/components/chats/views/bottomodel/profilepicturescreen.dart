@@ -7,28 +7,26 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
-List<CameraDescription> cameras = [];
+List<CameraDescription> cameras2 = [];
 
-class CameraScreen extends StatefulWidget {
-  const CameraScreen({Key? key}) : super(key: key);
+class PicturePictureScreen extends StatefulWidget {
+  const PicturePictureScreen({Key? key}) : super(key: key);
 
   @override
-  State<CameraScreen> createState() => _CameraScreenState();
+  State<PicturePictureScreen> createState() => _PicturePictureScreenState();
 }
 
-class _CameraScreenState extends State<CameraScreen> {
+class _PicturePictureScreenState extends State<PicturePictureScreen> {
   late CameraController cameracontroller;
   Future<void>? cameraValue;
-  bool isRecording = false;
   bool flash = false;
   bool iscamerafront = true;
   double transform = 0;
 
-
   @override
   void initState() {
     super.initState();
-    cameracontroller = CameraController(cameras[0], ResolutionPreset.high);
+    cameracontroller = CameraController(cameras2[0], ResolutionPreset.high);
     cameraValue = cameracontroller.initialize();
   }
 
@@ -57,7 +55,6 @@ class _CameraScreenState extends State<CameraScreen> {
             future: cameraValue,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
-                // return CameraPreview(cameracontroller);
                 final screenAspectRatio =
                   MediaQuery.of(context).size.aspectRatio;
                 final cameraAspectRatio = cameracontroller.value.aspectRatio;
@@ -75,7 +72,7 @@ class _CameraScreenState extends State<CameraScreen> {
                   child: CircularProgressIndicator(),
                 );
               }
-            },
+            }
           ),
           Positioned(
             bottom: 0.0,
@@ -101,43 +98,15 @@ class _CameraScreenState extends State<CameraScreen> {
                               : cameracontroller.setFlashMode(FlashMode.off);
                         },
                       ),
-                      GestureDetector(
-                        onLongPress: () async {
-                          await cameracontroller.startVideoRecording();
-    
-                          setState(() {
-                            isRecording = true;
-                          });
-                        },
-                        onLongPressUp: () async {
-                          XFile videopath =
-                              await cameracontroller.stopVideoRecording();
-                          setState(() {
-                            isRecording = false;
-                          });
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (builder) => VideoViewPage(
-                                path: videopath.path,
-                              ),
-                            ),
-                          );
-                        },
+                      InkWell(
                         onTap: () {
-                          if (!isRecording) takePhoto(context);
+                          takePhoto(context);
                         },
-                        child: isRecording
-                            ? const Icon(
-                                Icons.radio_button_on,
-                                color: Colors.red,
-                                size: 80,
-                              )
-                            : const Icon(
-                                Icons.panorama_fish_eye,
-                                color: ThemeConstants.light1Color,
-                                size: 70,
-                              ),
+                        child:const Icon(
+                          Icons.panorama_fish_eye,
+                          color: ThemeConstants.light1Color,
+                          size: 70,
+                        ),
                       ),
                       IconButton(
                         icon: Transform.rotate(
@@ -152,7 +121,7 @@ class _CameraScreenState extends State<CameraScreen> {
                           });
                           int cameraPos = iscamerafront ? 0 : 1;
                           cameracontroller = CameraController(
-                              cameras[cameraPos], ResolutionPreset.high);
+                              cameras2[cameraPos], ResolutionPreset.high);
                           cameraValue = cameracontroller.initialize();
                         },
                       ),
@@ -162,7 +131,7 @@ class _CameraScreenState extends State<CameraScreen> {
                     height: 4,
                   ),
                   const Text(
-                    "Hold for video, tap for photo",
+                    "PHOTO",
                     style: TextStyle(color: ThemeConstants.light1Color),
                     textAlign: TextAlign.center,
                   ),
@@ -180,7 +149,7 @@ class _CameraScreenState extends State<CameraScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (builder) => CameraView(path: file.path),
+        builder: (builder) => PicturePictureView(path: file.path),
       ),
     );
   }

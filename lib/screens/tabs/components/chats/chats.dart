@@ -1,10 +1,12 @@
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chattingapp/common/theme.dart';
-import 'package:chattingapp/model/getallchats_model.dart';
-import 'package:chattingapp/providers/chat_provider.dart';
+import 'package:chattingapp/constants.dart';
+import 'package:chattingapp/model/models.dart';
+import 'package:chattingapp/providers/provider.dart';
 import 'package:chattingapp/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 class Chats extends StatefulWidget {
   const Chats({super.key});
@@ -14,24 +16,75 @@ class Chats extends StatefulWidget {
 }
 
 class _ChatState extends State<Chats> {
-  ChatResponseModel? _chats;
-
   @override
   Widget build(BuildContext context) {
+    final myProfile = Provider.of<GetUser>(context);
+    if (myProfile.profilepic.isEmpty) {
+      myProfile.getProfile();
+    }
     return Scaffold(
-      appBar:
-          AppBar(title: const Text('Chats'), automaticallyImplyLeading: false),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(85.0),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 10),
+          child: AppBar(
+            automaticallyImplyLeading: false,
+            title: const Text('Chats'),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 30),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, profile);
+                  },
+                  child: Stack(
+                    children: <Widget>[
+                      Consumer<GetUser>(
+                      builder: (context, profile, child) {
+                        if ( profile.profilepic.isNotEmpty) {
+                          return  ClipRRect(
+                            borderRadius: BorderRadius.circular(35),
+                            child: CachedNetworkImage(
+                              imageUrl: profile.profilepic,
+                            ),
+                          );
+                        }else{
+                          return CircularProgressIndicator();
+                        }
+                      }
+                      ),
+                     
+                      Positioned(
+                        right: 0,
+                        bottom: 0,
+                        child: Container(
+                          decoration: const BoxDecoration(
+                              shape: BoxShape.circle, color: Colors.green),
+                          width: 20 / 2,
+                          height: 20 / 2,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
       body: RefreshIndicator(
         onRefresh: () async {},
         child: ListView(
           children: [
             const Padding(
-              padding: EdgeInsets.symmetric(vertical: 25, horizontal: 20),
+              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
               child: Text(
                 "Messages",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900),
+                style:
+                    TextStyle(fontSize: 18, fontWeight: FontWeight.w900),
               ),
             ),
+            const SizedBox(height: 15),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Container(
@@ -91,3 +144,9 @@ class _ChatState extends State<Chats> {
     );
   }
 }
+
+/*
+ px.avatar,
+                          height: 55,
+                          width: 55,
+                          */

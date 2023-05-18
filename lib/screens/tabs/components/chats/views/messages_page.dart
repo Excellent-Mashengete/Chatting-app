@@ -1,4 +1,5 @@
 import 'package:chattingapp/common/common.dart';
+import 'package:chattingapp/constants.dart';
 import 'package:chattingapp/model/models.dart';
 import 'package:chattingapp/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,8 @@ class Messages extends StatefulWidget {
 
 class _MessagesState extends State<Messages> {
   late MessageData messageData;
+  TextEditingController _controller = TextEditingController();
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -34,22 +37,35 @@ class _MessagesState extends State<Messages> {
           padding: const EdgeInsets.only(top: 5),
           child: AppBar(
             backgroundColor: ThemeConstants.dark2Color,
-            leadingWidth: 30,
-            title: Row(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(35),
-                  child: Image.network(
-                    messageData.profilePicture,
-                    height: 45,
-                    width: 45,
+            leadingWidth: 50,
+            titleSpacing: 0,
+            leading: InkWell(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: const Icon(Icons.arrow_back, size: 24),
+            ),
+            title: InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, contactprofile,
+                    arguments: messageData);
+              },
+              child: Row(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(35),
+                    child: Image.network(
+                      messageData.profilePicture,
+                      height: 45,
+                      width: 45,
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: Text(messageData.senderName),
-                ),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Text(messageData.senderName),
+                  ),
+                ],
+              ),
             ),
             actions: [
               Padding(
@@ -76,14 +92,54 @@ class _MessagesState extends State<Messages> {
           ),
         ),
       ),
-      body: ListView(
-          padding:
-              const EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 80),
-          children: [
-            for (int i = 0; i < 5; i++) const ChatSample(),
-          ],
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: WillPopScope(
+          child: Column(
+            children: [
+              Expanded(
+                // child: ListView.builder(
+                //   shrinkWrap: true,
+                //   controller: _scrollController,
+                //   itemCount: messageData.message.length + 1,
+                //   itemBuilder: (context, index) {
+                //     if (index == messageData.message.length) {
+                //       return Container(
+                //         height: 70,
+                //       );
+                //     }
+                //     if (messages[index].type == "source") {
+
+                //     } else {
+                //       return ReplyCard(
+                //         message: messages[index].message,
+                //         time: messages[index].time,
+                //       );
+                //     }
+                //   },
+                // ),
+                child: ListView(children: [
+                    ReplyCard(
+                    message:
+                        'Hey there actually I have one problem code, don\'t get any idea howt to develop a code is very good thing ',
+                    time: "12:80",
+                  ),
+                  Incomming(
+                    message:
+                        "Hi, developers How are you kjgkfjdgkj lkjglkjrklgtj jrt",
+                    time: "12:80",
+                  ),
+               
+                ]),
+              ),
+            ],
+          ),
+          onWillPop: () {
+            return Future.value(false);
+          },
         ),
-      bottomSheet: const ChatBottomBar(),
+      ),
     );
   }
 }

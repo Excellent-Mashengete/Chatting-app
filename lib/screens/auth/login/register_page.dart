@@ -42,6 +42,10 @@ class _RegisterState extends State<Register> {
   @override
   void dispose() {
     phoneController.dispose();
+    firstController.dispose();
+    lastController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
     super.dispose();
   }
 
@@ -165,17 +169,21 @@ class _RegisterState extends State<Register> {
                         isPassword: false,
                         errorText:
                             _submitted || _validateEmail ? _emailError : null,
-                        onChange: (_) => setState(() {
-                              _validateEmail = true;
-                            }),
+                        onChange: (_) => setState(
+                              () {
+                                _validateEmail = true;
+                              },
+                            ),
                         textType: TextInputType.emailAddress),
                     const SizedBox(height: 20),
                     // phone textfield
                     NumberInput(
                       initialCountryCode: 'ZA',
-                      onChange: (phone) => setState(() {
-                        phoneController.text = phone.completeNumber;
-                      }),
+                      onChange: (phone) => setState(
+                        () {
+                          phoneController.text = phone.completeNumber;
+                        },
+                      ),
                     ),
 
                     const SizedBox(height: 20),
@@ -189,13 +197,17 @@ class _RegisterState extends State<Register> {
                       errorText:
                           _submitted || _validatePass ? _passwordError : null,
                       textType: TextInputType.text,
-                      onChange: (_) => setState(() {
-                        _validatePass = true;
-                      }),
+                      onChange: (_) => setState(
+                        () {
+                          _validatePass = true;
+                        },
+                      ),
                       changeVisibility: () {
-                        setState(() {
-                          _obscureText = !_obscureText;
-                        });
+                        setState(
+                          () {
+                            _obscureText = !_obscureText;
+                          },
+                        );
                       },
                     ),
                     // sign in button
@@ -208,14 +220,18 @@ class _RegisterState extends State<Register> {
                             emailController.text.isEmpty &&
                             phoneController.text.isEmpty &&
                             passwordController.text.isEmpty) {
-                          setState(() {
-                            _submitted = true;
-                          });
+                          setState(
+                            () {
+                              _submitted = true;
+                            },
+                          );
                         } else {
-                          setState(() {
-                            _submitted = false;
-                            isApiCallProcessing = true; // Loader
-                          });
+                          setState(
+                            () {
+                              _submitted = false;
+                              isApiCallProcessing = true; // Loader
+                            },
+                          );
                           _handleLogin(
                               firstController.text,
                               lastController.text,
@@ -272,27 +288,37 @@ class _RegisterState extends State<Register> {
     registerRequestModel.password = passwordController;
 
     //get response from ApiClient
-    _apiClient.register(registerRequestModel).then((value) => {
-          // ignore: unnecessary_null_comparison
-          if (value != null)
-            {
-              setState(() {
-                isApiCallProcessing = false;
-              }),
-              if (value.message!.isNotEmpty)
-                {
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text(value.message!))),
-                  Navigator.pushNamed(context, verifyOtp,
-                      arguments: emailController)
-                }
-              else
-                {
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text(value.error!)))
-                }
-            },
-        });
+    _apiClient.register(registerRequestModel).then(
+          (value) => {
+            // ignore: unnecessary_null_comparison
+            if (value != null)
+              {
+                setState(
+                  () {
+                    isApiCallProcessing = false;
+                  },
+                ),
+                if (value.message!.isNotEmpty)
+                  {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(value.message!),
+                      ),
+                    ),
+                    Navigator.pushNamed(context, verifyOtp,
+                        arguments: emailController)
+                  }
+                else
+                  {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(value.error!),
+                      ),
+                    ),
+                  },
+              },
+          },
+        );
   }
 }
 

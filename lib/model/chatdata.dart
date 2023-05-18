@@ -15,6 +15,6 @@ class MessageData {
   final String senderName;
   final String message;
   final String messageDate;
-   final String phoneNumber;
+  final String phoneNumber;
   final String profilePicture;
 }

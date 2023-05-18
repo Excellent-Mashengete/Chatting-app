@@ -55,7 +55,6 @@ class ApiClient {
     }
   }
 
-
   //verify OTP Pin from login
   Future<VerifyOTPResponseModel> verifyOP(
       VerifyOTPRequestModel requestModel) async {

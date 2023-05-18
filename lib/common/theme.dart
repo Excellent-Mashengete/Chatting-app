@@ -57,7 +57,7 @@ final dark = ThemeData(
           // ignore: deprecated_member_use
           primary: ThemeConstants.light1Color,
           textStyle: const TextStyle(
-              fontFamily: 'Montserrat', color: ThemeConstants.light1Color))),
+              fontFamily: 'Montserrat', color: ThemeConstants.light1Color),),),
 
   //Input Text
   inputDecorationTheme: const InputDecorationTheme(

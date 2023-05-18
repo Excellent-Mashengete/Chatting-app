@@ -34,6 +34,13 @@ class _LoginState extends State<Login> {
     loginRequestModel = LoginRequestModel();
   }
 
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
   String? get _emailError {
     final text = emailController.value.text;
 
@@ -75,10 +82,7 @@ class _LoginState extends State<Login> {
 
   Widget uiSetup(BuildContext context) {
     return Scaffold(
-      appBar: const AppBarWidget(
-        title: '', 
-        icon: Icons.arrow_back
-      ),
+      appBar: const AppBarWidget(title: '', icon: Icons.arrow_back),
       body: SafeArea(
         child: Center(
           child: ListView(
@@ -95,24 +99,23 @@ class _LoginState extends State<Login> {
                       'Login to Your Account',
                       style: TextStyle(
                         fontSize: 20,
-                        color:ThemeConstants.light1Color,
+                        color: ThemeConstants.light1Color,
                       ),
                     ),
                     const SizedBox(height: 20),
                     // email textfield
                     InputFields(
-                      controller: emailController,
-                      icon: Icons.email,
-                      hintText: 'Email',
-                      obscureText: false,
-                      isPassword: false,
-                      errorText:
-                        _submitted || _validateEmail ? _emailError : null,
-                      onChange: (_) => setState(() {
-                        _validateEmail = true;
-                      }),
-                      textType: TextInputType.emailAddress
-                    ),
+                        controller: emailController,
+                        icon: Icons.email,
+                        hintText: 'Email',
+                        obscureText: false,
+                        isPassword: false,
+                        errorText:
+                            _submitted || _validateEmail ? _emailError : null,
+                        onChange: (_) => setState(() {
+                              _validateEmail = true;
+                            }),
+                        textType: TextInputType.emailAddress),
                     const SizedBox(height: 20),
                     // password textfield
                     InputFields(
@@ -165,7 +168,8 @@ class _LoginState extends State<Login> {
                             Text(
                               'Don`t have an account?',
                               style: TextStyle(
-                                color:ThemeConstants.light1Color.withOpacity(0.7),
+                                color:
+                                    ThemeConstants.light1Color.withOpacity(0.7),
                               ),
                             ),
                             TextButton(
@@ -189,7 +193,8 @@ class _LoginState extends State<Login> {
                           child: Text(
                             'Forgot Password?',
                             style: TextStyle(
-                              color:ThemeConstants.light1Color.withOpacity(0.7),
+                              color:
+                                  ThemeConstants.light1Color.withOpacity(0.7),
                             ),
                           ),
                         ),
@@ -222,8 +227,8 @@ class _LoginState extends State<Login> {
               }),
               if (value.message!.isNotEmpty)
                 {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(value.message!))),
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text(value.message!))),
                   Navigator.pushNamed(context, verifyOtp,
                       arguments: emailController)
                 }
@@ -240,13 +245,11 @@ class _LoginState extends State<Login> {
 class _SocialButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min, 
-      children: [
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child: ElevatedButton(
+    return Row(mainAxisSize: MainAxisSize.min, children: [
+      Expanded(
+        child: Padding(
+          padding: const EdgeInsets.only(right: 10),
+          child: ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
                 backgroundColor: ThemeConstants.dark2Color,
@@ -254,14 +257,13 @@ class _SocialButtons extends StatelessWidget {
                   borderRadius: BorderRadius.all(Radius.circular(15)),
                 ),
               ),
-              child: SvgPicture.asset(AssetConstants.googleImage)
-            ),
-          ),
+              child: SvgPicture.asset(AssetConstants.googleImage)),
         ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child: ElevatedButton(
+      ),
+      Expanded(
+        child: Padding(
+          padding: const EdgeInsets.only(right: 10),
+          child: ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
                 backgroundColor: ThemeConstants.dark2Color,
@@ -269,11 +271,9 @@ class _SocialButtons extends StatelessWidget {
                   borderRadius: BorderRadius.all(Radius.circular(15)),
                 ),
               ),
-              child: SvgPicture.asset(AssetConstants.appleImage)
-            ),
-          ),
+              child: SvgPicture.asset(AssetConstants.appleImage)),
         ),
-      ]
-    );
+      ),
+    ]);
   }
 }

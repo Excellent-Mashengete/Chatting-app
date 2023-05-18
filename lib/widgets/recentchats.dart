@@ -53,6 +53,50 @@ class RecentChats extends StatelessWidget {
             profilePicture:
               'https://avatarfiles.alphacoders.com/226/226604.png',
           ),
+        ),
+        _MessageTitle(
+            messageData: MessageData(
+              id: '1',
+              senderName: "Shaggy",
+              message: "Hello Developer, How are you?",
+              messageDate: "12:30",
+              phoneNumber: "",
+              profilePicture:
+                  'https://avatarfiles.alphacoders.com/103/103808.jpg',
+            ),
+          ),
+           _MessageTitle(
+          messageData: MessageData(
+            id: '2',
+            senderName: "Koketso",
+            message: "Hi Nhlanhla",
+            messageDate: "12:30",
+            phoneNumber: "",
+            profilePicture:
+                'https://avatarfiles.alphacoders.com/975/97500.jpg',
+          ),
+        ),
+         _MessageTitle(
+          messageData: MessageData(
+            id: '3',
+            senderName: "Chris",
+            message: "I need your help",
+            messageDate: "12:30",
+            phoneNumber: "",
+            profilePicture:
+                'https://avatarfiles.alphacoders.com/103/103808.jpg',
+          ),
+        ),
+        _MessageTitle(
+          messageData: MessageData(
+            id: '4',
+            senderName: "Ronald",
+            message: "Have you completed the fragments",
+            messageDate: "12:30",
+            phoneNumber: "",
+            profilePicture:
+              'https://avatarfiles.alphacoders.com/226/226604.png',
+          ),
         )
     ]);
   }

@@ -20,7 +20,6 @@ class _TabsState extends State<NavTabs> {
     const Chats(),
     const Contacts(),
     const Calls(),
-    const Settings(),
   ];
 
   bool isApiCallProcessing = false;
@@ -53,20 +52,17 @@ class _TabsState extends State<NavTabs> {
                 setState(() {
                   currentTab = index;
 
-                  switch (index) {
-                    case 0:
+                  // switch (index) {
+                  //   case 0:
 
-                      break;
-                    case 1:
-                      //print("Concts");
-                      break;
-                    case 2:
-                      // print("Calls");
-                      break;
-                    case 3:
-                      // print("Settings");
-                      break;
-                  }
+                  //     break;
+                  //   case 1:
+                  //     //print("Concts");
+                  //     break;
+                  //   case 2:
+                  //     // print("Calls");
+                  //     break;
+                  // }
                 });
               },
               tabs: [
@@ -90,13 +86,6 @@ class _TabsState extends State<NavTabs> {
                       : CupertinoIcons.phone,
                   iconColor: const Color(0xFFF5F5F5).withOpacity(0.7),
                   text: "Calls",
-                ),
-                GButton(
-                  icon: currentTab == 3
-                      ? Icons.settings
-                      : Icons.settings_outlined,
-                  iconColor: const Color(0xFFF5F5F5).withOpacity(0.7),
-                  text: "Settings",
                 ),
               ]),
         ),

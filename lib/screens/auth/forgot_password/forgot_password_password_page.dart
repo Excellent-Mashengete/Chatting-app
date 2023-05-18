@@ -1,4 +1,7 @@
+import 'package:chattingapp/constants.dart';
 import 'package:chattingapp/model/models.dart';
+import 'package:chattingapp/providers/provider.dart';
+import 'package:provider/provider.dart';
 import 'package:chattingapp/service/auth_api_service.dart';
 import 'package:chattingapp/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +19,7 @@ class EnterNewPassword extends StatefulWidget {
 }
 
 class _EnterNewPasswordState extends State<EnterNewPassword> {
-    final ApiClient _resetapiClient = ApiClient();
-
+  final ApiClient _resetapiClient = ApiClient();
   final newpasswordController = TextEditingController();
   final confirmpasswordController = TextEditingController();
 
@@ -70,6 +72,7 @@ class _EnterNewPasswordState extends State<EnterNewPassword> {
 
   @override
   Widget build(BuildContext context) {
+    var user = Provider.of<GetUser>(context, listen: false);
     return Scaffold(
       appBar: const AppBarWidget(
         title: 'New Password', 
@@ -157,7 +160,7 @@ class _EnterNewPasswordState extends State<EnterNewPassword> {
                             isApiCallProcessing = true;
                           });
                           _handleLogin(newpasswordController.text,
-                              confirmpasswordController.text);
+                              confirmpasswordController.text, user);
                         }
                       },
                     ),
@@ -172,7 +175,7 @@ class _EnterNewPasswordState extends State<EnterNewPassword> {
   }
 
   Future<void> _handleLogin(
-      String newPassController, String confPassController) async {
+      String newPassController, String confPassController, GetUser user) async {
     forgotNewPassRequestModel.identifier = message.toLowerCase();
     forgotNewPassRequestModel.newpassword = newPassController;
     forgotNewPassRequestModel.confirmPassword = confPassController;
@@ -185,10 +188,19 @@ class _EnterNewPasswordState extends State<EnterNewPassword> {
           isApiCallProcessing = false;
         }),
         if (value.message!.isNotEmpty){
+          user.addItem(User(
+              firstname: value.first!,
+              lastname: value.last!,
+              email: value.email!,
+              phoneNumber: value.phone!,
+              token: value.token!,
+              avatar: value.avatar! 
+            ),
+          ),
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(value.message!))
           ),
-        //  Navigator.pushNamed(context, homepage)
+          Navigator.pushNamed(context, homepage)
         }
         else{
           ScaffoldMessenger.of(context)
@@ -196,6 +208,6 @@ class _EnterNewPasswordState extends State<EnterNewPassword> {
           )
         }
       },
-    });
+    },);
   }
 }

@@ -18,18 +18,25 @@ class VerifyOTPResponseModel {
   final String? message;
   final String? error;
   final String? phone;
-  final String? name;
+  final String? first;
+  final String? last;
+  final String? email;
   final String? token;
+  final String? avatar;
+  
 
-  VerifyOTPResponseModel({this.message, this.error, this.phone, this.name, this.token});
+  VerifyOTPResponseModel({this.message, this.error, this.phone, this.first, this.last, this.email, this.avatar, this.token});
 
   factory VerifyOTPResponseModel.fromJson(Map<String, dynamic> json) {
     return VerifyOTPResponseModel(
       message: json["message"] ?? "",
       error: json["error"] ?? "",
       phone: json["phone"] ?? "",
-      name: json["name"] ?? "",
+      first: json["first"] ?? "",
+      last: json["last"] ?? "",
+      email: json["email"] ?? "",
       token: json["token"] ?? "",
+      avatar: json["avatar"] ?? "",
     );
   }
 }

@@ -1,10 +1,11 @@
 import 'package:chattingapp/common/common.dart';
 import 'package:chattingapp/constants.dart';
 import 'package:chattingapp/model/models.dart';
+import 'package:chattingapp/providers/provider.dart';
 import 'package:chattingapp/service/auth_api_service.dart';
-import 'package:chattingapp/service/hive.dart';
 import 'package:chattingapp/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class VerifyOTP extends StatefulWidget {
   const VerifyOTP({
@@ -20,7 +21,6 @@ class VerifyOTP extends StatefulWidget {
 
 class _MyVerifyOTPState extends State<VerifyOTP> {
   final ApiClient _apiClient = ApiClient();
-  final HandleHive _sharedPrefference = HandleHive();
 
   final verify1Controller = TextEditingController();
   final verify2Controller = TextEditingController();
@@ -40,6 +40,15 @@ class _MyVerifyOTPState extends State<VerifyOTP> {
     requestOtpRequestModel = ReqOTPRequestModel();
   }
 
+  @override
+  void dispose() {
+    verify1Controller.dispose();
+    verify2Controller.dispose();
+    verify3Controller.dispose();
+    verify4Controller.dispose();
+    super.dispose();
+  }
+
   late String email = maskEmail(message);
 
   @override
@@ -51,59 +60,61 @@ class _MyVerifyOTPState extends State<VerifyOTP> {
     );
   }
 
-  Widget uiSetup(BuildContext context) {
+  Widget uiSetup(BuildContext context, [int index = 0]) {
+    var user = Provider.of<GetUser>(context, listen: false);
+
     return Scaffold(
-        body: SafeArea(
-      child: Center(
+      body: SafeArea(
+        child: Center(
           child: ListView(
-        children: [
-          Container(
-              padding: const EdgeInsets.symmetric(horizontal: 40),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 50),
-                  Image.network(
-                    "https://i.imgur.com/bOCEVJg.png",
-                    height: 180,
-                    fit: BoxFit.contain,
-                  ),
-                  const SizedBox(height: 20),
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 50),
+                    Image.network(
+                      "https://i.imgur.com/bOCEVJg.png",
+                      height: 180,
+                      fit: BoxFit.contain,
+                    ),
+                    const SizedBox(height: 20),
 
-                  const Text(
-                    'Please enter email address or Phone number to reset the password',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  const SizedBox(height: 20),
-                  Text(email),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      OTPPin(
-                        controller: verify1Controller,
-                        hintText: '0',
-                      ),
-                      OTPPin(
-                        controller: verify2Controller,
-                        hintText: '0',
-                      ),
-                      OTPPin(
-                        controller: verify3Controller,
-                        hintText: '0',
-                      ),
-                      OTPPin(
-                        controller: verify4Controller,
-                        hintText: '0',
-                      ),
-                    ],
-                  ),
+                    const Text(
+                      'Please enter email address or Phone number to reset the password',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(email),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        OTPPin(
+                          controller: verify1Controller,
+                          hintText: '0',
+                        ),
+                        OTPPin(
+                          controller: verify2Controller,
+                          hintText: '0',
+                        ),
+                        OTPPin(
+                          controller: verify3Controller,
+                          hintText: '0',
+                        ),
+                        OTPPin(
+                          controller: verify4Controller,
+                          hintText: '0',
+                        ),
+                      ],
+                    ),
 
-                  // sign in button
-                  const SizedBox(height: 80),
+                    // sign in button
+                    const SizedBox(height: 80),
 
-                  Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         ElevatedButton(
@@ -128,65 +139,78 @@ class _MyVerifyOTPState extends State<VerifyOTP> {
                                 verify1Controller.text,
                                 verify2Controller.text,
                                 verify3Controller.text,
-                                verify4Controller.text);
+                                verify4Controller.text,
+                                user
+                              );
                           },
                           child: const Text('Verify OTP'),
                         ),
-                      ]),
-                ],
-              )),
-        ],
-      )),
-    ));
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   Future<void> _handleRequestOTP() async {
     requestOtpRequestModel.email = message.toLowerCase();
     _apiClient.requestOTP(requestOtpRequestModel).then((value) => {
-          // ignore: unnecessary_null_comparison
-          if (value != null)
-            {
-              setState(() {
-                isApiCallProcessing = false;
-              }),
-              if (value.message!.isNotEmpty)
-                {
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text(value.message!))),
-                }
-              else
-                {
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text(value.error!))),
-                }
-            },
-        });
-  }
-
-  Future<void> _handleVerifyOTP(
-      String code1, String code2, String code3, String code4) async {
-    verifyRequestModel.email = message.toLowerCase();
-    verifyRequestModel.otp = code1 + code2 + code3 + code4;
-    _apiClient.verifyOP(verifyRequestModel).then((value) => {
       // ignore: unnecessary_null_comparison
       if (value != null){
         setState(() {
-          // isApiCallProcessing = false;
+          isApiCallProcessing = false;
         }),
-
         if (value.message!.isNotEmpty){
-          _sharedPrefference.storeData(
-            value.name!, value.phone!, value.token!
-          ),
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(value.message!))),
+            SnackBar(
+              content: Text(value.message!),
+            ),
+          ),
+        }else{
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(value.error!),
+            ),
+          ),
+        }
+      },
+    });
+  }
 
-             Navigator.pushNamed(context, homepage)
+  Future<void> _handleVerifyOTP(
+      String code1, String code2, String code3, String code4, GetUser user) async {
+    verifyRequestModel.email = message.toLowerCase();
+    verifyRequestModel.otp = code1 + code2 + code3 + code4;
+    _apiClient.verifyOP(verifyRequestModel).then((value) => {
+          // ignore: unnecessary_null_comparison
+      if (value != null) {
+        setState(() {
+          isApiCallProcessing = false;
+        }),
+        if (value.message!.isNotEmpty){
+          user.addItem(User(
+            firstname: value.first!,
+            lastname: value.last!,
+            email: value.email!,
+            phoneNumber: value.phone!,
+            token: value.token!,
+            avatar: value.avatar! 
+            ),
+          ), //Add data to hive local database on the mobile
+
+          ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(value.message!))),
+          Navigator.pushNamed(context, homepage)
         }else{
           ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(value.error!))),
         }
       },
-    });
+    },);
   }
 }

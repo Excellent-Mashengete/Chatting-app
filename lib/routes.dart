@@ -1,4 +1,4 @@
-import 'package:chattingapp/model/message_data.dart';
+import 'package:chattingapp/model/chatdata.dart';
 import 'package:chattingapp/screens/auth/auths.dart';
 import 'package:chattingapp/screens/tabs/tabs.dart';
 import 'package:chattingapp/screens/landing/landing_page.dart';
@@ -20,6 +20,12 @@ class MyRoutes {
         return MaterialPageRoute(builder: (context) => const Register());
       case forgotpassword:
         return MaterialPageRoute(builder: (context) => const ForgotPassword());
+      case camera:
+        return MaterialPageRoute(builder: (context) => const CameraScreen());
+      case profileUpdate:
+        return MaterialPageRoute(builder: (context) => const PicturePictureScreen());
+      case profile:
+        return MaterialPageRoute(builder: (context) => const UserProfile());
       case enterNewPassword:
         if (args is String) {
           return MaterialPageRoute(
@@ -57,8 +63,16 @@ class MyRoutes {
           );
         }
         return _errorRoute();
-      case camera:
-        return MaterialPageRoute(builder: (context) => const CameraScreen());
+
+      case contactprofile:
+        if (args is MessageData) {
+          return MaterialPageRoute(
+            builder: (context) => ContactView(
+              messageData: args,
+            ),
+          );
+        }
+        return _errorRoute();
       default:
         //if there is no such named route in the switch statement, return error route
         return _errorRoute();

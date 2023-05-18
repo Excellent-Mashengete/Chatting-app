@@ -1,18 +1,16 @@
 import 'dart:io';
-
+import 'package:chattingapp/common/common.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoViewPage extends StatefulWidget {
-  const VideoViewPage({
-    Key? key, 
-    this.path
-  }) : super(key: key);
+  const VideoViewPage({Key? key, this.path}) : super(key: key);
 
   final path;
 
   @override
-  _VideoViewPageState createState() => _VideoViewPageState();
+  State<VideoViewPage> createState() => _VideoViewPageState();
 }
 
 class _VideoViewPageState extends State<VideoViewPage> {
@@ -22,9 +20,21 @@ class _VideoViewPageState extends State<VideoViewPage> {
   void initState() {
     super.initState();
     _controller = VideoPlayerController.file(File(widget.path))
-    ..initialize().then((_) {
-      setState(() {});
-    });
+      ..initialize().then((_) {
+        setState(() {});
+      });
+  }
+
+  String _videoDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    final hours = twoDigits(duration.inHours);
+    final minutes = twoDigits(duration.inMinutes.remainder(60));
+    final seconds = twoDigits(duration.inSeconds.remainder(60));
+    return [
+      if (duration.inHours > 0) hours,
+      minutes,
+      seconds,
+    ].join(':');
   }
 
   @override
@@ -35,33 +45,29 @@ class _VideoViewPageState extends State<VideoViewPage> {
         backgroundColor: Colors.black,
         actions: [
           IconButton(
-            icon:const Icon(
-              Icons.crop_rotate,
-              size: 27,
-            ),
-            onPressed: () {}
-          ),
+              icon: const Icon(
+                Icons.crop_rotate,
+                size: 27,
+              ),
+              onPressed: () {}),
           IconButton(
-            icon: const Icon(
-              Icons.emoji_emotions_outlined,
-              size: 27,
-            ),
-            onPressed: () {}
-          ),
+              icon: const Icon(
+                Icons.emoji_emotions_outlined,
+                size: 27,
+              ),
+              onPressed: () {}),
           IconButton(
-            icon: const Icon(
-              Icons.title,
-              size: 27,
-            ),
-            onPressed: () {}
-          ),
+              icon: const Icon(
+                Icons.title,
+                size: 27,
+              ),
+              onPressed: () {}),
           IconButton(
-            icon: const Icon(
-              Icons.edit,
-              size: 27,
-            ),
-            onPressed: () {}
-          ),
+              icon: const Icon(
+                Icons.edit,
+                size: 27,
+              ),
+              onPressed: () {}),
         ],
       ),
       body: SizedBox(
@@ -84,9 +90,9 @@ class _VideoViewPageState extends State<VideoViewPage> {
               child: Container(
                 color: Colors.black38,
                 width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                 child: TextFormField(
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 17,
                   ),
@@ -95,19 +101,19 @@ class _VideoViewPageState extends State<VideoViewPage> {
                   decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: "Add Caption....",
-                      prefixIcon: Icon(
+                      prefixIcon: const Icon(
                         Icons.add_photo_alternate,
                         color: Colors.white,
                         size: 27,
                       ),
-                      hintStyle: TextStyle(
+                      hintStyle: const TextStyle(
                         color: Colors.white,
                         fontSize: 17,
                       ),
                       suffixIcon: CircleAvatar(
                         radius: 27,
                         backgroundColor: Colors.tealAccent[700],
-                        child: Icon(
+                        child: const Icon(
                           Icons.check,
                           color: Colors.white,
                           size: 27,

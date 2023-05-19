@@ -1,4 +1,3 @@
-import 'package:chattingapp/model/user_token.dart';
 import 'package:flutter/material.dart';
 import 'package:chattingapp/model/models.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -15,7 +14,6 @@ class GetUser extends ChangeNotifier {
     }
     notifyListeners();
   }
-
 
   addToken(Token token) async {
     await Hive.initFlutter();

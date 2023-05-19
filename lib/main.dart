@@ -1,4 +1,4 @@
-import 'package:chattingapp/model/user_token.dart';
+import 'package:chattingapp/model/Auth/user_token.dart';
 import 'package:chattingapp/screens/login/login.dart';
 import 'package:chattingapp/providers/provider.dart';
 import 'package:chattingapp/screens/tabs/tabs.dart';

@@ -206,7 +206,7 @@ class _MyVerifyOTPState extends State<VerifyOTP> {
           user.addToken(Token(token:value.token!)), //Add data to hive local database on the mobile
           ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(value.message!))),
-          //Navigator.pushNamed(context, homepage)
+          Navigator.pushNamed(context, homepage)
         }else{
           ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(value.error!))),

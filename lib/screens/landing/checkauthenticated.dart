@@ -45,7 +45,7 @@ class _CheckAuthenticatedState extends State<CheckAuthenticated> with WidgetsBin
           return const Landing();
         } else {
           // Handle the result of the future and return the appropriate UI
-          if (snapshot.data!.isEmpty) {
+          if (snapshot.data!.isNotEmpty) {
             return const NavTabs();
           } else {
             return const Landing();

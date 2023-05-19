@@ -169,7 +169,7 @@ class _EnterNewPasswordState extends State<EnterNewPassword> {
                     
                     ScaffoldMessenger.of(context)
                         .showSnackBar(SnackBar(content: Text(value.message!))),
-                    //Navigator.pushNamed(context, homepage)
+                    Navigator.pushNamed(context, homepage)
                   }
                 else
                   {

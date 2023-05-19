@@ -1,6 +1,6 @@
+import 'package:chattingapp/model/user_token.dart';
 import 'package:flutter/material.dart';
 import 'package:chattingapp/model/models.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 //deals with logged in users
@@ -12,6 +12,17 @@ class GetUser extends ChangeNotifier {
     if (box.isNotEmpty || box.isEmpty) {
       box.clear();
       box.add(users);
+    }
+    notifyListeners();
+  }
+
+
+  addToken(Token token) async {
+    await Hive.initFlutter();
+    var box = await Hive.openBox('token');
+    if (box.isNotEmpty || box.isEmpty) {
+      box.clear();
+      box.add(token);
     }
     notifyListeners();
   }
@@ -31,8 +42,8 @@ class GetUser extends ChangeNotifier {
 
   //get user token from hive
   Future<void> getToken() async {
-    final box = await Hive.openBox('user_profile');
-    _token = box.values.first.token;
+    final box = await Hive.openBox('token');
+    _token = box.get(0);
     notifyListeners();
   }
 
@@ -54,9 +65,8 @@ class GetUser extends ChangeNotifier {
   }
 
   //Logging user out
-  deleteItem(int index) {
-    final box = Hive.box<User>('user');
-    box.deleteAt(index);
+  logout(User index) async {
+    index.delete();
     notifyListeners();
   }
 }

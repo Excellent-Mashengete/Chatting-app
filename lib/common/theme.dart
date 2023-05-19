@@ -9,6 +9,7 @@ class ThemeConstants {
   static const dark1Color = Color(0xFF0D1A2E);
   static const dark2Color = Color(0xFF122646);
   static const light1Color = Color(0xFFF5F5F5);
+  static const danger = Color.fromARGB(255, 255, 0, 0);
 }
 
 final dark = ThemeData(
@@ -60,18 +61,18 @@ final dark = ThemeData(
               fontFamily: 'Montserrat', color: ThemeConstants.light1Color),),),
 
   //Input Text
-  inputDecorationTheme: const InputDecorationTheme(
-      filled: true,
-      fillColor: ThemeConstants.dark2Color,
-      prefixIconColor: ThemeConstants.light1Color,
-      enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.transparent),
-        borderRadius: BorderRadius.all(Radius.circular(15)),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(15)),
-        borderSide: BorderSide(color: ThemeConstants.light1Color),
-      )),
+  // inputDecorationTheme: const InputDecorationTheme(
+  //     filled: true,
+  //     fillColor: ThemeConstants.dark2Color,
+  //     prefixIconColor: ThemeConstants.light1Color,
+  //     enabledBorder: OutlineInputBorder(
+  //       borderSide: BorderSide(color: Colors.transparent),
+  //       borderRadius: BorderRadius.all(Radius.circular(15)),
+  //     ),
+  //     focusedBorder: OutlineInputBorder(
+  //       borderRadius: BorderRadius.all(Radius.circular(15)),
+  //       borderSide: BorderSide(color: ThemeConstants.light1Color),
+  //     )),
 
 
 );

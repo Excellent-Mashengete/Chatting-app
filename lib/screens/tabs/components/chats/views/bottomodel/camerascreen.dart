@@ -4,8 +4,6 @@ import 'package:camera/camera.dart';
 import 'package:chattingapp/common/common.dart';
 import 'package:chattingapp/screens/tabs/tabs.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 
 List<CameraDescription> cameras = [];
 

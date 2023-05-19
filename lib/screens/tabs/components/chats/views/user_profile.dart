@@ -20,6 +20,7 @@ class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
     final myProfile = Provider.of<GetUser>(context);
+    final logout = Provider.of<GetUser>(context);
     if (myProfile.userList.isEmpty) {
       myProfile.getUserProfile();
     }
@@ -56,15 +57,13 @@ class _UserProfileState extends State<UserProfile> {
                           height: 150,
                           decoration: BoxDecoration(
                             border: Border.all(
-                              width: 4, 
-                              color: ThemeConstants.light1Color
-                            ),
+                                width: 4, color: ThemeConstants.light1Color),
                             boxShadow: [
                               BoxShadow(
                                 spreadRadius: 2,
                                 blurRadius: 10,
                                 color:
-                                  ThemeConstants.dark2Color.withOpacity(0.1),
+                                    ThemeConstants.dark2Color.withOpacity(0.1),
                               ),
                             ],
                             shape: BoxShape.circle,
@@ -89,13 +88,11 @@ class _UserProfileState extends State<UserProfile> {
                               height: 40,
                               width: 40,
                               decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  width: 4,
-                                  color: ThemeConstants.light1Color
-                                ),
-                                color: ThemeConstants.light1Color
-                              ),
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                      width: 4,
+                                      color: ThemeConstants.light1Color),
+                                  color: ThemeConstants.light1Color),
                               child: const Icon(
                                 CupertinoIcons.camera_fill,
                                 color: ThemeConstants.dark1Color,
@@ -107,11 +104,17 @@ class _UserProfileState extends State<UserProfile> {
                     ),
                   ),
                   const SizedBox(height: 60),
-                  buildTextField("${prof.firstname!}  ${prof.lastname!}", true),
+                  buildTextField(prof.name! , true),
                   buildTextField(prof.email!, false),
                   buildTextField(prof.phoneNumber!, false),
                   const SizedBox(height: 40),
-                  ButtonWidget(text: "Logout", press: () {})
+                  ButtonWidget(
+                    text: "Logout",
+                    press: () {
+                      logout.logout(User());
+                      //Navigator.pushNamed(context, landing);
+                    },
+                  )
                 ],
               );
             },
@@ -167,7 +170,7 @@ class _UserProfileState extends State<UserProfile> {
     );
   }
 
-  Widget buildTextField(String placeholder,  bool type) {
+  Widget buildTextField(String placeholder, bool type) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 30),
       child: TextFormField(
@@ -178,8 +181,7 @@ class _UserProfileState extends State<UserProfile> {
           floatingLabelBehavior: FloatingLabelBehavior.always,
           hintText: placeholder,
           hintStyle: const TextStyle(
-            fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey
-          ),
+              fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey),
         ),
       ),
     );

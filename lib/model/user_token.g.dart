@@ -1,41 +1,32 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_modal.dart';
+part of 'user_token.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class UserAdapter extends TypeAdapter<User> {
+class TokenAdapter extends TypeAdapter<Token> {
   @override
-  final int typeId = 1;
+  final int typeId = 2;
 
   @override
-  User read(BinaryReader reader) {
+  Token read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return User(
-      name: fields[0] as String?,
-      email: fields[2] as String?,
-      phoneNumber: fields[3] as String?,
-      avatar: fields[4] as String?,
+    return Token(
+      token: fields[0] as String?,
     );
   }
 
   @override
-  void write(BinaryWriter writer, User obj) {
+  void write(BinaryWriter writer, Token obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(1)
       ..writeByte(0)
-      ..write(obj.name)
-      ..writeByte(2)
-      ..write(obj.email)
-      ..writeByte(3)
-      ..write(obj.phoneNumber)
-      ..writeByte(4)
-      ..write(obj.avatar);
+      ..write(obj.token);
   }
 
   @override
@@ -44,7 +35,7 @@ class UserAdapter extends TypeAdapter<User> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is UserAdapter &&
+      other is TokenAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

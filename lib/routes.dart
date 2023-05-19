@@ -1,5 +1,6 @@
 import 'package:chattingapp/model/chatdata.dart';
-import 'package:chattingapp/screens/auth/auths.dart';
+import 'package:chattingapp/screens/login/login.dart';
+import 'package:chattingapp/screens/forgot_password/forgotpass.dart';
 import 'package:chattingapp/screens/tabs/tabs.dart';
 import 'package:chattingapp/screens/landing/landing_page.dart';
 import 'package:flutter/material.dart';

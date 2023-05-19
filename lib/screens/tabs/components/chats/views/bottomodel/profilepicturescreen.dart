@@ -4,8 +4,6 @@ import 'package:camera/camera.dart';
 import 'package:chattingapp/common/common.dart';
 import 'package:chattingapp/screens/tabs/tabs.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 
 List<CameraDescription> cameras2 = [];
 
@@ -72,7 +70,7 @@ class _PicturePictureScreenState extends State<PicturePictureScreen> {
                   child: CircularProgressIndicator(),
                 );
               }
-            }
+            },
           ),
           Positioned(
             bottom: 0.0,
@@ -86,17 +84,24 @@ class _PicturePictureScreenState extends State<PicturePictureScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      IconButton(
-                        icon: Icon(flash ? Icons.flash_on : Icons.flash_off,
-                            color: ThemeConstants.light1Color, size: 28),
-                        onPressed: () {
-                          setState(() {
-                            flash = !flash;
-                          });
-                          flash
-                              ? cameracontroller.setFlashMode(FlashMode.torch)
-                              : cameracontroller.setFlashMode(FlashMode.off);
-                        },
+                      Padding(
+                        padding: const EdgeInsets.all(0.0),
+                        child: iscamerafront
+                          ? IconButton(
+                              icon: Icon(flash ? Icons.flash_on : Icons.flash_off,
+                                  color: ThemeConstants.light1Color, size: 28),
+                              onPressed: () {
+                                setState(() {
+                                  flash = !flash;
+                                });
+                                flash
+                                    ? cameracontroller.setFlashMode(FlashMode.torch)
+                                    : cameracontroller.setFlashMode(FlashMode.off);
+                              },
+                            )
+                          : Container(
+                            padding: const EdgeInsets.all(50),
+                          )
                       ),
                       InkWell(
                         onTap: () {

@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:chattingapp/constants.dart';
 import 'package:chattingapp/model/models.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 
 class ApiClient {
@@ -83,8 +85,7 @@ class ApiClient {
   }
 
   //request OTP Pin
-  Future<AuthResponseModel> requestOTP(
-      ReqOTPRequestModel requestModel) async {
+  Future<AuthResponseModel> requestOTP(ReqOTPRequestModel requestModel) async {
     //IMPLEMENT Request OTP Pin
     try {
       final response = await http.post(Uri.parse('${baseurl}reqOTP'),
@@ -106,7 +107,6 @@ class ApiClient {
       rethrow;
     }
   }
-
 
   //Send an email asking for password reset
   Future<AuthResponseModel> passwordReset(
@@ -186,6 +186,31 @@ class ApiClient {
       }
     } on SocketException catch (_) {
       rethrow;
+    }
+  }
+
+  signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? gUser =
+          await GoogleSignIn(scopes: <String>["email"]).signIn();
+      if (gUser == null) {
+        throw const LogInWithGoogleFailure(
+          'Google Sign In has been'
+          ' cancelled by the user',
+        );
+      }
+      final GoogleSignInAuthentication gAuth = await gUser!.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: gAuth.accessToken,
+        idToken: gAuth.idToken,
+      );
+
+      return await FirebaseAuth.instance.signInWithCredential(credential);
+    } on FirebaseAuthException catch (e) {
+      throw LogInWithGoogleFailure.fromCode(e.code);
+    } catch (_) {
+      throw const LogInWithGoogleFailure();
     }
   }
 }

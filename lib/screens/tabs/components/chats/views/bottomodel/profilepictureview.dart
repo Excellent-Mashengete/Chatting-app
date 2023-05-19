@@ -1,45 +1,39 @@
 import 'dart:io';
+import 'package:chattingapp/common/common.dart';
 import 'package:flutter/material.dart';
 
 class PicturePictureView extends StatelessWidget {
-  const PicturePictureView({
-    Key? key, 
-    this.path
-  }) : super(key: key);
-
+  const PicturePictureView({Key? key, this.path}) : super(key: key);
   final path;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: ThemeConstants.dark1Color,
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: ThemeConstants.dark1Color,
+        leading: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: IconButton(
+            icon: const Icon(
+              Icons.arrow_back,
+              size: 30,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
         actions: [
-          IconButton(
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: IconButton(
               icon: const Icon(
-                Icons.crop_rotate,
-                size: 27,
+                Icons.check,
+                size: 30,
               ),
-              onPressed: () {}),
-          IconButton(
-              icon: const Icon(
-                Icons.emoji_emotions_outlined,
-                size: 27,
-              ),
-              onPressed: () {}),
-          IconButton(
-              icon: const Icon(
-                Icons.title,
-                size: 27,
-              ),
-              onPressed: () {}),
-          IconButton(
-              icon: const Icon(
-                Icons.edit,
-                size: 27,
-              ),
-              onPressed: () {}),
+              onPressed: () {},
+            ),
+          ),
         ],
       ),
       body: SizedBox(
@@ -53,43 +47,6 @@ class PicturePictureView extends StatelessWidget {
               child: Image.file(
                 File(path!),
                 fit: BoxFit.cover,
-              ),
-            ),
-            Positioned(
-              bottom: 0,
-              child: Container(
-                color: Colors.black38,
-                width: MediaQuery.of(context).size.width,
-                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
-                child: TextFormField(
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 17,
-                  ),
-                  maxLines: 6,
-                  minLines: 1,
-                  decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: "Add Caption....",
-                      prefixIcon: const Icon(
-                        Icons.add_photo_alternate,
-                        color: Colors.white,
-                        size: 27,
-                      ),
-                      hintStyle: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 17,
-                      ),
-                      suffixIcon: CircleAvatar(
-                        radius: 27,
-                        backgroundColor: Colors.tealAccent[700],
-                        child: const Icon(
-                          Icons.check,
-                          color: Colors.white,
-                          size: 27,
-                        ),
-                      )),
-                ),
               ),
             ),
           ],

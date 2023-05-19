@@ -1,7 +1,5 @@
 import 'dart:io';
-import 'package:chattingapp/common/common.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoViewPage extends StatefulWidget {
@@ -23,18 +21,6 @@ class _VideoViewPageState extends State<VideoViewPage> {
       ..initialize().then((_) {
         setState(() {});
       });
-  }
-
-  String _videoDuration(Duration duration) {
-    String twoDigits(int n) => n.toString().padLeft(2, '0');
-    final hours = twoDigits(duration.inHours);
-    final minutes = twoDigits(duration.inMinutes.remainder(60));
-    final seconds = twoDigits(duration.inSeconds.remainder(60));
-    return [
-      if (duration.inHours > 0) hours,
-      minutes,
-      seconds,
-    ].join(':');
   }
 
   @override

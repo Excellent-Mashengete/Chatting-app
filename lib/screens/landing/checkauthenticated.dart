@@ -1,6 +1,6 @@
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:chattingapp/screens/landing/landing_page.dart';
 import 'package:chattingapp/screens/tabs/tabs.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -38,14 +38,14 @@ class _CheckAuthenticatedState extends State<CheckAuthenticated> with WidgetsBin
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Box>(
-      future: Hive.openBox('user_profile'),
+      future: Hive.openBox('token'),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // Show the splash screen while waiting for the future to complete
           return const Landing();
         } else {
           // Handle the result of the future and return the appropriate UI
-          if (snapshot.data != null) {
+          if (snapshot.data!.isEmpty) {
             return const NavTabs();
           } else {
             return const Landing();
@@ -55,3 +55,20 @@ class _CheckAuthenticatedState extends State<CheckAuthenticated> with WidgetsBin
     );
   }
 }
+
+/*
+
+
+
+    return StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if(snapshot.hasData){
+            return const NavTabs();
+          }else{
+            return const Landing();
+          }
+        }
+    );
+ */
+

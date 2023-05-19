@@ -1,4 +1,5 @@
 
+import 'package:chattingapp/common/common.dart';
 import 'package:flutter/material.dart';
 
 class InputFields extends StatelessWidget {
@@ -7,12 +8,11 @@ class InputFields extends StatelessWidget {
     required this.controller,
     required this.hintText,
     required this.obscureText,
+    required this.textType,
     required this.icon,
     required this.isPassword,
-    required this.errorText,
-    required this.textType,
-    required this.onChange,
     this.changeVisibility,
+    this.validator,
   }) : super(key: key);
 
   final TextEditingController? controller;
@@ -21,30 +21,38 @@ class InputFields extends StatelessWidget {
   final IconData icon;
   final bool isPassword;
   final VoidCallback? changeVisibility;
-  final String? errorText;
   final TextInputType textType;
-  // ignore: prefer_typing_uninitialized_variables
-  final onChange ;
-
+  final String? Function(String?)? validator;
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: controller,
+    return TextFormField(
       obscureText: obscureText,
       keyboardType: textType,
-      onChanged: onChange,
+      controller: controller,
+      validator: validator,
       decoration: InputDecoration(
-          errorText: errorText,
-          prefixIcon: Icon(icon),
-          hintText: hintText,
-          suffixIcon: isPassword
-              ? IconButton(
-                  padding: const EdgeInsetsDirectional.only(end: 12.0),
-                  onPressed: changeVisibility,
-                  icon: Icon(
-                      obscureText ? Icons.visibility_off : Icons.visibility),
-                )
-              : null),
+        filled: true,
+        hintText: hintText,
+        fillColor: ThemeConstants.dark2Color,
+        prefixIconColor: ThemeConstants.light1Color,
+        suffixIcon: isPassword
+            ? InkWell(
+                onTap: changeVisibility,
+                child:
+                    Icon(obscureText ? Icons.visibility_off : Icons.visibility),
+              )
+            : null,
+        enabledBorder: const UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.transparent),
+        ),
+        focusedBorder: const UnderlineInputBorder(
+          borderSide: BorderSide(color: ThemeConstants.light1Color),
+        ),
+        focusColor: Colors.white,
+        prefixIcon: Icon(
+          icon,
+        ),
+      ),
     );
   }
 }

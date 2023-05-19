@@ -1,8 +1,6 @@
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chattingapp/common/theme.dart';
 import 'package:chattingapp/constants.dart';
-import 'package:chattingapp/model/models.dart';
 import 'package:chattingapp/providers/provider.dart';
 import 'package:chattingapp/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +47,7 @@ class _ChatState extends State<Chats> {
                             ),
                           );
                         }else{
-                          return CircularProgressIndicator();
+                          return const CircularProgressIndicator();
                         }
                       }
                       ),

@@ -17,25 +17,34 @@ class AuthResponseModel {
 class VerifyOTPResponseModel {
   final String? message;
   final String? error;
-  final String? phone;
-  final String? first;
-  final String? last;
-  final String? email;
   final String? token;
-  final String? avatar;
-  
+  final UserProfile? user;
 
-  VerifyOTPResponseModel({this.message, this.error, this.phone, this.first, this.last, this.email, this.avatar, this.token});
+  VerifyOTPResponseModel({this.message, this.error, this.token, this.user});
 
   factory VerifyOTPResponseModel.fromJson(Map<String, dynamic> json) {
     return VerifyOTPResponseModel(
       message: json["message"] ?? "",
       error: json["error"] ?? "",
-      phone: json["phone"] ?? "",
-      first: json["first"] ?? "",
-      last: json["last"] ?? "",
-      email: json["email"] ?? "",
       token: json["token"] ?? "",
+      user: UserProfile.fromJson(json["user"]),
+    );
+  }
+}
+
+class UserProfile {
+  final String? name;
+  final String? email;
+  final String? phone;
+  final String? avatar;
+
+  UserProfile({this.name, this.email, this.phone, this.avatar});
+
+  factory UserProfile.fromJson(Map<String, dynamic> json) {
+    return UserProfile(
+      name: json["name"] ?? "",
+      email: json["email"] ?? "",
+      phone: json["phone"] ?? "",
       avatar: json["avatar"] ?? "",
     );
   }
@@ -60,19 +69,16 @@ class LoginRequestModel {
 
 //Register Request
 class RegisterRequestModel {
-  String? firstname;
-  String? lastname;
+  String? name;
   String? email;
   String? password;
   String? phone;
 
-  RegisterRequestModel(
-      {this.firstname, this.lastname, this.email, this.phone, this.password});
+  RegisterRequestModel({this.name, this.email, this.phone, this.password});
 
   Map<String, dynamic> toJson() {
     Map<String, dynamic> map = {
-      "firstname": firstname!.trim(),
-      "lastname": lastname!.trim(),
+      "name": name!.trim(),
       "email": email!.trim(),
       "phone": phone!.trim(),
       "password": password!.trim()
@@ -118,7 +124,8 @@ class ForgotNewPassRequestModel {
   String? newpassword;
   String? confirmPassword;
 
-  ForgotNewPassRequestModel({this.identifier, this.newpassword, this.confirmPassword});
+  ForgotNewPassRequestModel(
+      {this.identifier, this.newpassword, this.confirmPassword});
 
   Map<String, dynamic> toJson() {
     Map<String, dynamic> map = {
@@ -131,8 +138,6 @@ class ForgotNewPassRequestModel {
   }
 }
 
-
-
 class VerifyOTPRequestModel {
   String? email;
   String? otp;
@@ -140,11 +145,59 @@ class VerifyOTPRequestModel {
   VerifyOTPRequestModel({this.email, this.otp});
 
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> map = {
-      "email": email!.trim(),
-      "OTP": otp!.trim()
-    };
+    Map<String, dynamic> map = {"email": email!.trim(), "OTP": otp!.trim()};
 
     return map;
   }
+}
+
+class LogInWithGoogleFailure implements Exception {
+  /// {@macro log_in_with_google_failure}
+  const LogInWithGoogleFailure([
+    this.message = 'An unknown exception occurred.',
+  ]);
+
+  /// Create an authentication message
+  /// from a firebase authentication exception code.
+  factory LogInWithGoogleFailure.fromCode(String code) {
+    switch (code) {
+      case 'account-exists-with-different-credential':
+        return const LogInWithGoogleFailure(
+          'Account exists with different credentials.',
+        );
+      case 'invalid-credential':
+        return const LogInWithGoogleFailure(
+          'The credential received is malformed or has expired.',
+        );
+      case 'operation-not-allowed':
+        return const LogInWithGoogleFailure(
+          'Operation is not allowed.  Please contact support.',
+        );
+      case 'user-disabled':
+        return const LogInWithGoogleFailure(
+          'This user has been disabled. Please contact support for help.',
+        );
+      case 'user-not-found':
+        return const LogInWithGoogleFailure(
+          'Email is not found, please create an account.',
+        );
+      case 'wrong-password':
+        return const LogInWithGoogleFailure(
+          'Incorrect password, please try again.',
+        );
+      case 'invalid-verification-code':
+        return const LogInWithGoogleFailure(
+          'The credential verification code received is invalid.',
+        );
+      case 'invalid-verification-id':
+        return const LogInWithGoogleFailure(
+          'The credential verification ID received is invalid.',
+        );
+      default:
+        return const LogInWithGoogleFailure();
+    }
+  }
+
+  /// The associated error message.
+  final String message;
 }

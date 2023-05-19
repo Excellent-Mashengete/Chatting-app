@@ -9,3 +9,4 @@ export 'input_textfield_widget.dart';
 export 'otp_pin.dart';
 export 'recentchats.dart';
 export 'replycard.dart';
+export 'squaretitle.dart';

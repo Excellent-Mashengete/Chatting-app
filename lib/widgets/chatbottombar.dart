@@ -1,6 +1,5 @@
 import 'package:chattingapp/common/common.dart';
 import 'package:chattingapp/constants.dart';
-import 'package:chattingapp/widgets/widgets.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' as foundation;
@@ -16,8 +15,8 @@ class _ChatBottomBarState extends State<ChatBottomBar> {
   bool show = false;
   FocusNode focusNode = FocusNode();
   bool sendButton = false;
-  TextEditingController _controller = TextEditingController();
-  ScrollController _scrollController = ScrollController();
+  final TextEditingController _controller = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +52,7 @@ class _ChatBottomBarState extends State<ChatBottomBar> {
                               maxLines: 5,
                               minLines: 1,
                               onChanged: (value) {
-                                if (value.length > 0) {
+                                if (value.isNotEmpty) {
                                   setState(() {
                                     sendButton = true;
                                   });
@@ -86,7 +85,7 @@ class _ChatBottomBarState extends State<ChatBottomBar> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     IconButton(
-                                      icon: Icon(Icons.attach_file),
+                                      icon: const Icon(Icons.attach_file),
                                       onPressed: () {
                                         showModalBottomSheet(
                                           backgroundColor:
@@ -98,7 +97,7 @@ class _ChatBottomBarState extends State<ChatBottomBar> {
                                       },
                                     ),
                                     IconButton(
-                                      icon: Icon(Icons.camera_alt),
+                                      icon:const Icon(Icons.camera_alt),
                                       onPressed: () {
                                         // Navigator.push(
                                               //     context,
@@ -109,7 +108,7 @@ class _ChatBottomBarState extends State<ChatBottomBar> {
                                     ),
                                   ],
                                 ),
-                                      contentPadding: EdgeInsets.all(5),
+                                      contentPadding: const EdgeInsets.all(5),
                               ),
                             ),
                           ),
@@ -132,7 +131,7 @@ class _ChatBottomBarState extends State<ChatBottomBar> {
                                 if (sendButton) {
                                   _scrollController.animateTo(
                                     _scrollController.position.maxScrollExtent,
-                                    duration:Duration(milliseconds: 300),
+                                    duration:const Duration(milliseconds: 300),
                                     curve: Curves.easeOut
                                   );      
                                 }

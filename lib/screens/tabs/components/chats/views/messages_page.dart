@@ -19,8 +19,8 @@ class Messages extends StatefulWidget {
 
 class _MessagesState extends State<Messages> {
   late MessageData messageData;
-  TextEditingController _controller = TextEditingController();
-  ScrollController _scrollController = ScrollController();
+  final TextEditingController _controller = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -92,7 +92,7 @@ class _MessagesState extends State<Messages> {
           ),
         ),
       ),
-      body: Container(
+      body: SizedBox(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: WillPopScope(

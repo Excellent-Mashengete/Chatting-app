@@ -2,120 +2,39 @@ import 'package:chattingapp/common/common.dart';
 import 'package:chattingapp/constants.dart';
 import 'package:chattingapp/model/models.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class RecentChats extends StatelessWidget {
-  const RecentChats({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: const [
-        _MessageTitle(
-            messageData: MessageData(
-              id: '1',
-              senderName: "Shaggy",
-              message: "Hello Developer, How are you?",
-              messageDate: "12:30",
-              phoneNumber: "",
-              profilePicture:
-                  'https://avatarfiles.alphacoders.com/103/103808.jpg',
-            ),
-          ),
-           _MessageTitle(
-          messageData: MessageData(
-            id: '2',
-            senderName: "Koketso",
-            message: "Hi Nhlanhla",
-            messageDate: "12:30",
-            phoneNumber: "",
-            profilePicture:
-                'https://avatarfiles.alphacoders.com/975/97500.jpg',
-          ),
-        ),
-         _MessageTitle(
-          messageData: MessageData(
-            id: '3',
-            senderName: "Chris",
-            message: "I need your help",
-            messageDate: "12:30",
-            phoneNumber: "",
-            profilePicture:
-                'https://avatarfiles.alphacoders.com/103/103808.jpg',
-          ),
-        ),
-        _MessageTitle(
-          messageData: MessageData(
-            id: '4',
-            senderName: "Ronald",
-            message: "Have you completed the fragments",
-            messageDate: "12:30",
-            phoneNumber: "",
-            profilePicture:
-              'https://avatarfiles.alphacoders.com/226/226604.png',
-          ),
-        ),
-        _MessageTitle(
-            messageData: MessageData(
-              id: '1',
-              senderName: "Shaggy",
-              message: "Hello Developer, How are you?",
-              messageDate: "12:30",
-              phoneNumber: "",
-              profilePicture:
-                  'https://avatarfiles.alphacoders.com/103/103808.jpg',
-            ),
-          ),
-           _MessageTitle(
-          messageData: MessageData(
-            id: '2',
-            senderName: "Koketso",
-            message: "Hi Nhlanhla",
-            messageDate: "12:30",
-            phoneNumber: "",
-            profilePicture:
-                'https://avatarfiles.alphacoders.com/975/97500.jpg',
-          ),
-        ),
-         _MessageTitle(
-          messageData: MessageData(
-            id: '3',
-            senderName: "Chris",
-            message: "I need your help",
-            messageDate: "12:30",
-            phoneNumber: "",
-            profilePicture:
-                'https://avatarfiles.alphacoders.com/103/103808.jpg',
-          ),
-        ),
-        _MessageTitle(
-          messageData: MessageData(
-            id: '4',
-            senderName: "Ronald",
-            message: "Have you completed the fragments",
-            messageDate: "12:30",
-            phoneNumber: "",
-            profilePicture:
-              'https://avatarfiles.alphacoders.com/226/226604.png',
-          ),
-        )
-    ]);
-  }
-}
-
-class _MessageTitle extends StatelessWidget {
-  const _MessageTitle({
+  const RecentChats({
     Key? key,
-    required this.messageData,
+    required this.chats,
   }) : super(key: key);
 
-  final MessageData messageData;
+  final ChatResponseModel chats;
+  String formatMessageDate(String dateString) { 
+    DateTime now = DateTime.now(); 
+    DateTime messageDate = DateTime.parse(dateString); 
+    Duration difference = now.difference(messageDate); 
+    
+    if (difference.inSeconds < 1) { 
+      return "Just now"; 
+    } else if (difference.inSeconds < 60) { 
+      return "${difference.inSeconds} seconds ago"; 
+    } else if (difference.inHours < 24 && now.day == messageDate.day) { 
+      return '${messageDate.hour.toString().padLeft(2, '0')}:${messageDate.minute.toString().padLeft(2, '0')}'; 
+    } else if (difference.inDays == 1 || (difference.inHours < 24 && now.day != messageDate.day)) { 
+      return "Yesterday"; 
+    } else { 
+      return DateFormat('dd MMM yyyy').format(messageDate);
+    } 
+  }
 
   @override
   Widget build(BuildContext context) {
+
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, messages,
-            arguments: messageData);
+        Navigator.pushNamed(context, messages, arguments: chats);
       },
       child: Container(
         height: 100,
@@ -137,7 +56,7 @@ class _MessageTitle extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(35),
                   child: Image.network(
-                    messageData.profilePicture,
+                    chats.chats!.first.receiver!.avatar.toString(),
                     height: 50,
                     width: 50,
                   ),
@@ -151,7 +70,7 @@ class _MessageTitle extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: Text(
-                        messageData.senderName,
+                        chats.chats!.first.receiver!.name.toString(),
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           fontSize: 17,
@@ -164,7 +83,7 @@ class _MessageTitle extends StatelessWidget {
                     SizedBox(
                       height: 20,
                       child: Text(
-                        messageData.message,
+                       chats.chats!.first.lastMessage!.messages.toString(),
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           color: ThemeConstants.light1Color.withOpacity(0.7),
@@ -185,7 +104,7 @@ class _MessageTitle extends StatelessWidget {
                       height: 4,
                     ),
                     Text(
-                      messageData.messageDate.toUpperCase(),
+                      formatMessageDate(chats.chats!.first.lastMessage!.datesend.toString()),
                       style: const TextStyle(
                         fontSize: 12,
                         letterSpacing: -0.2,
@@ -200,16 +119,15 @@ class _MessageTitle extends StatelessWidget {
                       width: 20,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        color: ThemeConstants.light1Color,
-                        borderRadius: BorderRadius.circular(25)
-                      ),
-                      child: const Text(
+                          color: ThemeConstants.light1Color,
+                          borderRadius: BorderRadius.circular(25)),
+                      child: 
+                      Text(
                         "10",
                         style: TextStyle(
-                          color: ThemeConstants.dark2Color,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold
-                        ),
+                            color: ThemeConstants.dark2Color,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                   ],

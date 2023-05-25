@@ -4,6 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:chattingapp/common/common.dart';
 import 'package:chattingapp/screens/tabs/tabs.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 List<CameraDescription> cameras2 = [];
 
@@ -26,12 +27,64 @@ class _PicturePictureScreenState extends State<PicturePictureScreen> {
     super.initState();
     cameracontroller = CameraController(cameras2[0], ResolutionPreset.high);
     cameraValue = cameracontroller.initialize();
+    checkPermissionsAndNavigateBack();
   }
 
   @override
   void dispose() {
     cameracontroller.dispose();
     super.dispose();
+  }
+
+  Future<void> checkPermissionsAndNavigateBack() async {
+    PermissionStatus cameraPermissionStatus = await Permission.camera.status;
+    PermissionStatus microphonePermissionStatus =
+        await Permission.microphone.status;
+
+    if (cameraPermissionStatus.isDenied ||
+        microphonePermissionStatus.isDenied) {
+          Navigator.pop(context);
+    } else if (cameraPermissionStatus.isPermanentlyDenied ||
+        microphonePermissionStatus.isPermanentlyDenied) {
+      _showSettingsDialog();
+    } else {
+      // Permissions are granted, continue with your logic
+    }
+  }
+
+  // Future<void> _requestPermissions() async {
+  //   Map<Permission, PermissionStatus> permissionStatus =
+  //       await [Permission.camera, Permission.microphone].request();
+
+  //   if (permissionStatus[Permission.camera].isDenied ||
+  //       permissionStatus[Permission.microphone].isDenied) {
+  //     Navigator.pop(context);
+  //   } else {
+  //     checkPermissionsAndNavigateBack();
+  //   }
+  // }
+
+
+  void _showSettingsDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Permissions Required'),
+        content: const Text(
+          'Please grant camera and microphone permissions in Settings'
+        ),
+        actions: [
+          TextButton(
+            child: const Text('CANCEL'),
+            onPressed: () => Navigator.pop(context),
+          ),
+          TextButton(
+            child: const Text('SETTINGS'),
+            onPressed: () => openAppSettings(),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -54,7 +107,7 @@ class _PicturePictureScreenState extends State<PicturePictureScreen> {
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 final screenAspectRatio =
-                  MediaQuery.of(context).size.aspectRatio;
+                    MediaQuery.of(context).size.aspectRatio;
                 final cameraAspectRatio = cameracontroller.value.aspectRatio;
                 final aspectRatio = cameraAspectRatio / screenAspectRatio;
 
@@ -85,29 +138,32 @@ class _PicturePictureScreenState extends State<PicturePictureScreen> {
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.all(0.0),
-                        child: iscamerafront
-                          ? IconButton(
-                              icon: Icon(flash ? Icons.flash_on : Icons.flash_off,
-                                  color: ThemeConstants.light1Color, size: 28),
-                              onPressed: () {
-                                setState(() {
-                                  flash = !flash;
-                                });
-                                flash
-                                    ? cameracontroller.setFlashMode(FlashMode.torch)
-                                    : cameracontroller.setFlashMode(FlashMode.off);
-                              },
-                            )
-                          : Container(
-                            padding: const EdgeInsets.all(50),
-                          )
-                      ),
+                          padding: const EdgeInsets.all(0.0),
+                          child: iscamerafront
+                              ? IconButton(
+                                  icon: Icon(
+                                      flash ? Icons.flash_on : Icons.flash_off,
+                                      color: ThemeConstants.light1Color,
+                                      size: 28),
+                                  onPressed: () {
+                                    setState(() {
+                                      flash = !flash;
+                                    });
+                                    flash
+                                        ? cameracontroller
+                                            .setFlashMode(FlashMode.torch)
+                                        : cameracontroller
+                                            .setFlashMode(FlashMode.off);
+                                  },
+                                )
+                              : Container(
+                                  padding: const EdgeInsets.all(50),
+                                )),
                       InkWell(
                         onTap: () {
                           takePhoto(context);
                         },
-                        child:const Icon(
+                        child: const Icon(
                           Icons.panorama_fish_eye,
                           color: ThemeConstants.light1Color,
                           size: 70,

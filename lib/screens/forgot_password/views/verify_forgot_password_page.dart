@@ -1,6 +1,4 @@
 import 'package:chattingapp/common/common.dart';
-import 'package:chattingapp/constants.dart';
-import 'package:chattingapp/model/models.dart';
 import 'package:chattingapp/service/auth_api_service.dart';
 import 'package:chattingapp/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -25,15 +23,13 @@ class _VerifyForgotPasswordState extends State<VerifyForgotPassword> {
   bool isApiCallProcessing = false;
 
   late String message;
-  late VerifyOTPRequestModel forgotPassVerifyRequestModel;
-  late ReqOTPRequestModel requestOtpRequestModel;
+
  
   @override
   void initState() {
     super.initState();
     message = widget.data;
-    forgotPassVerifyRequestModel = VerifyOTPRequestModel();
-    requestOtpRequestModel = ReqOTPRequestModel();
+
   }
 
   @override
@@ -109,7 +105,7 @@ class _VerifyForgotPasswordState extends State<VerifyForgotPassword> {
                             setState(() {
                               isApiCallProcessing = true;
                             });
-                            _handleRequestOTP();
+              
                           },
                           child: const Text('Resend'),
                         ),
@@ -122,13 +118,7 @@ class _VerifyForgotPasswordState extends State<VerifyForgotPassword> {
                             setState(() {
                               isApiCallProcessing = true;
                             });
-                            
-                            _handleVerifyOTP(
-                              verify1Controller.text,
-                              verify2Controller.text,
-                              verify3Controller.text,
-                              verify4Controller.text
-                            );
+
                           },
                           child: const Text('Verify OTP'),
                         ),
@@ -144,50 +134,4 @@ class _VerifyForgotPasswordState extends State<VerifyForgotPassword> {
     );
   }
 
-  Future<void> _handleRequestOTP() async {
-    requestOtpRequestModel.email = message.toLowerCase();
-    _apiClient.requestOTP(requestOtpRequestModel).then((value) => {
-      // ignore: unnecessary_null_comparison
-      if (value != null){
-        setState(() {
-          isApiCallProcessing = false;
-        }),
-
-        if (value.message!.isNotEmpty){
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(value.message!))
-          ),
-        }else{
-          ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(value.error!))),
-        }
-      },
-    });
-  }
-
-  Future<void> _handleVerifyOTP(
-      String code1, String code2, String code3, String code4) async {
-    forgotPassVerifyRequestModel.email = message.toLowerCase();
-    forgotPassVerifyRequestModel.otp = code1 + code2 + code3 + code4;
-
-    _apiClient.verifyAccount(forgotPassVerifyRequestModel).then((value) => {
-      // ignore: unnecessary_null_comparison
-      if (value != null){
-        setState(() {
-          isApiCallProcessing = false;
-        }),
-        
-
-        if (value.message!.isNotEmpty){
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(value.message!))
-          ),
-          Navigator.pushNamed(context, enterNewPassword, arguments: message)
-        }else{
-          ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(value.error!))),
-        }
-      },
-    });
-  }
 }

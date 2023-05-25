@@ -1,9 +1,14 @@
+import 'package:chattingapp/common/common.dart';
+import 'package:chattingapp/helpers/biometric_helper.dart';
 import 'package:chattingapp/screens/landing/landing_page.dart';
+import 'package:chattingapp/screens/landing/splashcsreen.dart';
+import 'package:chattingapp/providers/get_user.dart';
+import 'package:chattingapp/providers/provider.dart';
 import 'package:chattingapp/screens/tabs/tabs.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:chattingapp/model/models.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-
 
 class CheckAuthenticated extends StatefulWidget {
   const CheckAuthenticated({super.key});
@@ -12,19 +17,26 @@ class CheckAuthenticated extends StatefulWidget {
   State<CheckAuthenticated> createState() => _CheckAuthenticatedState();
 }
 
-class _CheckAuthenticatedState extends State<CheckAuthenticated> with WidgetsBindingObserver {
+class _CheckAuthenticatedState extends State<CheckAuthenticated> {
+  bool showBiometrics = false;
+  bool isAuthenticated = false;
+
   @override
   void initState() {
+    isBiometricAvailable();
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
-  
+
+  isBiometricAvailable() async {
+    showBiometrics = await BiometricHelper().hasEnrolledBiometrics();
+    setState(() {});
+  }
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
@@ -37,16 +49,53 @@ class _CheckAuthenticatedState extends State<CheckAuthenticated> with WidgetsBin
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Box>(
-      future: Hive.openBox('token'),
+    var user = Provider.of<GetUser>(context, listen: false);
+    return StreamBuilder(
+      stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // Show the splash screen while waiting for the future to complete
-          return const Landing();
+          return const SplashScreen();
         } else {
           // Handle the result of the future and return the appropriate UI
-          if (snapshot.data!.isNotEmpty) {
-            return const NavTabs();
+          if (snapshot.hasData) {
+            user.addUser(CurrentUser(
+                name: snapshot.data!.displayName,
+                email: snapshot.data!.email,
+                phoneNumber: snapshot.data!.phoneNumber,
+                avatar: snapshot.data!.photoURL));
+            user.addToken(Token(
+              token: snapshot.data!.refreshToken,
+            ));
+            user.addUserID(UserId(
+              uid: snapshot.data!.uid,
+            ));
+            return Scaffold(
+              backgroundColor: ThemeConstants.dark1Color,
+              body: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (showBiometrics)
+                      ElevatedButton(
+                        onPressed: () async {
+                          isAuthenticated =
+                            await BiometricHelper().authenticate();
+                        },
+                        child: const Text('Biometric Login',
+                          style: TextStyle(
+                            color: ThemeConstants.light1Color,
+                            fontSize: 30
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 50),
+                      if(isAuthenticated)
+                        const NavTabs()
+                  ],
+                ),
+              ),
+            );
           } else {
             return const Landing();
           }
@@ -55,20 +104,3 @@ class _CheckAuthenticatedState extends State<CheckAuthenticated> with WidgetsBin
     );
   }
 }
-
-/*
-
-
-
-    return StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if(snapshot.hasData){
-            return const NavTabs();
-          }else{
-            return const Landing();
-          }
-        }
-    );
- */
-

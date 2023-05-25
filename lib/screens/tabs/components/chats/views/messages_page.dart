@@ -55,14 +55,14 @@ class _MessagesState extends State<Messages> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(35),
                     child: Image.network(
-                      messageData.profilePicture,
+                     " messageData.profilePicture,",
                       height: 45,
                       width: 45,
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 10),
-                    child: Text(messageData.senderName),
+                    child: Text("messageData.senderName"),
                   ),
                 ],
               ),

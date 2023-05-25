@@ -1,33 +1,41 @@
 {
   "project_info": {
-    "project_number": "619227105824",
-    "project_id": "chattingapp-d5e82",
-    "storage_bucket": "chattingapp-d5e82.appspot.com"
+    "project_number": "1006777982280",
+    "project_id": "chattingapp-387610",
+    "storage_bucket": "chattingapp-387610.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:619227105824:android:349da014d8dcede0688a45",
+        "mobilesdk_app_id": "1:1006777982280:android:2e7f68a34915aaedc0a77d",
         "android_client_info": {
           "package_name": "com.chattingapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "619227105824-k3qofakn1hh3bponbmcoc0th1pa2l3mq.apps.googleusercontent.com",
+          "client_id": "1006777982280-mnon5tl32e7strleg2atbe4drkbjhede.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.chattingapp",
+            "certificate_hash": "98410d8cccc06a82ef8051ddb93f645861761536"
+          }
+        },
+        {
+          "client_id": "1006777982280-9vbde8titn81p2gvt61v1q0ch06q4678.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyACoiAnm-ZIg5QX3S_fbDei9gAds179fOA"
+          "current_key": "AIzaSyDHLVK_5AfGeGXaSy8a1GUvx09EZfPdaDM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "619227105824-k3qofakn1hh3bponbmcoc0th1pa2l3mq.apps.googleusercontent.com",
+              "client_id": "1006777982280-9vbde8titn81p2gvt61v1q0ch06q4678.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -1,216 +1,86 @@
-import 'dart:convert';
-import 'dart:io';
+import 'package:chattingapp/Authentication/authentication.dart';
+import 'package:chattingapp/Authentication/mobile.dart';
+import 'package:chattingapp/common/common.dart';
 import 'package:chattingapp/constants.dart';
-import 'package:chattingapp/model/models.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
 class ApiClient {
-  //request to login
-  Future<AuthResponseModel> login(LoginRequestModel requestModel) async {
-    //IMPLEMENT USER LOGIN
+  final Authentication _authentication = Authentication();
+  final MobileAuth _mobileotp = MobileAuth();
+
+  //Login with google
+  Future<void> logInWithGoogle(context) async {
     try {
-      final response = await http.post(
-        Uri.parse('${baseurl}login'),
-        body: requestModel.toJson(),
-      );
-
-      switch (response.statusCode) {
-        case 200:
-          final data = json.decode(response.body);
-          return AuthResponseModel.fromJson(data);
-        case 400:
-          final data = json.decode(response.body);
-          return AuthResponseModel.fromJson(data);
-
-        default:
-          throw Exception(response.body);
-      }
-    } on SocketException catch (_) {
-      rethrow;
-    }
-  }
-
-  //request to Register
-  Future<AuthResponseModel> register(RegisterRequestModel requestModel) async {
-    //IMPLEMENT USER LOGIN
-    try {
-      final response = await http.post(
-        Uri.parse('${baseurl}register'),
-        body: requestModel.toJson(),
-      );
-
-      switch (response.statusCode) {
-        case 201:
-          final data = json.decode(response.body);
-          return AuthResponseModel.fromJson(data);
-        case 400:
-          final data = json.decode(response.body);
-          return AuthResponseModel.fromJson(data);
-
-        default:
-          throw Exception(response.body);
-      }
-    } on SocketException catch (_) {
-      rethrow;
-    }
-  }
-
-  //verify OTP Pin from login
-  Future<VerifyOTPResponseModel> verifyOP(
-      VerifyOTPRequestModel requestModel) async {
-    //IMPLEMENT Verify OTP Pin
-    try {
-      final response = await http.post(
-        Uri.parse('${baseurl}verifyOTP'),
-        body: requestModel.toJson(),
-      );
-      switch (response.statusCode) {
-        case 200:
-          final data = json.decode(response.body);
-          return VerifyOTPResponseModel.fromJson(data);
-        case 400:
-          final data = json.decode(response.body);
-          return VerifyOTPResponseModel.fromJson(data);
-        case 404:
-          final data = json.decode(response.body);
-          return VerifyOTPResponseModel.fromJson(data);
-        default:
-          throw Exception(response.body);
-      }
-    } on SocketException catch (_) {
-      rethrow;
-    }
-  }
-
-  //request OTP Pin
-  Future<AuthResponseModel> requestOTP(ReqOTPRequestModel requestModel) async {
-    //IMPLEMENT Request OTP Pin
-    try {
-      final response = await http.post(Uri.parse('${baseurl}reqOTP'),
-          body: requestModel.toJson());
-
-      switch (response.statusCode) {
-        case 200:
-          final data = json.decode(response.body);
-          return AuthResponseModel.fromJson(data);
-
-        case 500:
-          final data = json.decode(response.body);
-          return AuthResponseModel.fromJson(data);
-
-        default:
-          throw Exception(response.body);
-      }
-    } on SocketException catch (_) {
-      rethrow;
-    }
-  }
-
-  //Send an email asking for password reset
-  Future<AuthResponseModel> passwordReset(
-      ResetPassRequestModel requestModel) async {
-    //IMPLEMENT REQUEST FORGOTPASSWORD OTP PIN
-    try {
-      final response = await http.post(
-        Uri.parse('${baseurl}resetPassword'),
-        body: requestModel.toJson(),
-      );
-
-      switch (response.statusCode) {
-        case 200:
-          final data = json.decode(response.body);
-          return AuthResponseModel.fromJson(data);
-        case 400:
-          final data = json.decode(response.body);
-          return AuthResponseModel.fromJson(data);
-        case 404:
-          final data = json.decode(response.body);
-          return AuthResponseModel.fromJson(data);
-        default:
-          throw Exception(response.body);
-      }
-    } on SocketException catch (_) {
-      rethrow;
-    }
-  }
-
-  //Verify reset user account
-  Future<AuthResponseModel> verifyAccount(
-      VerifyOTPRequestModel requestModel) async {
-    //IMPLEMENT Verify FORGOTPASSWORD request OTP PIN
-    try {
-      final response = await http.post(
-        Uri.parse('${baseurl}verifyresetpass'),
-        body: requestModel.toJson(),
-      );
-
-      switch (response.statusCode) {
-        case 200:
-          final data = json.decode(response.body);
-          return AuthResponseModel.fromJson(data);
-        case 400:
-          final data = json.decode(response.body);
-          return AuthResponseModel.fromJson(data);
-        case 404:
-          final data = json.decode(response.body);
-          return AuthResponseModel.fromJson(data);
-        default:
-          throw Exception(response.body);
-      }
-    } on SocketException catch (_) {
-      rethrow;
-    }
-  }
-
-  //Create new passwords
-  Future<VerifyOTPResponseModel> newPassword(
-      ForgotNewPassRequestModel requestModel) async {
-    //IMPLEMENT REQUEST FORGOTPASSWORD OTP PIN
-    try {
-      final response = await http.post(
-        Uri.parse('${baseurl}newpassword'),
-        body: requestModel.toJson(),
-      );
-
-      switch (response.statusCode) {
-        case 200:
-          final data = json.decode(response.body);
-          return VerifyOTPResponseModel.fromJson(data);
-        case 400:
-          final data = json.decode(response.body);
-          return VerifyOTPResponseModel.fromJson(data);
-        default:
-          throw Exception(response.body);
-      }
-    } on SocketException catch (_) {
-      rethrow;
-    }
-  }
-
-  signInWithGoogle() async {
-    try {
-      final GoogleSignInAccount? gUser =
-          await GoogleSignIn(scopes: <String>["email"]).signIn();
-      if (gUser == null) {
-        throw const LogInWithGoogleFailure(
-          'Google Sign In has been'
-          ' cancelled by the user',
-        );
-      }
-      final GoogleSignInAuthentication gAuth = await gUser!.authentication;
-
-      final credential = GoogleAuthProvider.credential(
-        accessToken: gAuth.accessToken,
-        idToken: gAuth.idToken,
-      );
-
-      return await FirebaseAuth.instance.signInWithCredential(credential);
-    } on FirebaseAuthException catch (e) {
-      throw LogInWithGoogleFailure.fromCode(e.code);
+      await _authentication.signInWithGoogle();
+    } on LogInWithGoogleFailure catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.message)));
     } catch (_) {
-      throw const LogInWithGoogleFailure();
+      rethrow;
     }
+  }
+
+  Future<void> logInWithEmailAndPassword(context, email, password) async {
+    try {
+      await _authentication.signInWithEmailAndPassword(
+          email: email, password: password);
+
+      await _mobileotp.sendOTP(email, context);
+
+      Navigator.pushNamed(context, verifyOtp, arguments: email);
+    } on LogInWithGoogleFailure catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.message)));
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  Future<void> registerNewUser(
+      context, String email, String password, String name) async {
+    try {
+      await _authentication.createNewUser(
+        email: email,
+        password: password,
+        name: name,
+      );
+
+      await _mobileotp.sendOTP(email, context);
+      Navigator.pushNamed(context, verifyOtp, arguments: email);
+    } on LogInWithGoogleFailure catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.message)));
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  Future resendOtp(context, String email) async {
+    try {
+      await _mobileotp.sendOTP(email, context);
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  Future verifyOTP(context, String email, code1, code2, code3, code4) async {
+    final otp = code1 + code2 + code3 + code4;
+    try {
+      await _mobileotp.verifyOTP(email, otp, context);
+      
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  Future<void> logOutUser(context) async {
+    final box = await Hive.openBox('user');
+    final box1 = await Hive.openBox('token');
+    final box2 = await Hive.openBox('useruid');
+    await box.clear();
+    await box1.clear();
+    await box2.clear();
+    await _authentication.logOut();
   }
 }

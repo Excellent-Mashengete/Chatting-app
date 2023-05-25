@@ -1,6 +1,4 @@
 import 'package:chattingapp/common/common.dart';
-import 'package:chattingapp/constants.dart';
-import 'package:chattingapp/model/models.dart';
 import 'package:chattingapp/service/auth_api_service.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +13,7 @@ class ForgotPassword extends StatefulWidget {
 
 class _ForgotPasswordState extends State<ForgotPassword> {
   final ApiClient _resetapiClient = ApiClient();
-  late ResetPassRequestModel resetPassRequestModel;
+
 
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
@@ -25,7 +23,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   @override
   void initState() {
     super.initState();
-    resetPassRequestModel = ResetPassRequestModel();
+
   }
 
   @override
@@ -93,7 +91,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           isApiCallProcessing = true;
                         });
                         
-                        _handleResetPassword();
+                       
                       }
                     },
                   ),
@@ -106,28 +104,4 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     );
   }
 
-  Future<void> _handleResetPassword() async {
-    resetPassRequestModel.identifier = emailController.text.toLowerCase();
-    _resetapiClient.passwordReset(resetPassRequestModel).then((value) => {
-          // ignore: unnecessary_null_comparison
-          if (value != null)
-            {
-              setState(() {
-                isApiCallProcessing = false;
-              }),
-              if (value.message!.isNotEmpty)
-                {
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text(value.message!))),
-                  Navigator.pushNamed(context, verifyforgotPassword,
-                      arguments: emailController.text.toLowerCase())
-                }
-              else
-                {
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text(value.error!))),
-                }
-            },
-        });
-  }
 }

@@ -1,6 +1,5 @@
 import 'package:chattingapp/common/common.dart';
 import 'package:chattingapp/constants.dart';
-import 'package:chattingapp/model/models.dart';
 import 'package:chattingapp/service/auth_api_service.dart';
 import 'package:chattingapp/widgets/widgets.dart';
 import 'package:email_validator/email_validator.dart';
@@ -15,8 +14,6 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final ApiClient _apiClient = ApiClient();
-  late LoginRequestModel loginRequestModel;
-
   final _formKey = GlobalKey<FormState>();
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
@@ -26,7 +23,6 @@ class _LoginState extends State<Login> {
   @override
   void initState() {
     super.initState();
-    loginRequestModel = LoginRequestModel();
   }
 
   @override
@@ -145,10 +141,16 @@ class _LoginState extends State<Login> {
                         press: () {
                           final valid = _formKey.currentState!.validate();
                           if (valid) {
-                            setState(() {
-                               isApiCallProcessing = true;
+                           setState(() {
+                              isApiCallProcessing = true;
                             });
-                            _handleLogin();
+                            _apiClient.logInWithEmailAndPassword(context, 
+                              usernameController.text, passwordController.text
+                            );
+                            setState(() {
+                              isApiCallProcessing = false;
+                            });
+
                           }
                         },
                       ),
@@ -196,15 +198,30 @@ class _LoginState extends State<Login> {
                         children: [
                           // google button
                           SquareTitle(
-                              imagePath: AssetConstants.googleImage,
-                              onTap: () {}),
+                            imagePath: AssetConstants.googleImage,
+                            onTap: () {
+                              _apiClient.logInWithGoogle(context);
+                            },
+                            isImage: false,
+                          ),
 
                           const SizedBox(width: 25),
 
                           // apple button
                           SquareTitle(
-                              imagePath: AssetConstants.appleImage,
-                              onTap: () {})
+                            imagePath: AssetConstants.appleImage,
+                            onTap: () {},
+                            isImage: false,
+                          ),
+
+                          const SizedBox(width: 25),
+
+                          // Huawei button
+                          SquareTitle(
+                            imagePath: AssetConstants.huaweiImage,
+                            onTap: () {},
+                            isImage: true,
+                          ),
                         ],
                       ),
 
@@ -246,30 +263,5 @@ class _LoginState extends State<Login> {
     );
   }
 
-  Future<void> _handleLogin() async {
-    loginRequestModel.identifier = usernameController.text.toLowerCase();
-    loginRequestModel.password = passwordController.text;
-    _apiClient.login(loginRequestModel).then((value) => {
-          // ignore: unnecessary_null_comparison
-          if (value != null)
-            {
-              setState(() {
-                isApiCallProcessing = false;
-              }),
-              if (value.message!.isNotEmpty)
-                {
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text(value.message!))),
-                  Navigator.pushNamed(context, verifyOtp,
-                      arguments: usernameController.text.toLowerCase()),
-                }
-              else
-                {
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text(value.error!))),
-                }
-            },
-        });
-  }
 
 }

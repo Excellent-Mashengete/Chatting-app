@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_token.dart';
+part of 'user_token_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator

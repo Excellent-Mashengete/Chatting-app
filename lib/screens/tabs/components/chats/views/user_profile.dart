@@ -2,6 +2,7 @@ import 'package:chattingapp/common/common.dart';
 import 'package:chattingapp/constants.dart';
 import 'package:chattingapp/model/models.dart';
 import 'package:chattingapp/providers/provider.dart';
+import 'package:chattingapp/service/auth_api_service.dart';
 import 'package:chattingapp/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,10 +18,10 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
+  final ApiClient _apiClient = ApiClient();
   @override
   Widget build(BuildContext context) {
     final myProfile = Provider.of<GetUser>(context);
-    final logout = Provider.of<GetUser>(context);
     if (myProfile.userList.isEmpty) {
       myProfile.getUserProfile();
     }
@@ -32,10 +33,7 @@ class _UserProfileState extends State<UserProfile> {
           },
           icon: const Icon(Icons.arrow_back),
         ),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [Text("Profile", textAlign: TextAlign.center)],
-        ),
+        title: const Text("Profile", textAlign: TextAlign.end),
       ),
       body: Container(
         padding: const EdgeInsets.only(left: 15, top: 20, right: 15),
@@ -46,7 +44,7 @@ class _UserProfileState extends State<UserProfile> {
           child: ListView.builder(
             itemCount: myProfile.userList.length,
             itemBuilder: (context, index) {
-              User prof = myProfile.userList[index];
+              CurrentUser prof = myProfile.userList[index];
               return Column(
                 children: [
                   Center(
@@ -69,7 +67,7 @@ class _UserProfileState extends State<UserProfile> {
                             shape: BoxShape.circle,
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: NetworkImage(prof.avatar!),
+                              image: NetworkImage(prof.avatar.toString()),
                             ),
                           ),
                         ),
@@ -104,17 +102,20 @@ class _UserProfileState extends State<UserProfile> {
                     ),
                   ),
                   const SizedBox(height: 60),
-                  buildTextField(prof.name! , true),
-                  buildTextField(prof.email!, false),
-                  buildTextField(prof.phoneNumber!, false),
+                  buildTextField(prof.name!, true),
+                  buildTextField(prof.email!, true),
                   const SizedBox(height: 40),
                   ButtonWidget(
                     text: "Logout",
-                    press: () {
-                      logout.logout(User());
-                      //Navigator.pushNamed(context, landing);
+                    press: () async {
+                      await _apiClient.logOutUser(context);
+                      Future.delayed(const Duration(seconds: 2), () {
+                        setState(() {
+                          Navigator.pushNamed(context, landing);
+                        });
+                      });
                     },
-                  )
+                  ),
                 ],
               );
             },

@@ -1,8 +1,4 @@
 import 'package:chattingapp/common/common.dart';
-import 'package:chattingapp/constants.dart';
-import 'package:chattingapp/model/models.dart';
-import 'package:chattingapp/providers/provider.dart';
-import 'package:provider/provider.dart';
 import 'package:chattingapp/service/auth_api_service.dart';
 import 'package:chattingapp/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -30,13 +26,13 @@ class _EnterNewPasswordState extends State<EnterNewPassword> {
   bool isApiCallProcessing = false;
 
   late String message;
-  late ForgotNewPassRequestModel forgotNewPassRequestModel;
+
 
   @override
   void initState() {
     super.initState();
     message = widget.data;
-    forgotNewPassRequestModel = ForgotNewPassRequestModel();
+
   }
 
   @override
@@ -49,7 +45,7 @@ class _EnterNewPasswordState extends State<EnterNewPassword> {
   }
 
   Widget uiSetup(BuildContext context) {
-    var user = Provider.of<GetUser>(context, listen: false);
+
     return Scaffold(
       appBar: const AppBarWidget(title: 'New Password', icon: Icons.arrow_back),
       body: SafeArea(
@@ -129,7 +125,7 @@ class _EnterNewPasswordState extends State<EnterNewPassword> {
                           isApiCallProcessing = true;
                         });
                         
-                        _handleConfirmNewPassword(user);
+
                       }
                     },
                   ),
@@ -142,42 +138,5 @@ class _EnterNewPasswordState extends State<EnterNewPassword> {
     );
   }
 
-  Future<void> _handleConfirmNewPassword(GetUser user) async {
-    forgotNewPassRequestModel.identifier = message.toLowerCase();
-    forgotNewPassRequestModel.newpassword = newpasswordController.text;
-    forgotNewPassRequestModel.confirmPassword = confirmpasswordController.text;
 
-    //get response from ApiClient
-    _resetapiClient.newPassword(forgotNewPassRequestModel).then(
-          (value) => {
-            // ignore: unnecessary_null_comparison
-            if (value != null)
-              {
-                setState(() {
-                  isApiCallProcessing = false;
-                }),
-                if (value.message!.isNotEmpty)
-                  {
-                    user.addItem(User(
-                      name: value.user!.name,
-                      email: value.user!.email,
-                      phoneNumber: value.user!.phone,
-                      avatar: value.user!.avatar 
-                      ),
-                    ),
-                    user.addToken(Token(token:value.token!)), //Add data to hive local database on the mobile
-                    
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text(value.message!))),
-                    Navigator.pushNamed(context, homepage)
-                  }
-                else
-                  {
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text(value.error!)))
-                  }
-              },
-          },
-        );
-  }
 }

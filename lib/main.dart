@@ -1,4 +1,4 @@
-import 'package:chattingapp/model/Auth/user_token.dart';
+import 'package:chattingapp/screens/landing/checkauthenticated.dart';
 import 'package:chattingapp/screens/login/login.dart';
 import 'package:chattingapp/providers/provider.dart';
 import 'package:chattingapp/screens/tabs/tabs.dart';
@@ -18,7 +18,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await Hive.initFlutter(); // initialize hive with the path of the directory.
-  Hive.registerAdapter(UserAdapter());
+  Hive.registerAdapter(CurrentUserAdapter());
+  Hive.registerAdapter(UserIdAdapter());
   Hive.registerAdapter(TokenAdapter());
   cameras = await availableCameras(); //for camera availability
   cameras2 = await availableCameras(); //for camera availability
@@ -52,21 +53,3 @@ class MyApp extends StatelessWidget {
         home: const CheckAuthenticated());
   }
 }
-
-
-/*
-FutureBuilder<Box>(
-        future: Hive.openBox('user'),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return AsyncSnapshot.waiting()
-          }else{
-            if (snapshot.data?.getAt(5)!= null) {
-              return const NavTabs();
-            } else {
-              return const Landing();
-            }
-          }
-        },
-      ),
-      */

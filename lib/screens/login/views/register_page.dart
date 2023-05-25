@@ -1,6 +1,5 @@
 import 'package:chattingapp/common/common.dart';
 import 'package:chattingapp/constants.dart';
-import 'package:chattingapp/model/models.dart';
 import 'package:chattingapp/service/auth_api_service.dart';
 import 'package:chattingapp/widgets/widgets.dart';
 import 'package:email_validator/email_validator.dart';
@@ -15,25 +14,21 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   final ApiClient _apiClient = ApiClient();
-  late RegisterRequestModel registerRequestModel;
 
   final _formKey = GlobalKey<FormState>();
   final firstController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  final phoneController = TextEditingController();
   bool _absecure = true;
   bool isApiCallProcessing = false;
 
   @override
   void initState() {
     super.initState();
-    registerRequestModel = RegisterRequestModel();
   }
 
   @override
   void dispose() {
-    phoneController.dispose();
     firstController.dispose();
     emailController.dispose();
     passwordController.dispose();
@@ -48,7 +43,7 @@ class _RegisterState extends State<Register> {
       child: uiSetup(context),
     );
   }
-  
+
   Widget uiSetup(BuildContext context) {
     return Scaffold(
       backgroundColor: ThemeConstants.dark1Color,
@@ -132,17 +127,8 @@ class _RegisterState extends State<Register> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 20),
-                      NumberInput(
-                        initialCountryCode: 'ZA',
-                        onChange: (phone) => setState(
-                          () {
-                            phoneController.text = phone.completeNumber;
-                          },
-                        ),
-                      ),
-
-                      const SizedBox(height: 35),
+                     
+                      const SizedBox(height: 50),
 
                       // // sign in button
                       ButtonWidget(
@@ -151,9 +137,15 @@ class _RegisterState extends State<Register> {
                           final valid = _formKey.currentState!.validate();
                           if (valid) {
                             setState(() {
-                               isApiCallProcessing = true;
+                              isApiCallProcessing = true;
                             });
-                            _handleRegister();
+                            _apiClient.registerNewUser(
+                              context, emailController.text, passwordController.text,
+                              firstController.text,
+                            );
+                            setState(() {
+                              isApiCallProcessing = false;
+                            });
                           }
                         },
                       ),
@@ -201,15 +193,30 @@ class _RegisterState extends State<Register> {
                         children: [
                           // google button
                           SquareTitle(
-                              imagePath: AssetConstants.googleImage,
-                              onTap: () {}),
+                            imagePath: AssetConstants.googleImage,
+                            onTap: () {
+                              _apiClient.logInWithGoogle(context);
+                            },
+                            isImage: false,
+                          ),
 
                           const SizedBox(width: 25),
 
                           // apple button
                           SquareTitle(
-                              imagePath: AssetConstants.appleImage,
-                              onTap: () {})
+                            imagePath: AssetConstants.appleImage,
+                            onTap: () {},
+                            isImage: false,
+                          ),
+
+                          const SizedBox(width: 25),
+
+                          // Huawei button
+                          SquareTitle(
+                            imagePath: AssetConstants.huaweiImage,
+                            onTap: () {},
+                            isImage: true,
+                          ),
                         ],
                       ),
 
@@ -249,33 +256,5 @@ class _RegisterState extends State<Register> {
         ),
       ),
     );
-  }
-
-  Future<void> _handleRegister() async {
-    registerRequestModel.name = firstController.text;
-    registerRequestModel.email = emailController.text.toLowerCase();
-    registerRequestModel.password = passwordController.text;
-    registerRequestModel.phone = phoneController.text;
-    _apiClient.register(registerRequestModel).then((value) => {
-          // ignore: unnecessary_null_comparison
-          if (value != null)
-            {
-              setState(() {
-                isApiCallProcessing = false;
-              }),
-              if (value.message!.isNotEmpty)
-                {
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text(value.message!))),
-                  Navigator.pushNamed(context, verifyOtp,
-                    arguments: emailController.text.toLowerCase()),
-                }
-              else
-                {
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text(value.error!))),
-                }
-            },
-        });
   }
 }

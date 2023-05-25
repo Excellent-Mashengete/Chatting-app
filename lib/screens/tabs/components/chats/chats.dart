@@ -1,7 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chattingapp/common/theme.dart';
 import 'package:chattingapp/constants.dart';
+import 'package:chattingapp/model/models.dart';
 import 'package:chattingapp/providers/provider.dart';
+import 'package:chattingapp/service/chats_users_api_service.dart';
+import 'package:chattingapp/widgets/skeleton.dart';
 import 'package:chattingapp/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,12 +16,46 @@ class Chats extends StatefulWidget {
 }
 
 class _ChatState extends State<Chats> {
+  final MessageApiClient _apiClient = MessageApiClient();
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    setState(() {
+      isLoading = true;
+    });
+    Future.delayed(const Duration(seconds: 3));
+    _fetchData();
+    super.initState();
+  }
+
+  final List<ChatResponseModel> userchats = [];
+
+  Future<void> _fetchData() async {
+    _apiClient.getAllChats().then((value) => {
+      if (value != null) {
+        setState(() {
+          isLoading = false;
+        }),
+        if (value.chats!.isNotEmpty) {
+          setState(() {
+            userchats.addAll(value.chats as Iterable<ChatResponseModel>);
+          }),
+        }else{
+          ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(value.error!))),
+        }
+      },
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final myProfile = Provider.of<GetUser>(context);
     if (myProfile.profilepic.isEmpty) {
       myProfile.getProfile();
     }
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(85.0),
@@ -37,21 +73,19 @@ class _ChatState extends State<Chats> {
                   },
                   child: Stack(
                     children: <Widget>[
-                      Consumer<GetUser>(
-                      builder: (context, profile, child) {
-                        if ( profile.profilepic.isNotEmpty) {
-                          return  ClipRRect(
+                      Consumer<GetUser>(builder: (context, profile, child) {
+                        if (profile.profilepic.isNotEmpty) {
+                          return ClipRRect(
                             borderRadius: BorderRadius.circular(35),
-                            child: CachedNetworkImage(
-                              imageUrl: profile.profilepic,
-                            ),
+                            child: Image.network(
+                              profile.profilepic.toString(),
+                              fit: BoxFit.cover,
+                            )
                           );
-                        }else{
+                        } else {
                           return const CircularProgressIndicator();
                         }
-                      }
-                      ),
-                     
+                      }),
                       Positioned(
                         right: 0,
                         bottom: 0,
@@ -71,18 +105,12 @@ class _ChatState extends State<Chats> {
         ),
       ),
       body: RefreshIndicator(
-        onRefresh: () async {},
-        child: ListView(
+        onRefresh: () async {
+          _fetchData();
+        },
+        child: Column(
           children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-              child: Text(
-                "Messages",
-                style:
-                    TextStyle(fontSize: 18, fontWeight: FontWeight.w900),
-              ),
-            ),
-            const SizedBox(height: 15),
+            const SizedBox(height: 5),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Container(
@@ -134,8 +162,23 @@ class _ChatState extends State<Chats> {
                 ),
               ),
             ),
-            const ActiveChats(),
-            const RecentChats(),
+            isLoading
+              ? Expanded(
+                  child: ListView.separated(
+                    itemBuilder: (context, index) => const ChatsLoader(),
+                    separatorBuilder: (context, index) =>
+                      const SizedBox(height: 16),
+                    itemCount: 6
+                  ),
+                )
+              : Expanded(
+                  child: ListView.builder(
+                    itemCount: userchats.length,
+                    itemBuilder: (context, index){
+                      return RecentChats(chats: userchats[index]);
+                    },
+                  ),
+                ),
           ],
         ),
       ),
@@ -143,8 +186,59 @@ class _ChatState extends State<Chats> {
   }
 }
 
-/*
- px.avatar,
-                          height: 55,
-                          width: 55,
-                          */
+class ChatsLoader extends StatelessWidget {
+  const ChatsLoader({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Row(
+        children: [
+          const Skeleton(
+            height: 50,
+            width: 50,
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Skeleton(
+                  width: 80,
+                  height: 8,
+                ),
+                Skeleton(
+                  width: 150,
+                  height: 8,
+                )
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: const [
+                Skeleton(
+                  width: 35,
+                  height: 8,
+                ),
+                SizedBox(
+                  height: 4,
+                ),
+                Skeleton(
+                  width: 20,
+                  height: 20,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

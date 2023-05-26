@@ -1,4 +1,5 @@
 import 'package:chattingapp/common/common.dart';
+import 'package:chattingapp/constants.dart';
 import 'package:chattingapp/helpers/biometric_helper.dart';
 import 'package:chattingapp/screens/landing/landing_page.dart';
 import 'package:chattingapp/screens/landing/splashcsreen.dart';
@@ -74,24 +75,35 @@ class _CheckAuthenticatedState extends State<CheckAuthenticated> {
               backgroundColor: ThemeConstants.dark1Color,
               body: Center(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    const SizedBox(height: 100),
+                    const Icon(Icons.lock, size: 50),
+                    const SizedBox(height: 30),
+                    const Text(
+                      'ChattingApp Locked',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    const SizedBox(height: 200),
+                    
                     if (showBiometrics)
-                      ElevatedButton(
-                        onPressed: () async {
+                      InkWell(
+                        onTap: () async {
                           isAuthenticated =
                             await BiometricHelper().authenticate();
+                              // ignore: use_build_context_synchronously
+                              if(isAuthenticated) Navigator.pushNamed(context, homepage);
                         },
-                        child: const Text('Biometric Login',
-                          style: TextStyle(
-                            color: ThemeConstants.light1Color,
-                            fontSize: 30
-                          ),
-                        ),
+                        child: const Icon(Icons.fingerprint, size: 60, color: ThemeConstants.light1Color)
                       ),
-                      const SizedBox(height: 50),
-                      if(isAuthenticated)
-                        const NavTabs()
+                    
+                    const SizedBox(height: 30),
+                    const Text(
+                      'Touch the fingerprint sensor',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 18),
+                    ),
                   ],
                 ),
               ),

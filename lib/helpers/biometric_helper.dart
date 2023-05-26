@@ -14,9 +14,18 @@ class BiometricHelper {
 
   Future<bool> authenticate() async {
     final bool didAuthenticate = await _auth.authenticate(
-      localizedReason: 'Touch the fingerprint sensor',
-      options: const AuthenticationOptions(biometricOnly: true),
+      localizedReason:
+            'Scan your fingerprint (or face or whatever) to authenticate',
+      options: const AuthenticationOptions(
+        stickyAuth: true,
+        biometricOnly: true,
+      ),
     );
     return didAuthenticate;
+  }
+
+  Future<bool> _cancelAuthentication() async {
+    final bool cancelBiometric = await _auth.stopAuthentication();
+    return cancelBiometric;
   }
 }

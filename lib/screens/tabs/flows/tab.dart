@@ -18,7 +18,7 @@ class _TabsState extends State<NavTabs> {
   int currentTab = 0;
   final List<Widget> screens = [
     const Chats(),
-    const Contacts(),
+    const ContactsPage(),
     const Calls(),
   ];
 
@@ -63,7 +63,7 @@ class _TabsState extends State<NavTabs> {
                   //     // print("Calls");
                   //     break;
                   // }
-                });
+                },);
               },
               tabs: [
                 GButton(
@@ -87,7 +87,7 @@ class _TabsState extends State<NavTabs> {
                   iconColor: const Color(0xFFF5F5F5).withOpacity(0.7),
                   text: "Calls",
                 ),
-              ]),
+              ],),
         ),
       ),
       body: Center(

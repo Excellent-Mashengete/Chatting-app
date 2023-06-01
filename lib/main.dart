@@ -1,5 +1,4 @@
 import 'package:chattingapp/screens/landing/checkauthenticated.dart';
-import 'package:chattingapp/screens/login/login.dart';
 import 'package:chattingapp/providers/provider.dart';
 import 'package:chattingapp/screens/tabs/tabs.dart';
 import 'package:firebase_core/firebase_core.dart';

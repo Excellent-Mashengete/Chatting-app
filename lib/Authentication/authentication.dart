@@ -4,13 +4,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
+
 class Authentication {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  
+
   User? get currentUser => _firebaseAuth.currentUser;
 
   Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
- 
+
   /// Returns the Identity JWT
   Future<String>? getIdToken({bool forceRefresh = false}) {
     return _firebaseAuth.currentUser?.getIdToken(forceRefresh);
@@ -78,6 +79,17 @@ class Authentication {
       );
 
       await _firebaseAuth.signInWithCredential(credential);
+    } on FirebaseAuthException catch (e) {
+      throw LogInWithGoogleFailure.fromCode(e.code);
+    } catch (_) {
+      throw const LogInWithGoogleFailure();
+    }
+  }
+
+  Future<void> HuaweiAuth() async {
+    try {
+      late final firebase_auth.AuthCredential credential;
+      
     } on FirebaseAuthException catch (e) {
       throw LogInWithGoogleFailure.fromCode(e.code);
     } catch (_) {

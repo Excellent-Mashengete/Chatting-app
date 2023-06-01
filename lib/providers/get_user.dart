@@ -83,6 +83,24 @@ class GetUser extends ChangeNotifier {
     notifyListeners();
   }
 
+  //get user biometroc status from hive
+  addBiometrics(bool fingerPrint) async {
+    print(fingerPrint);
+    var box = await Hive.openBox('biometrics');
+    box.put('fingerprint', fingerPrint);
+    notifyListeners();
+  }
+
+  bool _biometric = false;
+  get biometric => _biometric;
+
+  //get user biometroc status from hive
+  Future<void> getBiometric() async {
+    final box = await Hive.openBox('biometrics');
+    _biometric = box.get('fingerprint');
+    notifyListeners();
+  }
+
   List _userList = [];
   List get userList => _userList;
 

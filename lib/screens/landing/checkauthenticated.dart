@@ -1,5 +1,3 @@
-import 'package:chattingapp/common/common.dart';
-import 'package:chattingapp/constants.dart';
 import 'package:chattingapp/helpers/biometric_helper.dart';
 import 'package:chattingapp/screens/landing/landing_page.dart';
 import 'package:chattingapp/screens/landing/splashcsreen.dart';
@@ -21,7 +19,6 @@ class CheckAuthenticated extends StatefulWidget {
 class _CheckAuthenticatedState extends State<CheckAuthenticated> {
   bool showBiometrics = false;
   bool isAuthenticated = false;
-
   @override
   void initState() {
     isBiometricAvailable();
@@ -51,6 +48,7 @@ class _CheckAuthenticatedState extends State<CheckAuthenticated> {
   @override
   Widget build(BuildContext context) {
     var user = Provider.of<GetUser>(context, listen: false);
+    user.getBiometric();
     return StreamBuilder(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
@@ -71,43 +69,49 @@ class _CheckAuthenticatedState extends State<CheckAuthenticated> {
             user.addUserID(UserId(
               uid: snapshot.data!.uid,
             ));
-            return Scaffold(
-              backgroundColor: ThemeConstants.dark1Color,
-              body: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 100),
-                    const Icon(Icons.lock, size: 50),
-                    const SizedBox(height: 30),
-                    const Text(
-                      'ChattingApp Locked',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    const SizedBox(height: 200),
-                    
-                    if (showBiometrics)
-                      InkWell(
-                        onTap: () async {
-                          isAuthenticated =
-                            await BiometricHelper().authenticate();
-                              // ignore: use_build_context_synchronously
-                              if(isAuthenticated) Navigator.pushNamed(context, homepage);
-                        },
-                        child: const Icon(Icons.fingerprint, size: 60, color: ThemeConstants.light1Color)
-                      ),
-                    
-                    const SizedBox(height: 30),
-                    const Text(
-                      'Touch the fingerprint sensor',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ],
-                ),
-              ),
-            );
+
+            bool checkFingerPrint = user.biometric;
+
+            // return checkFingerPrint
+            //     ? Scaffold(
+            //         backgroundColor: ThemeConstants.dark1Color,
+            //         body: Center(
+            //           child: Column(
+            //             mainAxisAlignment: MainAxisAlignment.start,
+            //             children: [
+            //               const SizedBox(height: 100),
+            //               const Icon(Icons.lock, size: 50),
+            //               const SizedBox(height: 30),
+            //               const Text(
+            //                 'ChattingApp Locked',
+            //                 textAlign: TextAlign.center,
+            //                 style: TextStyle(fontSize: 18),
+            //               ),
+            //               const SizedBox(height: 200),
+            //               if (showBiometrics)
+            //                 InkWell(
+            //                     onTap: () async {
+            //                       isAuthenticated =
+            //                           await BiometricHelper().authenticate();
+            //                       // ignore: use_build_context_synchronously
+            //                       if (isAuthenticated)
+            //                         Navigator.pushNamed(context, homepage);
+            //                     },
+            //                     child: const Icon(Icons.fingerprint,
+            //                         size: 60,
+            //                         color: ThemeConstants.light1Color)),
+            //               const SizedBox(height: 30),
+            //               const Text(
+            //                 'Touch the fingerprint sensor',
+            //                 textAlign: TextAlign.center,
+            //                 style: TextStyle(fontSize: 18),
+            //               ),
+            //             ],
+            //           ),
+            //         ),
+            //       )
+            //     : 
+              return const NavTabs();
           } else {
             return const Landing();
           }

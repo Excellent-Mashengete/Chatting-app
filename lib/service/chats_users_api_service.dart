@@ -1,19 +1,21 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:chattingapp/Authentication/authentication.dart';
 import 'package:chattingapp/constants.dart';
 import 'package:chattingapp/model/models.dart';
-import 'package:hive/hive.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 
 class MessageApiClient {
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
   Future<ChatResponseModel> getAllChats() async {
-    final box = await Hive.openBox('token');
-    var token  = box.values.first.token;
+    final user = _firebaseAuth.currentUser;
+    final userId = user!.uid;
 
     try {
       final response = await http.get(
-        Uri.parse('${baseurl}getchats'),
-        headers: {"authorization": token},
+        Uri.parse('${baseurl}getchats/userId'),
       );
 
       switch (response.statusCode) {

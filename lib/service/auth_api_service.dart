@@ -1,9 +1,12 @@
 import 'package:chattingapp/Authentication/authentication.dart';
-import 'package:chattingapp/Authentication/mobile.dart';
+import 'package:chattingapp/service/mobile.dart';
 import 'package:chattingapp/common/common.dart';
 import 'package:chattingapp/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:chattingapp/model/models.dart';
 import 'package:hive/hive.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class ApiClient {
   final Authentication _authentication = Authentication();
@@ -58,17 +61,32 @@ class ApiClient {
 
   Future resendOtp(context, String email) async {
     try {
-      await _mobileotp.sendOTP(email, context);
+      _mobileotp.sendOTP(email, context);
     } catch (_) {
       rethrow;
     }
   }
 
-  Future verifyOTP(context, String email, code1, code2, code3, code4) async {
-    final otp = code1 + code2 + code3 + code4;
+  Future<VerifyOTPResponseModel> verifyOTP(VerifyOTPRequestModel requestModel) async {
     try {
-      await _mobileotp.verifyOTP(email, otp, context);
+      final response = await http.post(
+        Uri.parse('${baseurl}verifyotp'),
+        body: requestModel.toJson(),
+      );
       
+      switch (response.statusCode) {
+        case 200:
+          final data = json.decode(response.body);
+          return VerifyOTPResponseModel.fromJson(data);
+        case 400:
+          final data = json.decode(response.body);
+          return VerifyOTPResponseModel.fromJson(data);
+        case 404:
+          final data = json.decode(response.body);
+          return VerifyOTPResponseModel.fromJson(data);
+        default:
+          throw Exception(response.body);
+      }
     } catch (_) {
       rethrow;
     }

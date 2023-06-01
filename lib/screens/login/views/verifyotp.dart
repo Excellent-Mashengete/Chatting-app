@@ -1,4 +1,6 @@
 import 'package:chattingapp/common/common.dart';
+import 'package:chattingapp/constants.dart';
+import 'package:chattingapp/model/models.dart';
 import 'package:chattingapp/service/auth_api_service.dart';
 import 'package:chattingapp/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +19,7 @@ class VerifyOTP extends StatefulWidget {
 
 class _MyVerifyOTPState extends State<VerifyOTP> {
   final ApiClient _apiClient = ApiClient();
+  late VerifyOTPRequestModel verifyRequestModel;
 
   final verify1Controller = TextEditingController();
   final verify2Controller = TextEditingController();
@@ -31,6 +34,7 @@ class _MyVerifyOTPState extends State<VerifyOTP> {
   void initState() {
     super.initState();
     message = widget.data;
+    verifyRequestModel = VerifyOTPRequestModel();
   }
 
   @override
@@ -119,7 +123,7 @@ class _MyVerifyOTPState extends State<VerifyOTP> {
                               isApiCallProcessing = true;
                             });
 
-                            _apiClient.resendOtp(context, email);
+                            _apiClient.resendOtp(context, message);
 
                             setState(() {
                               isApiCallProcessing = false;
@@ -136,15 +140,11 @@ class _MyVerifyOTPState extends State<VerifyOTP> {
                               isApiCallProcessing = true;
                             });
 
-                            _apiClient.verifyOTP(
-                              context, email, verify1Controller, 
-                              verify2Controller, verify3Controller, 
-                              verify4Controller
-                            );
-
-                            setState(() {
-                              isApiCallProcessing = false;
-                            });
+                            _verifyOTP(
+                                verify1Controller.text,
+                                verify2Controller.text,
+                                verify3Controller.text,
+                                verify4Controller.text);
                           },
                           child: const Text('Verify OTP'),
                         ),
@@ -158,5 +158,27 @@ class _MyVerifyOTPState extends State<VerifyOTP> {
         ),
       ),
     );
+  }
+
+  Future<void> _verifyOTP(String code1, String code2, String code3, String code4) async {
+    final otp = code1 + code2 + code3 + code4;
+    verifyRequestModel.otp = otp;
+    verifyRequestModel.email = message.toLowerCase();
+
+    _apiClient.verifyOTP(verifyRequestModel).then((value) => {
+      if (value != null){
+        setState(() {
+          isApiCallProcessing = false;
+        }),
+        if (value.message!.isNotEmpty){
+          ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(value.message!))),
+          Navigator.pushNamed(context, homepage) 
+        }else{
+          ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(value.error!))),
+        }
+      }
+    });
   }
 }

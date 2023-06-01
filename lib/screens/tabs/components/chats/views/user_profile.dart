@@ -6,6 +6,8 @@ import 'package:chattingapp/service/auth_api_service.dart';
 import 'package:chattingapp/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
 class UserProfile extends StatefulWidget {
@@ -19,11 +21,14 @@ class UserProfile extends StatefulWidget {
 
 class _UserProfileState extends State<UserProfile> {
   final ApiClient _apiClient = ApiClient();
+  late bool fingerprintState = false;
+
   @override
   Widget build(BuildContext context) {
     final myProfile = Provider.of<GetUser>(context);
     if (myProfile.userList.isEmpty) {
       myProfile.getUserProfile();
+      myProfile.getBiometric();
     }
     return Scaffold(
       appBar: AppBar(
@@ -104,6 +109,7 @@ class _UserProfileState extends State<UserProfile> {
                   const SizedBox(height: 60),
                   buildTextField(prof.name!, true),
                   buildTextField(prof.email!, true),
+                  fingerprint(myProfile),
                   const SizedBox(height: 40),
                   ButtonWidget(
                     text: "Logout",
@@ -207,6 +213,36 @@ class _UserProfileState extends State<UserProfile> {
             height: 5,
           ),
           Text(text),
+        ],
+      ),
+    );
+  }
+
+  Widget fingerprint(GetUser bio) {
+    return Container(
+      padding: const EdgeInsets.only(bottom: 30),
+      margin: const EdgeInsets.symmetric(horizontal: 8),
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: Colors.grey,
+            width: 0.2,
+          ),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+           Text(
+            bio.biometric.toString(),
+          ),
+          Switch(
+            value: bio.biometric,
+            onChanged: (val) async {
+
+              await bio.addBiometrics(val);
+            },
+          ),
         ],
       ),
     );

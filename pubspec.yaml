@@ -58,9 +58,8 @@ dependencies:
   permission_handler: ^10.2.0
   intl: ^0.18.1
   flutter_secure_storage: ^8.0.0
-  email_otp: ^2.0.1
   local_auth: ^2.1.6
-  email_auth: ^1.0.0
+  contacts_service: ^0.6.3
 
 
 
